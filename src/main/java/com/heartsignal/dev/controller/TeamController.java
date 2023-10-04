@@ -43,4 +43,14 @@ public class TeamController {
         User user = principalDetails.getUser();
         return aggregationFacade.checkMatching(user);
     }
+    @PatchMapping("/{teamId}/signal")
+    public void cancelSignal(@PathVariable Long teamId, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        User user = principalDetails.getUser();
+        aggregationFacade.rejectSignal(user, teamId, false);
+    }
+    @DeleteMapping("/{teamId}/signal")
+    public void rejectSignal(@PathVariable Long teamId, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        User user = principalDetails.getUser();
+        aggregationFacade.rejectSignal(user, teamId, true);
+    }
 }
