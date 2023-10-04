@@ -9,12 +9,12 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -49,4 +49,6 @@ public class User {
     public void updateRoleToUser() {
         this.role = Role.USER;
     }
+
+    public User(){}
 }

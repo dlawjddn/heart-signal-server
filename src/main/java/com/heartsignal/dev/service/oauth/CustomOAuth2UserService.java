@@ -6,6 +6,7 @@ import com.heartsignal.dev.domain.User;
 import com.heartsignal.dev.oauth.CustomOAuth2user;
 import com.heartsignal.dev.oauth.KakaoUserInfo;
 import com.heartsignal.dev.repository.UserRepository;
+import com.heartsignal.dev.service.domain.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,6 +26,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
+    private final UserService userService;
     private final UserRepository userRepository;
 
     @Override
@@ -46,11 +48,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User getUser(KakaoUserInfo kakaoUserInfo) {
-        Optional<User> userBySocialId = userRepository.findBySocialId(kakaoUserInfo.getId());
 
-        if(userBySocialId.isPresent()){
-            return userBySocialId.get();
+        Optional<User> bySocialId = userRepository.findBySocialId(kakaoUserInfo.getId());
+        if(bySocialId.isPresent()){
+            return bySocialId.get();
         }
+
 
         User user = User.builder()
                 .chatStatus(false)
@@ -61,7 +64,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .role(Role.GUEST)
                 .build();
 
-        userRepository.save(user);
+        userService.save(user);
         return user;
     }
 }

@@ -8,20 +8,23 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @Builder
-@NoArgsConstructor
 @Table(name ="bars")
 public class Bar {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "bar_id")
     private Long id;
 
     private String name;
+    @Column(name = "`group`")
     private String group;
     private String location;
     private String concept;
 
-    @OneToOne(mappedBy = "bar")
+    @OneToOne(mappedBy = "bar", fetch = FetchType.LAZY)
     private BarChat barChat;
+
+    public Bar(){}
 
 }

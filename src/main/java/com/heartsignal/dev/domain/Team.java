@@ -12,12 +12,12 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @Builder
-@NoArgsConstructor
 @Table(name = "team")
 public class Team {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "team_id")
     private Long id;
 
     @OneToOne
@@ -35,4 +35,6 @@ public class Team {
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private List<User> members;
+
+    public Team(){}
 }

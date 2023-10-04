@@ -1,16 +1,20 @@
 package com.heartsignal.dev.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "user_info")
 @Getter
 @Setter
+@AllArgsConstructor
+@Builder
 public class UserInfo {
 
     @Id
+    @Column(name = "user_info_id")
     private Long id;
 
     private String gender;
@@ -26,4 +30,6 @@ public class UserInfo {
     @JoinColumn(name = "id")
     @MapsId
     private User user;          //UserInfo의 Id는 User의 Id랑 동일
+
+    public UserInfo(){}
 }

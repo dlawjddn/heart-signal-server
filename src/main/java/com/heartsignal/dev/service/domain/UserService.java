@@ -17,4 +17,10 @@ public class UserService {
     public void updateUserRoleToUser(User user) {
         user.updateRoleToUser();
     }
+
+    @Transactional
+    public void save(User user) {
+        userRepository.save(user);
+    }
+
 }
