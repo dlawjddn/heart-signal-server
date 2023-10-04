@@ -23,6 +23,7 @@ public class UserInfoService {
                 additionalInfo.getFace(),
                 additionalInfo.getSelfInfo(),
                 user));
+        log.info("회원 추가 정보 저장 완료");
     }
     public boolean isExistedNickname(String nickname){
         return userInfoRepository.existsByNickname(nickname);
