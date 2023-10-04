@@ -95,6 +95,18 @@ public class AggregationFacade {
         signalService.saveSignal(myTeam, teamService.findById(teamId));
     }
 
+    // 시그널 거절하기
+    public void rejectSignal(User user, Long teamId, boolean reject){
+        Team myTeam = user.getTeam();
+        Team otherTeam = teamService.findById(teamId);
+        if (!myTeam.getLeader().equals(user))
+            throw new CustomException(ErrorCode.ONLY_LEADER);
+        if (reject)
+            signalService.deleteSignal(signalService.findBySenderAndReceiver(otherTeam, myTeam));
+        else
+            signalService.deleteSignal(signalService.findBySenderAndReceiver(myTeam, otherTeam));
+    }
+
     /**
      * 주점
      */
@@ -111,7 +123,7 @@ public class AggregationFacade {
         List<TeamDTO> sendingInfos = signalService.findSendingSignal(myTeam).stream()
                 .map(signal -> new TeamDTO(signal.getReceiver().getId(), signal.getReceiver().getTitle()))
                 .toList();
-        List<TeamDTO> receivedInfos = signalService.findSendingSignal(myTeam).stream()
+        List<TeamDTO> receivedInfos = signalService.findReceivedSignal(myTeam).stream()
                 .map(signal -> new TeamDTO(signal.getSender().getId(), signal.getSender().getTitle()))
                 .toList();
         return new SignalDTO(sendingInfos, receivedInfos);
