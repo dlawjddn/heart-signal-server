@@ -57,6 +57,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String refreshToken = jwtService.createRefreshToken();
         String bearerAccessToken = "Bearer " + accessToken;
         String bearerRefreshToken = "Bearer " + refreshToken;
+        /**
+         * TODO url 문제 해결 필요 + Bearer + 문제 해결 필요
+         */
         String cookieValueForAccess = URLEncoder.encode(bearerAccessToken, StandardCharsets.UTF_8);
         String cookieValueForRefresh = URLEncoder.encode(bearerRefreshToken, StandardCharsets.UTF_8);
 
