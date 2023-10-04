@@ -4,6 +4,7 @@ import com.heartsignal.dev.Facade.AggregationFacade;
 import com.heartsignal.dev.domain.User;
 import com.heartsignal.dev.dto.team.response.SignalTeamsInfo;
 import com.heartsignal.dev.dto.team.request.SaveTeamInfo;
+import com.heartsignal.dev.dto.team.response.TeamDetailsDTO;
 import com.heartsignal.dev.oauth.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,5 +26,10 @@ public class TeamController {
     public SignalTeamsInfo signalList(@AuthenticationPrincipal PrincipalDetails principalDetails){
         User leader = principalDetails.getUser();
         return aggregationFacade.provideSignalList(leader);
+    }
+    @GetMapping("/{teamId}")
+    public TeamDetailsDTO showSignalDetails(@PathVariable Long teamId, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        User user = principalDetails.getUser();
+        return aggregationFacade.provideTeamDetails(user, teamId);
     }
 }
