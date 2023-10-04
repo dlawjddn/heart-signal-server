@@ -1,10 +1,12 @@
 package com.heartsignal.dev.Facade;
 
+import com.heartsignal.dev.domain.Team;
 import com.heartsignal.dev.domain.User;
 import com.heartsignal.dev.domain.UserInfo;
 import com.heartsignal.dev.dto.team.response.SignalTeamsInfo;
 import com.heartsignal.dev.dto.team.request.SaveTeamInfo;
 import com.heartsignal.dev.dto.team.response.TeamDTO;
+import com.heartsignal.dev.dto.team.response.TeamDetailsDTO;
 import com.heartsignal.dev.dto.userInfo.response.AdditionalInfoDTO;
 import com.heartsignal.dev.dto.userInfo.response.ExistedNickname;
 import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfo;
@@ -56,10 +58,26 @@ public class AggregationFacade {
     /**
      * 시그널 리스트
      */
+
+    // 시그널 리스트 제공
     public SignalTeamsInfo provideSignalList(User leader){
         List<TeamDTO> teamDTOs = teamService.findSignalList(leader).stream()
                 .map(team -> new TeamDTO(team.getId(), team.getTitle()))
                 .toList();
         return new SignalTeamsInfo(teamDTOs);
+    }
+
+    // 시그널 상세 정보 제공
+    public TeamDetailsDTO provideTeamDetails(User user, Long teamId){
+        Team findTeam = teamService.findById(teamId);
+        List<AdditionalInfoDTO> memberInfos = findTeam.getMembers().stream()
+                .map(User::getUserInfo).toList().stream()
+                .map(userInfo -> new AdditionalInfoDTO(userInfo.getNickname(), userInfo.getMbti(), userInfo.getLookAlike(), userInfo.getSelfInfo()))
+                .toList(); // 리더를 제외한 멤버들의 추가 정보 리스트
+        UserInfo leaderInfo = findTeam.getLeader().getUserInfo();
+        memberInfos.add(new AdditionalInfoDTO(leaderInfo.getNickname(), leaderInfo.getMbti(), leaderInfo.getLookAlike(), leaderInfo.getSelfInfo()));
+
+        Team myTeam = user.getTeam();
+        return new TeamDetailsDTO(myTeam.getTitle(), myTeam.getLeader().equals(user), memberInfos);
     }
 }
