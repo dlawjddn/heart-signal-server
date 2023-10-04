@@ -10,6 +10,8 @@ import com.heartsignal.dev.dto.team.response.TeamDetailsDTO;
 import com.heartsignal.dev.dto.userInfo.response.AdditionalInfoDTO;
 import com.heartsignal.dev.dto.userInfo.response.ExistedNickname;
 import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfo;
+import com.heartsignal.dev.exception.custom.CustomException;
+import com.heartsignal.dev.exception.custom.ErrorCode;
 import com.heartsignal.dev.service.domain.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +29,7 @@ public class AggregationFacade {
     private final MeetingRoomService meetingRoomService;
     private final BarService barService;
     private final BarChatroomService barChatroomService;
+    private final SignalService signalService;
 
     /**
      * 추가 정보 기입
@@ -56,7 +59,7 @@ public class AggregationFacade {
         teamService.saveTeam(leader, members, teamInfo.getTitle());
     }
     /**
-     * 시그널 리스트
+     * 시그널
      */
 
     // 시그널 리스트 제공
@@ -79,5 +82,13 @@ public class AggregationFacade {
 
         Team myTeam = user.getTeam();
         return new TeamDetailsDTO(myTeam.getTitle(), myTeam.getLeader().equals(user), memberInfos);
+    }
+
+    //시그널 보내기
+    public void sendSignal(User user, Long teamId){
+        Team myTeam = user.getTeam();
+        if (!myTeam.getLeader().equals(user))
+            throw new CustomException(ErrorCode.ONLY_LEADER); // 일반 유저라면 exception
+        signalService.saveSignal(myTeam, teamService.findById(teamId));
     }
 }
