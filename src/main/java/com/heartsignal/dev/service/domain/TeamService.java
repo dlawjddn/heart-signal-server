@@ -3,6 +3,8 @@ package com.heartsignal.dev.service.domain;
 
 import com.heartsignal.dev.domain.Team;
 import com.heartsignal.dev.domain.User;
+import com.heartsignal.dev.exception.custom.CustomException;
+import com.heartsignal.dev.exception.custom.ErrorCode;
 import com.heartsignal.dev.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,5 +36,9 @@ public class TeamService {
         return teamRepository.findAll().stream()
                 .filter(team -> (team.getLeader() != null && team.getMembers().size() == memberCnt && team.getLeader().getUserInfo().getGender().equals(teamGender)))
                 .toList();
+    }
+    public Team findById(Long teamId){
+        return teamRepository.findById(teamId)
+                .orElseThrow(() -> new CustomException(ErrorCode.TEAM_NOT_FOUND));
     }
 }
