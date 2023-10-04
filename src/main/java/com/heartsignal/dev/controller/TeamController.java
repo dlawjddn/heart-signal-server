@@ -2,15 +2,13 @@ package com.heartsignal.dev.controller;
 
 import com.heartsignal.dev.Facade.AggregationFacade;
 import com.heartsignal.dev.domain.User;
+import com.heartsignal.dev.dto.team.response.SignalTeamsInfo;
 import com.heartsignal.dev.dto.team.request.SaveTeamInfo;
 import com.heartsignal.dev.oauth.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -22,5 +20,10 @@ public class TeamController {
     public void makeTeam(@RequestBody SaveTeamInfo teamInfo, @AuthenticationPrincipal PrincipalDetails principalDetails){
         User leader = principalDetails.getUser();
         aggregationFacade.makeTeam(leader, teamInfo);
+    }
+    @GetMapping
+    public SignalTeamsInfo signalList(@AuthenticationPrincipal PrincipalDetails principalDetails){
+        User leader = principalDetails.getUser();
+        return aggregationFacade.provideSignalList(leader);
     }
 }
