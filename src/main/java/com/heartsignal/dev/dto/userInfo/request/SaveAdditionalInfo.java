@@ -1,4 +1,4 @@
-package com.heartsignal.dev.dto.userInfo;
+package com.heartsignal.dev.dto.userInfo.request;
 
 import lombok.Data;
 

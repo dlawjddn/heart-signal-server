@@ -2,7 +2,7 @@ package com.heartsignal.dev.service.domain;
 
 import com.heartsignal.dev.domain.User;
 import com.heartsignal.dev.domain.UserInfo;
-import com.heartsignal.dev.dto.userInfo.SaveAdditionalInfo;
+import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfo;
 import com.heartsignal.dev.repository.UserInfoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -2,10 +2,9 @@ package com.heartsignal.dev.controller;
 
 import com.heartsignal.dev.Facade.AggregationFacade;
 import com.heartsignal.dev.domain.User;
-import com.heartsignal.dev.dto.userInfo.DuplicatedNickname;
-import com.heartsignal.dev.dto.userInfo.SaveAdditionalInfo;
+import com.heartsignal.dev.dto.userInfo.response.DuplicatedNickname;
+import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfo;
 import com.heartsignal.dev.oauth.PrincipalDetails;
-import com.heartsignal.dev.service.domain.UserInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
