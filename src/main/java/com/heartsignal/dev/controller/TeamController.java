@@ -2,6 +2,7 @@ package com.heartsignal.dev.controller;
 
 import com.heartsignal.dev.Facade.AggregationFacade;
 import com.heartsignal.dev.domain.User;
+import com.heartsignal.dev.dto.signal.response.SignalDTO;
 import com.heartsignal.dev.dto.team.response.SignalTeamsInfo;
 import com.heartsignal.dev.dto.team.request.SaveTeamInfo;
 import com.heartsignal.dev.dto.team.response.TeamDetailsDTO;
@@ -36,5 +37,10 @@ public class TeamController {
     public void sendSignal(@PathVariable Long teamId, @AuthenticationPrincipal PrincipalDetails principalDetails){
         User user = principalDetails.getUser();
         aggregationFacade.sendSignal(user, teamId);
+    }
+    @PostMapping("/match/confirm")
+    public SignalDTO checkMatching(@AuthenticationPrincipal PrincipalDetails principalDetails){
+        User user = principalDetails.getUser();
+        return aggregationFacade.checkMatching(user);
     }
 }
