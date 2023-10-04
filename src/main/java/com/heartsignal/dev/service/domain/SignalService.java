@@ -3,6 +3,8 @@ package com.heartsignal.dev.service.domain;
 import com.heartsignal.dev.domain.Signal;
 import com.heartsignal.dev.domain.Team;
 import com.heartsignal.dev.domain.User;
+import com.heartsignal.dev.exception.custom.CustomException;
+import com.heartsignal.dev.exception.custom.ErrorCode;
 import com.heartsignal.dev.repository.SignalRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,5 +32,14 @@ public class SignalService {
     }
     public List<Signal> findReceivedSignal(Team myTeam){
         return signalRepository.findByReceiver(myTeam);
+    }
+    public Signal findBySenderAndReceiver(Team sender, Team receiver){
+        return signalRepository.findBySenderAndReceiver(sender, receiver)
+                .orElseThrow(() -> new CustomException(ErrorCode.SIGNAL_NOT_FOUND));
+    }
+    @Transactional
+    public void deleteSignal(Signal signal){
+        signalRepository.delete(signal);
+        log.info("시그널 삭제 완료");
     }
 }
