@@ -28,4 +28,11 @@ public class TeamService {
                         .createdAt(new Timestamp(System.currentTimeMillis())).build());
         log.info("팀 구성 완료");
     }
+    public List<Team> findSignalList(User leader){
+        int memberCnt = leader.getTeam().getMembers().size();
+        String teamGender = leader.getUserInfo().getGender();
+        return teamRepository.findAll().stream()
+                .filter(team -> (team.getLeader() != null && team.getMembers().size() == memberCnt && team.getLeader().getUserInfo().getGender().equals(teamGender)))
+                .toList();
+    }
 }
