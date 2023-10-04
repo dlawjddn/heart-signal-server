@@ -1,6 +1,8 @@
 package com.heartsignal.dev.Facade;
 
 import com.heartsignal.dev.domain.User;
+import com.heartsignal.dev.domain.UserInfo;
+import com.heartsignal.dev.dto.userInfo.response.AdditionalInfoDTO;
 import com.heartsignal.dev.dto.userInfo.response.ExistedNickname;
 import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfo;
 import com.heartsignal.dev.service.domain.*;
@@ -28,5 +30,12 @@ public class AggregationFacade {
 
     public ExistedNickname checkDuplicatedNickname(String nickname){
         return new ExistedNickname(userInfoService.isExistedNickname(nickname));
+    }
+    /**
+     * 마이페이지
+     */
+    public AdditionalInfoDTO showMyPage(User user){
+        UserInfo myAddiInfo = user.getUserInfo();
+        return new AdditionalInfoDTO(myAddiInfo.getNickname(), myAddiInfo.getMbti(), myAddiInfo.getLookAlike(), myAddiInfo.getSelfInfo());
     }
 }
