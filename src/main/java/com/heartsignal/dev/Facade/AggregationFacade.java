@@ -4,6 +4,7 @@ import com.heartsignal.dev.domain.Bar;
 import com.heartsignal.dev.domain.Team;
 import com.heartsignal.dev.domain.User;
 import com.heartsignal.dev.domain.UserInfo;
+import com.heartsignal.dev.dto.signal.response.SignalDTO;
 import com.heartsignal.dev.dto.team.response.SignalTeamsInfo;
 import com.heartsignal.dev.dto.team.request.SaveTeamInfo;
 import com.heartsignal.dev.dto.team.response.TeamDTO;
@@ -99,4 +100,20 @@ public class AggregationFacade {
      */
 
     // 주점 목록 조회
+
+
+    /**
+     * 매칭 확인하기
+     */
+
+    public SignalDTO checkMatching(User user){
+        Team myTeam = user.getTeam();
+        List<TeamDTO> sendingInfos = signalService.findSendingSignal(myTeam).stream()
+                .map(signal -> new TeamDTO(signal.getReceiver().getId(), signal.getReceiver().getTitle()))
+                .toList();
+        List<TeamDTO> receivedInfos = signalService.findSendingSignal(myTeam).stream()
+                .map(signal -> new TeamDTO(signal.getSender().getId(), signal.getSender().getTitle()))
+                .toList();
+        return new SignalDTO(sendingInfos, receivedInfos);
+    }
 }
