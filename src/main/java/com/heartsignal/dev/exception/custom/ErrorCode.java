@@ -13,6 +13,7 @@ public enum ErrorCode {
     //404
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER NOT FOUND"),
     NICKNAME_NOT_FOUND(HttpStatus.NOT_FOUND, "NICKNAME NOT FOUND"),
+    TEAM_NOT_FOUND(HttpStatus.NOT_FOUND, "TEAM NOT FOUND"),
 
     //500
 
