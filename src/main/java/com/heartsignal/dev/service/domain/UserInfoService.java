@@ -3,6 +3,8 @@ package com.heartsignal.dev.service.domain;
 import com.heartsignal.dev.domain.User;
 import com.heartsignal.dev.domain.UserInfo;
 import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfo;
+import com.heartsignal.dev.exception.custom.CustomException;
+import com.heartsignal.dev.exception.custom.ErrorCode;
 import com.heartsignal.dev.repository.UserInfoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,5 +29,9 @@ public class UserInfoService {
     }
     public boolean isExistedNickname(String nickname){
         return userInfoRepository.existsByNickname(nickname);
+    }
+    public UserInfo findByNickName(String nickname){
+        return userInfoRepository.findByNickname(nickname)
+                .orElseThrow(() -> new CustomException(ErrorCode.NICKNAME_NOT_FOUND));
     }
 }
