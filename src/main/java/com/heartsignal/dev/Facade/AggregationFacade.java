@@ -1,5 +1,6 @@
 package com.heartsignal.dev.Facade;
 
+import com.heartsignal.dev.domain.Bar;
 import com.heartsignal.dev.domain.Team;
 import com.heartsignal.dev.domain.User;
 import com.heartsignal.dev.domain.UserInfo;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -91,4 +93,10 @@ public class AggregationFacade {
             throw new CustomException(ErrorCode.ONLY_LEADER); // 일반 유저라면 exception
         signalService.saveSignal(myTeam, teamService.findById(teamId));
     }
+
+    /**
+     * 주점
+     */
+
+    // 주점 목록 조회
 }
