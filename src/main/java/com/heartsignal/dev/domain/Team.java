@@ -35,10 +35,4 @@ public class Team {
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private List<User> members;
-
-    public Team(User leader, String title, List<User> members){
-        this.leader = leader;
-        this.title = title;
-        this.members = members;
-    }
 }

@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.List;
 @Slf4j
 @Service
@@ -18,7 +19,13 @@ public class TeamService {
     private final TeamRepository teamRepository;
     @Transactional
     public void saveTeam(User leader, List<User> members, String title){
-        teamRepository.save(new Team(leader, title, members));
+        teamRepository.save(
+                Team.builder()
+                        .leader(leader)
+                        .members(members)
+                        .title(title)
+                        .status(false)
+                        .createdAt(new Timestamp(System.currentTimeMillis())).build());
         log.info("팀 구성 완료");
     }
 }
