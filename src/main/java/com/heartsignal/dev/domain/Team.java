@@ -35,4 +35,5 @@ public class Team {
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private List<User> members;
+    protected Team(){}
 }
