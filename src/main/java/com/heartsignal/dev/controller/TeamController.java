@@ -32,4 +32,9 @@ public class TeamController {
         User user = principalDetails.getUser();
         return aggregationFacade.provideTeamDetails(user, teamId);
     }
+    @PostMapping("/{teamId}/signal")
+    public void sendSignal(@PathVariable Long teamId, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        User user = principalDetails.getUser();
+        aggregationFacade.sendSignal(user, teamId);
+    }
 }
