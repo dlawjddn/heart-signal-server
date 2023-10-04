@@ -2,7 +2,7 @@ package com.heartsignal.dev.controller;
 
 import com.heartsignal.dev.Facade.AggregationFacade;
 import com.heartsignal.dev.domain.User;
-import com.heartsignal.dev.dto.userInfo.response.DuplicatedNickname;
+import com.heartsignal.dev.dto.userInfo.response.ExistedNickname;
 import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfo;
 import com.heartsignal.dev.oauth.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +21,8 @@ public class UserInfoController {
         User user = principalDetails.getUser();
         aggregationFacade.saveAdditionalInfo(user, additionalInfo);
     }
-    @PostMapping("/duplicate-nickname/{nickname}")
-    public DuplicatedNickname checkDuplicatedNickname(@PathVariable String nickname){
+    @GetMapping("/existed-nickname/{nickname}")
+    public ExistedNickname checkDuplicatedNickname(@PathVariable String nickname){
         return aggregationFacade.checkDuplicatedNickname(nickname);
     }
 }

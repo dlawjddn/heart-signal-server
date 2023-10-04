@@ -1,7 +1,7 @@
 package com.heartsignal.dev.Facade;
 
 import com.heartsignal.dev.domain.User;
-import com.heartsignal.dev.dto.userInfo.response.DuplicatedNickname;
+import com.heartsignal.dev.dto.userInfo.response.ExistedNickname;
 import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfo;
 import com.heartsignal.dev.service.domain.*;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class AggregationFacade {
         userInfoService.saveAdditionalInfo(user, additionalInfo);
     }
 
-    public DuplicatedNickname checkDuplicatedNickname(String nickname){
-        return new DuplicatedNickname(userInfoService.isExistedNickname(nickname));
+    public ExistedNickname checkDuplicatedNickname(String nickname){
+        return new ExistedNickname(userInfoService.isExistedNickname(nickname));
     }
 }
