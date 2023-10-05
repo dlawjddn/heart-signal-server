@@ -10,11 +10,11 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @Builder
-public class BarChat {
+public class BarChatRoom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "bar_chat_id")
+    @Column(name = "bar_chat_room_id")
     private Long id;
 
     @OneToOne
@@ -24,6 +24,6 @@ public class BarChat {
     @OneToMany(mappedBy = "barChat", cascade = CascadeType.ALL)
     private List<User> users;
 
-    public BarChat(){}
+    public BarChatRoom(){}
 
 }

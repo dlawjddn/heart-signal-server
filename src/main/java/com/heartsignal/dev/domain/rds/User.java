@@ -37,7 +37,7 @@ public class User {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bar_chat_id", nullable = true)       //명시적으로 그냥 남겨놓기, null가능!
-    private BarChat barChat;
+    private BarChatRoom barChatRoom;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserInfo userInfo;

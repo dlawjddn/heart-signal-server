@@ -9,11 +9,11 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Table
-public class MeetingRoom {
+public class MeetingChatRoom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name ="meeting_room_id")
+    @Column(name ="meeting_chat_room_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -24,5 +24,5 @@ public class MeetingRoom {
     @JoinColumn(name = "team2_id", nullable = false)
     private Team team2;
 
-    public MeetingRoom(){}
+    public MeetingChatRoom(){}
 }

@@ -23,7 +23,7 @@ public class Bar {
     private String concept;
 
     @OneToOne(mappedBy = "bar", fetch = FetchType.LAZY)
-    private BarChat barChat;
+    private BarChatRoom barChatRoom;
 
     public Bar(){}
 
