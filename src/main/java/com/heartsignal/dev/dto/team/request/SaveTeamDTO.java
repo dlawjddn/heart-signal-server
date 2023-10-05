@@ -1,11 +1,13 @@
 package com.heartsignal.dev.dto.team.request;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
-public class SaveTeamInfo {
+@Getter
+@Setter
+public class SaveTeamDTO {
     private List<String> nicknames;
     private String title;
 }
