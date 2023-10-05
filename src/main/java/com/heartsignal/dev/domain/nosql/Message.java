@@ -2,7 +2,9 @@ package com.heartsignal.dev.domain.nosql;
 
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.OffsetDateTime;
 import java.util.Date;
 
 @Getter
@@ -13,7 +15,8 @@ import java.util.Date;
 public class Message {
     private String sender;
     private String content;
-    private Date sendAt;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private OffsetDateTime date;
 
     /**
      * message는 따로 레포, 서비스를 만들지 않음!
