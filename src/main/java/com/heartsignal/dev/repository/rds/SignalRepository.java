@@ -1,7 +1,7 @@
-package com.heartsignal.dev.repository;
+package com.heartsignal.dev.repository.rds;
 
-import com.heartsignal.dev.domain.Signal;
-import com.heartsignal.dev.domain.Team;
+import com.heartsignal.dev.domain.rds.Signal;
+import com.heartsignal.dev.domain.rds.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

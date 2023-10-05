@@ -1,4 +1,4 @@
-package com.heartsignal.dev.domain;
+package com.heartsignal.dev.domain.rds;
 
 
 import jakarta.persistence.*;
@@ -13,8 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "team")
-
-@Entity
 @NamedStoredProcedureQuery(
         name = "createTeam", 
         procedureName = "createTeam",

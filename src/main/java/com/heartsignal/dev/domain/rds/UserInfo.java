@@ -1,4 +1,4 @@
-package com.heartsignal.dev.domain;
+package com.heartsignal.dev.domain.rds;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

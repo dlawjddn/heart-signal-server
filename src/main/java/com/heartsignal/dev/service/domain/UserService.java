@@ -1,10 +1,10 @@
 package com.heartsignal.dev.service.domain;
 
 
-import com.heartsignal.dev.domain.User;
+import com.heartsignal.dev.domain.rds.User;
 import com.heartsignal.dev.exception.custom.CustomException;
 import com.heartsignal.dev.exception.custom.ErrorCode;
-import com.heartsignal.dev.repository.UserRepository;
+import com.heartsignal.dev.repository.rds.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

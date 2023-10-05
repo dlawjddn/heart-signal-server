@@ -1,9 +1,8 @@
 package com.heartsignal.dev.Facade;
 
-import com.heartsignal.dev.domain.Bar;
-import com.heartsignal.dev.domain.Team;
-import com.heartsignal.dev.domain.User;
-import com.heartsignal.dev.domain.UserInfo;
+import com.heartsignal.dev.domain.rds.Team;
+import com.heartsignal.dev.domain.rds.User;
+import com.heartsignal.dev.domain.rds.UserInfo;
 import com.heartsignal.dev.dto.signal.response.SignalDTO;
 import com.heartsignal.dev.dto.team.response.SignalTeamsInfo;
 import com.heartsignal.dev.dto.team.request.SaveTeamInfo;
@@ -19,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j

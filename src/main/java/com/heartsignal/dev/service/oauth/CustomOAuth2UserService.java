@@ -1,11 +1,11 @@
 package com.heartsignal.dev.service.oauth;
 
 
-import com.heartsignal.dev.domain.Role;
-import com.heartsignal.dev.domain.User;
+import com.heartsignal.dev.domain.rds.Role;
+import com.heartsignal.dev.domain.rds.User;
 import com.heartsignal.dev.oauth.CustomOAuth2user;
 import com.heartsignal.dev.oauth.KakaoUserInfo;
-import com.heartsignal.dev.repository.UserRepository;
+import com.heartsignal.dev.repository.rds.UserRepository;
 import com.heartsignal.dev.service.domain.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -2,11 +2,11 @@
 package com.heartsignal.dev.handler;
 
 
-import com.heartsignal.dev.domain.Role;
-import com.heartsignal.dev.domain.User;
+import com.heartsignal.dev.domain.rds.Role;
+import com.heartsignal.dev.domain.rds.User;
 import com.heartsignal.dev.oauth.CustomOAuth2user;
 import com.heartsignal.dev.oauth.PrincipalDetails;
-import com.heartsignal.dev.repository.UserRepository;
+import com.heartsignal.dev.repository.rds.UserRepository;
 import com.heartsignal.dev.service.domain.UserService;
 import com.heartsignal.dev.service.jwt.JwtService;
 import jakarta.servlet.ServletException;

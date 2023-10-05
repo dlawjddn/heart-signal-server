@@ -1,6 +1,6 @@
 package com.heartsignal.dev.oauth;
 
-import com.heartsignal.dev.domain.Role;
+import com.heartsignal.dev.domain.rds.Role;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;

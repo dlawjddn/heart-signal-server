@@ -1,6 +1,6 @@
-package com.heartsignal.dev.repository;
+package com.heartsignal.dev.repository.rds;
 
-import com.heartsignal.dev.domain.User;
+import com.heartsignal.dev.domain.rds.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
