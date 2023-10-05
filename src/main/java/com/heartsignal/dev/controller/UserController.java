@@ -4,7 +4,7 @@ import com.heartsignal.dev.Facade.AggregationFacade;
 import com.heartsignal.dev.domain.User;
 import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfo;
 import com.heartsignal.dev.dto.userInfo.response.AdditionalInfoDTO;
-import com.heartsignal.dev.dto.userInfo.response.ExistedNickname;
+import com.heartsignal.dev.dto.userInfo.response.ExistedNicknameDTO;
 import com.heartsignal.dev.oauth.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ public class UserController {
         aggregationFacade.saveAdditionalInfo(user, additionalInfo);
     }
     @GetMapping("/existed-nickname/{nickname}")
-    public ExistedNickname checkDuplicatedNickname(@PathVariable String nickname){
+    public ExistedNicknameDTO checkDuplicatedNickname(@PathVariable String nickname){
         return aggregationFacade.checkDuplicatedNickname(nickname);
     }
     @GetMapping("/mypage")
