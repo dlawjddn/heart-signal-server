@@ -11,5 +11,5 @@ import java.util.List;
 @AllArgsConstructor
 public class BarListDTO {
     private String name;
-    private List<BarContent> pubs;
+    private List<BarContentDTO> pubs;
 }

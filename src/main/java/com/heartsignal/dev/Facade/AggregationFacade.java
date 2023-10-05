@@ -3,7 +3,7 @@ package com.heartsignal.dev.Facade;
 import com.heartsignal.dev.domain.rds.Team;
 import com.heartsignal.dev.domain.rds.User;
 import com.heartsignal.dev.domain.rds.UserInfo;
-import com.heartsignal.dev.dto.bar.response.BarContent;
+import com.heartsignal.dev.dto.bar.response.BarContentDTO;
 import com.heartsignal.dev.dto.bar.response.BarInfoDTO;
 import com.heartsignal.dev.dto.bar.response.BarListDTO;
 import com.heartsignal.dev.dto.signal.response.SignalDTO;
@@ -149,7 +149,7 @@ public class AggregationFacade {
         List<BarListDTO> barListDTOS = new ArrayList<>();
         List<String> locations = barService.findLocations(); // -> 위치에 해당하는 문자열 배열
         for (String location : locations) {
-            List<BarContent> barContents = new ArrayList<>();
+            List<BarContentDTO> barContentDTOS = new ArrayList<>();
             List<BarInfoDTO> barInfoDTOS = barService.findBarsInLocation(location).stream()
                     .map(bar -> BarInfoDTO.builder()
                             .barID(bar.getId())
@@ -158,14 +158,14 @@ public class AggregationFacade {
                             .build())
                     .toList();
             for (int i=0; i<barInfoDTOS.size(); i+=2){
-                barContents.add(BarContent.builder()
+                barContentDTOS.add(BarContentDTO.builder()
                                 .first(barInfoDTOS.get(i))
                                 .second(barInfoDTOS.get(i+1))
                         .build());
             }
             barListDTOS.add(BarListDTO.builder()
                     .name(location)
-                    .pubs(barContents)
+                    .pubs(barContentDTOS)
                     .build());
         }
         return barListDTOS;

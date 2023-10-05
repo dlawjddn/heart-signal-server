@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BarContent {
+public class BarContentDTO {
     private BarInfoDTO first;
     private BarInfoDTO second;
 }
