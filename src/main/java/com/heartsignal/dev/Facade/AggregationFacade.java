@@ -13,7 +13,7 @@ import com.heartsignal.dev.dto.userInfo.response.ExistedNickname;
 import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfo;
 import com.heartsignal.dev.exception.custom.CustomException;
 import com.heartsignal.dev.exception.custom.ErrorCode;
-import com.heartsignal.dev.service.domain.*;
+import com.heartsignal.dev.service.domain.rds.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class AggregationFacade {
     private final UserInfoService userInfoService;
     private final UserService userService;
     private final TeamService teamService;
-    private final MeetingRoomService meetingRoomService;
+    private final MeetingChatRoomService meetingChatRoomService;
     private final BarService barService;
     private final BarChatroomService barChatroomService;
     private final SignalService signalService;

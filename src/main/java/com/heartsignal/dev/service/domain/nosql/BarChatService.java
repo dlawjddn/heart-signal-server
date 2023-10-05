@@ -1,4 +1,4 @@
-package com.heartsignal.dev.service.domain;
+package com.heartsignal.dev.service.domain.nosql;
 
 import com.heartsignal.dev.repository.nosql.BarChatRepository;
 import lombok.RequiredArgsConstructor;

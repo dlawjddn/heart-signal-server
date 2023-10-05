@@ -7,7 +7,7 @@ import com.heartsignal.dev.domain.rds.User;
 import com.heartsignal.dev.oauth.CustomOAuth2user;
 import com.heartsignal.dev.oauth.PrincipalDetails;
 import com.heartsignal.dev.repository.rds.UserRepository;
-import com.heartsignal.dev.service.domain.UserService;
+import com.heartsignal.dev.service.domain.rds.UserService;
 import com.heartsignal.dev.service.jwt.JwtService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;

@@ -1,4 +1,4 @@
-package com.heartsignal.dev.service.domain;
+package com.heartsignal.dev.service.domain.rds;
 
 import com.heartsignal.dev.domain.rds.User;
 import com.heartsignal.dev.domain.rds.UserInfo;

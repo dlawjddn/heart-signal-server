@@ -6,7 +6,7 @@ import com.heartsignal.dev.domain.rds.User;
 import com.heartsignal.dev.oauth.CustomOAuth2user;
 import com.heartsignal.dev.oauth.KakaoUserInfo;
 import com.heartsignal.dev.repository.rds.UserRepository;
-import com.heartsignal.dev.service.domain.UserService;
+import com.heartsignal.dev.service.domain.rds.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
