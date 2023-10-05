@@ -3,6 +3,9 @@ package com.heartsignal.dev.Facade;
 import com.heartsignal.dev.domain.rds.Team;
 import com.heartsignal.dev.domain.rds.User;
 import com.heartsignal.dev.domain.rds.UserInfo;
+import com.heartsignal.dev.dto.bar.response.BarContent;
+import com.heartsignal.dev.dto.bar.response.BarInfoDTO;
+import com.heartsignal.dev.dto.bar.response.BarListDTO;
 import com.heartsignal.dev.dto.signal.response.SignalDTO;
 import com.heartsignal.dev.dto.team.response.SignalTeamsDTO;
 import com.heartsignal.dev.dto.team.request.SaveTeamDTO;
@@ -18,19 +21,20 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class AggregationFacade {
-    private final UserInfoService userInfoService;
     private final UserService userService;
+    private final UserInfoService userInfoService;
     private final TeamService teamService;
-    private final MeetingChatRoomService meetingChatRoomService;
     private final BarService barService;
-    private final BarChatroomService barChatroomService;
     private final SignalService signalService;
+    private final MeetingChatRoomService meetingChatRoomService;
+    private final BarChatroomService barChatroomService;
 
     /**
      * 추가 정보 기입
@@ -140,7 +144,32 @@ public class AggregationFacade {
      * 주점
      */
 
-    // 주점 목록 조회
+    // 주점 목록 조회 -> 야호 해냈당
+    public List<BarListDTO> provideBarInfos(){
+        List<BarListDTO> barListDTOS = new ArrayList<>();
+        List<String> locations = barService.findLocations(); // -> 위치에 해당하는 문자열 배열
+        for (String location : locations) {
+            List<BarContent> barContents = new ArrayList<>();
+            List<BarInfoDTO> barInfoDTOS = barService.findBarsInLocation(location).stream()
+                    .map(bar -> BarInfoDTO.builder()
+                            .barID(bar.getId())
+                            .groupName(bar.getGroup())
+                            .name(bar.getName())
+                            .build())
+                    .toList();
+            for (int i=0; i<barInfoDTOS.size(); i+=2){
+                barContents.add(BarContent.builder()
+                                .first(barInfoDTOS.get(i))
+                                .second(barInfoDTOS.get(i+1))
+                        .build());
+            }
+            barListDTOS.add(BarListDTO.builder()
+                    .name(location)
+                    .pubs(barContents)
+                    .build());
+        }
+        return barListDTOS;
+    }
 
 
     /**
