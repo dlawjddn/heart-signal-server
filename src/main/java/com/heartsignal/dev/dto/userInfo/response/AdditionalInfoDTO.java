@@ -1,8 +1,12 @@
 package com.heartsignal.dev.dto.userInfo.response;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@Builder
 public class AdditionalInfoDTO {
     private String nickname;
     private String mbti;

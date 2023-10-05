@@ -1,8 +1,12 @@
 package com.heartsignal.dev.dto.team.response;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@Builder
 public class TeamDTO {
     private Long teamId;
     private String teamName;
