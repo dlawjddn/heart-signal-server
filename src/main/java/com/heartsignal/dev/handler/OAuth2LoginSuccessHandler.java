@@ -84,8 +84,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
              * 나중에 바꿔야하는 값
              * 리프레시는 시큐어쿠키로 바꿀것
              */
-            accessCookie.setPath("/user-info");
-            refreshCookie.setPath("/user-info");
+            accessCookie.setPath("/**");
+            refreshCookie.setPath("/**");
             response.addCookie(accessCookie);
             response.addCookie(refreshCookie);
 
