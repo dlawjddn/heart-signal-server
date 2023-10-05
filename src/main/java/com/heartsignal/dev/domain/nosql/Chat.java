@@ -11,10 +11,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "bar_chats")
-public class BarChat {
+@Document(collection = "chats")
+public class Chat {
     @Id
     private String id;     //각 주점별 Id;
     private List<Message> messages;
-
 }

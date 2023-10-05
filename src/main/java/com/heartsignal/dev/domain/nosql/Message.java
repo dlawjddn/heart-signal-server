@@ -18,9 +18,4 @@ public class Message {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private OffsetDateTime date;
 
-    /**
-     * message는 따로 레포, 서비스를 만들지 않음!
-     *
-     * barChatService, MeetChatService 에서 필요할때 생성하는 걸로!!
-     */
 }

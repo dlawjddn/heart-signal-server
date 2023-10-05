@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class BarChatController {
+public class ChatController {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final AggregationFacade aggregationFacade;
 
     @MessageMapping("/messages/{barId}")
     public void chat(@DestinationVariable String barId, @RequestBody MessageDTO messageDTO) {
-        aggregationFacade.saveBarMessage(messageDTO, barId);
+        aggregationFacade.saveChat(messageDTO, barId);
         simpMessagingTemplate.convertAndSend("/subscribe/rooms/" + barId, messageDTO);
     }
 }

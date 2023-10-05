@@ -2,6 +2,8 @@ package com.heartsignal.dev.service.domain.rds;
 
 
 import com.heartsignal.dev.domain.rds.Bar;
+import com.heartsignal.dev.exception.custom.CustomException;
+import com.heartsignal.dev.exception.custom.ErrorCode;
 import com.heartsignal.dev.repository.rds.BarRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,5 +20,6 @@ public class BarService {
     public List<Bar> findBarsInLocation(String location){
         return barRepository.findByLocation(location);
     }
+
 
 }
