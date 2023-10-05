@@ -36,7 +36,8 @@ public class AggregationFacade {
      * 추가 정보 기입
      */
     public void saveAdditionalInfo(User user, SaveAdditionalInfo additionalInfo){
-        userInfoService.saveAdditionalInfo(user, additionalInfo);
+        User byId = userService.findById(user.getId());
+        userInfoService.saveAdditionalInfo(byId, additionalInfo);
     }
 
     public ExistedNickname checkDuplicatedNickname(String nickname){

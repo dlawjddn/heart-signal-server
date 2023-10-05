@@ -39,8 +39,8 @@ public class User {
     @JoinColumn(name = "bar_chat_id", nullable = true)       //명시적으로 그냥 남겨놓기, null가능!
     private BarChatRoom barChatRoom;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private UserInfo userInfo;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    UserInfo userInfo;
 
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
@@ -48,6 +48,10 @@ public class User {
 
     public void updateRoleToUser() {
         this.role = Role.USER;
+    }
+
+    public void updateUserInfo(UserInfo userInfo){
+        this.userInfo = userInfo;
     }
 
     public User(){}

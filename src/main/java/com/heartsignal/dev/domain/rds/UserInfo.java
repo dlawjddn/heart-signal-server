@@ -1,20 +1,19 @@
 package com.heartsignal.dev.domain.rds;
 
+import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfo;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
+@ToString
 public class UserInfo {
 
     @Id
-    @Column(name = "user_info_id")
     private Long id;
 
     private String gender;
@@ -27,9 +26,9 @@ public class UserInfo {
     private String selfInfo;
 
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "user_id")
     @MapsId
-    private User user;          //UserInfo의 Id는 User의 Id랑 동일
+    @ToString.Exclude
+    User user;
 
-    public UserInfo(){}
 }

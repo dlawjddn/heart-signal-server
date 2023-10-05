@@ -21,7 +21,7 @@ public class BarChatRoom {
     @JoinColumn(name = "bar_id", nullable = false)
     private Bar bar;
 
-    @OneToMany(mappedBy = "barChat", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "barChatRoom", cascade = CascadeType.ALL)
     private List<User> users;
 
     public BarChatRoom(){}
