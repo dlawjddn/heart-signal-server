@@ -2,7 +2,7 @@ package com.heartsignal.dev.service.domain.rds;
 
 import com.heartsignal.dev.domain.rds.User;
 import com.heartsignal.dev.domain.rds.UserInfo;
-import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfo;
+import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfoDTO;
 import com.heartsignal.dev.exception.custom.CustomException;
 import com.heartsignal.dev.exception.custom.ErrorCode;
 import com.heartsignal.dev.repository.rds.UserInfoRepository;
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserInfoService {
     private final UserInfoRepository userInfoRepository;
     @Transactional
-    public void saveAdditionalInfo(User user, SaveAdditionalInfo additionalInfo){
+    public void saveAdditionalInfo(User user, SaveAdditionalInfoDTO additionalInfo){
         log.info("userId ={}", user.getId().toString());
 
         UserInfo userInfo = userInfoRepository.save(UserInfo.builder()

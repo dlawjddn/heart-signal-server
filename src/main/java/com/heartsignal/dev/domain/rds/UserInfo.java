@@ -1,6 +1,5 @@
 package com.heartsignal.dev.domain.rds;
 
-import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfo;
 import jakarta.persistence.*;
 import lombok.*;
 
