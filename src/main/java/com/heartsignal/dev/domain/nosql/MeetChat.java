@@ -15,7 +15,7 @@ import java.util.List;
 public class MeetChat {
 
     @Id
-    private Integer id; // 각 미팅방별 id;
+    private String id; // 각 미팅방별 id;
     private List<Message> messages;
 
 }
