@@ -35,9 +35,8 @@ public class AggregationFacade {
     /**
      * 추가 정보 기입
      */
-    public void saveAdditionalInfo(User user, SaveAdditionalInfoDTO additionalInfo){
-        User byId = userService.findById(user.getId());
-        userInfoService.saveAdditionalInfo(byId, additionalInfo);
+    public void saveAdditionalInfo(User tempUser, SaveAdditionalInfoDTO additionalInfo){
+        userInfoService.saveAdditionalInfo(userService.findById(tempUser.getId()), additionalInfo);
     }
 
     public ExistedNicknameDTO checkDuplicatedNickname(String nickname){
@@ -48,7 +47,8 @@ public class AggregationFacade {
     /**
      * 마이페이지
      */
-    public AdditionalInfoDTO showMyPage(User user) {
+    public AdditionalInfoDTO showMyPage(User tempUser) {
+        User user = userService.findById(tempUser.getId());
         UserInfo myAddiInfo = user.getUserInfo();
         return AdditionalInfoDTO.builder()
                 .nickname(myAddiInfo.getNickname())
@@ -60,19 +60,20 @@ public class AggregationFacade {
     /**
      * 그룹화
      */
-    public void makeTeam(User leader, SaveTeamDTO teamInfo){
+    public void makeTeam(User tempLeader, SaveTeamDTO teamInfo){
         List<User> members = teamInfo.getNicknames().stream()
                 .map(userInfoService::findByNickName).toList().stream()
                 .map(userInfo -> userService.findById(userInfo.getId())).toList();
         log.info("팀 구성원 추출 완료");
-        teamService.saveTeam(leader, members, teamInfo.getTitle());
+        teamService.saveTeam(userService.findById(tempLeader.getId()), members, teamInfo.getTitle());
     }
     /**
      * 시그널
      */
 
     // 시그널 리스트 제공
-    public SignalTeamsDTO provideSignalList(User leader){
+    public SignalTeamsDTO provideSignalList(User tempLeader){
+        User leader = userService.findById(tempLeader.getId());
         List<TeamDTO> teamDTOs = teamService.findSignalList(leader).stream()
                 .map(team -> TeamDTO.builder()
                         .teamId(team.getId())
@@ -85,7 +86,8 @@ public class AggregationFacade {
     }
 
     // 시그널 상세 정보 제공
-    public TeamDetailsDTO provideTeamDetails(User user, Long teamId){
+    public TeamDetailsDTO provideTeamDetails(User tempUser, Long teamId){
+        User user = userService.findById(tempUser.getId());
         Team findTeam = teamService.findById(teamId);
         List<AdditionalInfoDTO> memberInfos = findTeam.getMembers().stream()
                 .map(User::getUserInfo).toList().stream()
@@ -113,7 +115,8 @@ public class AggregationFacade {
     }
 
     //시그널 보내기
-    public void sendSignal(User user, Long teamId){
+    public void sendSignal(User tempUser, Long teamId){
+        User user = userService.findById(tempUser.getId());
         Team myTeam = user.getTeam();
         if (!myTeam.getLeader().equals(user))
             throw new CustomException(ErrorCode.ONLY_LEADER); // 일반 유저라면 exception
@@ -121,7 +124,8 @@ public class AggregationFacade {
     }
 
     // 시그널 거절하기
-    public void rejectSignal(User user, Long teamId, boolean reject){
+    public void rejectSignal(User tempUser, Long teamId, boolean reject){
+        User user = userService.findById(tempUser.getId());
         Team myTeam = user.getTeam();
         Team otherTeam = teamService.findById(teamId);
         if (!myTeam.getLeader().equals(user))
@@ -143,7 +147,8 @@ public class AggregationFacade {
      * 매칭 확인하기
      */
 
-    public SignalDTO checkMatching(User user){
+    public SignalDTO checkMatching(User tempUser){
+        User user = userService.findById(tempUser.getId());
         Team myTeam = user.getTeam();
         List<TeamDTO> sendingInfos = signalService.findSendingSignal(myTeam).stream()
                 .map(signal -> TeamDTO.builder()
