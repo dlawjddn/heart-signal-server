@@ -7,9 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class AdditionalInfoDTO {
-    private String nickname;
-    private String mbti;
-    private String face;
-    private String selfInfo;
+public class ExistedNicknameDTO {
+    private boolean isExisted;
 }
