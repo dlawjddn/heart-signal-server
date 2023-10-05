@@ -9,6 +9,7 @@ import com.heartsignal.dev.dto.bar.response.BarContentDTO;
 import com.heartsignal.dev.dto.bar.response.BarInfoDTO;
 import com.heartsignal.dev.dto.bar.response.BarListDTO;
 import com.heartsignal.dev.dto.chat.response.MessageDTO;
+import com.heartsignal.dev.dto.chat.response.MessageListDTO;
 import com.heartsignal.dev.dto.signal.response.SignalDTO;
 import com.heartsignal.dev.dto.team.response.SignalTeamsDTO;
 import com.heartsignal.dev.dto.team.request.SaveTeamDTO;
@@ -28,7 +29,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -221,6 +224,24 @@ public class AggregationFacade {
     }
 
 
+    public MessageListDTO provideChatInfos(String chatId, OffsetDateTime dateTime) {
+        Chat chat = chatService.findChatById(chatId);
 
+        List<Message> sortedMessages = chat.getMessages()
+                .stream()
+                .sorted(Comparator.comparing(Message::getDate))
+                .toList();
 
-}
+        List<MessageDTO> messageDTOList = sortedMessages.stream()
+                .map(msg -> MessageDTO.builder()
+                        .content(msg.getContent())
+                        .sender(msg.getSender())
+                        .sendTime(msg.getDate().toString())
+                        .build()
+                )
+                .collect(Collectors.toList());
+
+        return MessageListDTO.builder()
+                .messageList(messageDTOList)
+                .build();
+    }

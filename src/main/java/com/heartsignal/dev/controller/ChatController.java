@@ -2,12 +2,15 @@ package com.heartsignal.dev.controller;
 
 import com.heartsignal.dev.Facade.AggregationFacade;
 import com.heartsignal.dev.dto.chat.response.MessageDTO;
+import com.heartsignal.dev.dto.chat.response.MessageListDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.OffsetDateTime;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,5 +23,13 @@ public class ChatController {
     public void chat(@DestinationVariable String barId, @RequestBody MessageDTO messageDTO) {
         aggregationFacade.saveChat(messageDTO, barId);
         simpMessagingTemplate.convertAndSend("/subscribe/rooms/" + barId, messageDTO);
+    }
+
+    @GetMapping("/api/v1/chats/{chatId}/chat")
+    public MessageListDTO showMessages(@PathVariable String chatId,
+                                       @RequestParam
+                                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime date){
+
+        return aggregationFacade.provideChatInfos(chatId, date);
     }
 }
