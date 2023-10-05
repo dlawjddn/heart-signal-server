@@ -1,16 +1,15 @@
 package com.heartsignal.dev.Facade;
 
-import com.heartsignal.dev.domain.Bar;
 import com.heartsignal.dev.domain.Team;
 import com.heartsignal.dev.domain.User;
 import com.heartsignal.dev.domain.UserInfo;
 import com.heartsignal.dev.dto.signal.response.SignalDTO;
-import com.heartsignal.dev.dto.team.response.SignalTeamsInfo;
-import com.heartsignal.dev.dto.team.request.SaveTeamInfo;
+import com.heartsignal.dev.dto.team.response.SignalTeamsDTO;
+import com.heartsignal.dev.dto.team.request.SaveTeamDTO;
 import com.heartsignal.dev.dto.team.response.TeamDTO;
 import com.heartsignal.dev.dto.team.response.TeamDetailsDTO;
 import com.heartsignal.dev.dto.userInfo.response.AdditionalInfoDTO;
-import com.heartsignal.dev.dto.userInfo.response.ExistedNickname;
+import com.heartsignal.dev.dto.userInfo.response.ExistedNicknameDTO;
 import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfo;
 import com.heartsignal.dev.exception.custom.CustomException;
 import com.heartsignal.dev.exception.custom.ErrorCode;
@@ -19,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -41,20 +39,27 @@ public class AggregationFacade {
         userInfoService.saveAdditionalInfo(user, additionalInfo);
     }
 
-    public ExistedNickname checkDuplicatedNickname(String nickname){
-        return new ExistedNickname(userInfoService.isExistedNickname(nickname));
+    public ExistedNicknameDTO checkDuplicatedNickname(String nickname){
+        return ExistedNicknameDTO.builder()
+                .isExisted(userInfoService.isExistedNickname(nickname))
+                .build();
     }
     /**
      * 마이페이지
      */
     public AdditionalInfoDTO showMyPage(User user){
         UserInfo myAddiInfo = user.getUserInfo();
-        return new AdditionalInfoDTO(myAddiInfo.getNickname(), myAddiInfo.getMbti(), myAddiInfo.getLookAlike(), myAddiInfo.getSelfInfo());
+        return AdditionalInfoDTO.builder()
+                .nickname(myAddiInfo.getNickname())
+                .mbti(myAddiInfo.getMbti())
+                .face(myAddiInfo.getLookAlike())
+                .selfInfo(myAddiInfo.getSelfInfo())
+                .build();
     }
     /**
      * 그룹화
      */
-    public void makeTeam(User leader, SaveTeamInfo teamInfo){
+    public void makeTeam(User leader, SaveTeamDTO teamInfo){
         List<User> members = teamInfo.getNicknames().stream()
                 .map(userInfoService::findByNickName).toList().stream()
                 .map(userInfo -> userService.findById(userInfo.getId())).toList();
@@ -66,11 +71,16 @@ public class AggregationFacade {
      */
 
     // 시그널 리스트 제공
-    public SignalTeamsInfo provideSignalList(User leader){
+    public SignalTeamsDTO provideSignalList(User leader){
         List<TeamDTO> teamDTOs = teamService.findSignalList(leader).stream()
-                .map(team -> new TeamDTO(team.getId(), team.getTitle()))
+                .map(team -> TeamDTO.builder()
+                        .teamId(team.getId())
+                        .teamName(team.getTitle())
+                        .build())
                 .toList();
-        return new SignalTeamsInfo(teamDTOs);
+        return SignalTeamsDTO.builder()
+                .teams(teamDTOs)
+                .build();
     }
 
     // 시그널 상세 정보 제공
@@ -78,13 +88,27 @@ public class AggregationFacade {
         Team findTeam = teamService.findById(teamId);
         List<AdditionalInfoDTO> memberInfos = findTeam.getMembers().stream()
                 .map(User::getUserInfo).toList().stream()
-                .map(userInfo -> new AdditionalInfoDTO(userInfo.getNickname(), userInfo.getMbti(), userInfo.getLookAlike(), userInfo.getSelfInfo()))
+                .map(userInfo ->  AdditionalInfoDTO.builder()
+                        .nickname(userInfo.getNickname())
+                        .mbti(userInfo.getMbti())
+                        .face(userInfo.getLookAlike())
+                        .selfInfo(userInfo.getSelfInfo())
+                        .build())
                 .toList(); // 리더를 제외한 멤버들의 추가 정보 리스트
         UserInfo leaderInfo = findTeam.getLeader().getUserInfo();
-        memberInfos.add(new AdditionalInfoDTO(leaderInfo.getNickname(), leaderInfo.getMbti(), leaderInfo.getLookAlike(), leaderInfo.getSelfInfo()));
+        memberInfos.add(AdditionalInfoDTO.builder()
+                .nickname(leaderInfo.getNickname())
+                .mbti(leaderInfo.getMbti())
+                .face(leaderInfo.getLookAlike())
+                .selfInfo(leaderInfo.getSelfInfo())
+                .build());
 
         Team myTeam = user.getTeam();
-        return new TeamDetailsDTO(myTeam.getTitle(), myTeam.getLeader().equals(user), memberInfos);
+        return TeamDetailsDTO.builder()
+                .title(myTeam.getTitle())
+                .isLeader(myTeam.getLeader().equals(user))
+                .usersInfo(memberInfos)
+                .build();
     }
 
     //시그널 보내기
@@ -121,11 +145,20 @@ public class AggregationFacade {
     public SignalDTO checkMatching(User user){
         Team myTeam = user.getTeam();
         List<TeamDTO> sendingInfos = signalService.findSendingSignal(myTeam).stream()
-                .map(signal -> new TeamDTO(signal.getReceiver().getId(), signal.getReceiver().getTitle()))
+                .map(signal -> TeamDTO.builder()
+                        .teamId((signal.getReceiver().getId()))
+                        .teamName(signal.getReceiver().getTitle())
+                        .build())
                 .toList();
         List<TeamDTO> receivedInfos = signalService.findReceivedSignal(myTeam).stream()
-                .map(signal -> new TeamDTO(signal.getSender().getId(), signal.getSender().getTitle()))
+                .map(signal -> TeamDTO.builder()
+                        .teamId(signal.getSender().getId())
+                        .teamName(signal.getSender().getTitle())
+                        .build())
                 .toList();
-        return new SignalDTO(sendingInfos, receivedInfos);
+        return SignalDTO.builder()
+                .sendingSignal(sendingInfos)
+                .receivedSignal(receivedInfos)
+                .build();
     }
 }
