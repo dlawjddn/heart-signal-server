@@ -25,6 +25,11 @@ public class UserInfoService {
                 additionalInfo.getFace(),
                 additionalInfo.getSelfInfo(),
                 user));
+        user.updateRoleToUser();
+        /**
+         * 유저 ROLE 변경 GUEST -> USER
+         * 추가 정보기입 끝
+         */
         log.info("회원 추가 정보 저장 완료");
     }
     public boolean isExistedNickname(String nickname){
