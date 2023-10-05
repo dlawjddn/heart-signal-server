@@ -18,6 +18,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Optional;
@@ -81,12 +84,14 @@ public class JwtService {
     public Optional<String> extractAccessToken(HttpServletRequest request) {
         return Optional.ofNullable(request.getHeader(accessHeader))
                 .filter(accessToken -> accessToken.startsWith(BEARER))
+                .map(token -> URLDecoder.decode(token, StandardCharsets.UTF_8))
                 .map(accessToken -> accessToken.replace(BEARER, ""));
     }
 
     public Optional<String> extractRefreshToken(HttpServletRequest request) {
         return Optional.ofNullable(request.getHeader(refreshHeader))
                 .filter(refreshToken -> refreshToken.startsWith(BEARER))
+                .map(token -> URLDecoder.decode(token, StandardCharsets.UTF_8))
                 .map(refreshToken -> refreshToken.replace(BEARER, ""));
     }
 
