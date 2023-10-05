@@ -6,11 +6,15 @@ import com.heartsignal.dev.domain.User;
 import com.heartsignal.dev.exception.custom.CustomException;
 import com.heartsignal.dev.exception.custom.ErrorCode;
 import com.heartsignal.dev.repository.TeamRepository;
+import javax.persistence.EntityManager;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.stream.Collectors;
 import java.sql.Timestamp;
 import java.util.List;
 @Slf4j
@@ -19,16 +23,32 @@ import java.util.List;
 public class TeamService {
 
     private final TeamRepository teamRepository;
+    private EntityManager entityManager;
+
     @Transactional
     public void saveTeam(User leader, List<User> members, String title){
-        teamRepository.save(
-                Team.builder()
-                        .leader(leader)
-                        .members(members)
-                        .title(title)
-                        .status(false)
-                        .createdAt(new Timestamp(System.currentTimeMillis())).build());
-        log.info("팀 구성 완료");
+        Long leaderId = leader.getId();
+
+        String userNicknames = members.stream()
+                                      .map(member -> member.getUserInfo().getNickname()) 
+                                      .collect(Collectors.joining(","));
+
+        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("createTeam");
+        storedProcedureQuery.registerStoredProcedureParameter("leader_id", Long.class, ParameterMode.IN);
+        storedProcedureQuery.registerStoredProcedureParameter("title", String.class, ParameterMode.IN);
+        storedProcedureQuery.registerStoredProcedureParameter("user_nicknames", String.class, ParameterMode.IN);
+
+        storedProcedureQuery.setParameter("leader_id", leaderId);
+        storedProcedureQuery.setParameter("title", title);
+        storedProcedureQuery.setParameter("user_nicknames", userNicknames);
+
+        try {
+            storedProcedureQuery.execute();
+            log.info("팀 구성 완료");
+        } catch (Exception e) {
+            log.error("팀 구성 중 오류 발생", e);
+        }
+    
     }
     public List<Team> findSignalList(User leader){
         int memberCnt = leader.getTeam().getMembers().size();

@@ -13,6 +13,18 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "team")
+
+@Entity
+@NamedStoredProcedureQuery(
+        name = "createTeam", 
+        procedureName = "createTeam",
+        parameters = {
+            @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class, name = "leader_id"),
+            @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "title"),
+            @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "user_nicknames")
+        }
+)
+
 public class Team {
 
     @Id
