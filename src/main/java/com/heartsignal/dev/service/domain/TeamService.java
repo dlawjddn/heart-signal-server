@@ -5,6 +5,7 @@ import com.heartsignal.dev.domain.Team;
 import com.heartsignal.dev.domain.User;
 import com.heartsignal.dev.exception.custom.CustomException;
 import com.heartsignal.dev.exception.custom.ErrorCode;
+import com.heartsignal.dev.repository.TeamRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureQuery;
