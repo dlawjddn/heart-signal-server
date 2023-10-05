@@ -9,8 +9,4 @@ import lombok.Setter;
 @Builder
 public class ExistedNicknameDTO {
     private boolean isExisted;
-
-    public ExistedNicknameDTO(boolean isExisted) {
-        this.isExisted = isExisted;
-    }
 }

@@ -14,10 +14,4 @@ public class TeamDetailsDTO {
     private String title;
     private boolean isLeader;
     private List<AdditionalInfoDTO> usersInfo;
-
-    public TeamDetailsDTO(String title, boolean isLeader, List<AdditionalInfoDTO> usersInfo) {
-        this.title = title;
-        this.isLeader = isLeader;
-        this.usersInfo = usersInfo;
-    }
 }

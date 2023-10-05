@@ -12,11 +12,4 @@ public class AdditionalInfoDTO {
     private String mbti;
     private String face;
     private String selfInfo;
-
-    public AdditionalInfoDTO(String nickname, String mbti, String face, String selfInfo) {
-        this.nickname = nickname;
-        this.mbti = mbti;
-        this.face = face;
-        this.selfInfo = selfInfo;
-    }
 }
