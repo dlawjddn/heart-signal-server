@@ -229,8 +229,8 @@ public class AggregationFacade {
 
         List<Message> sortedMessages = chat.getMessages()
                 .stream()
-                .filter(msg -> msg.getDate().isAfter(dateTime)) // dateTime 이후의 메시지만 필터링합니다.
-                .sorted(Comparator.comparing(Message::getDate)) // 날짜를 기준으로 오름차순 정렬합니다.
+                .filter(msg -> msg.getDate().isAfter(dateTime))
+                .sorted(Comparator.comparing(Message::getDate))
                 .toList();
 
         List<MessageDTO> messageDTOList = sortedMessages.stream()
