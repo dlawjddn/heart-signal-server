@@ -1,11 +1,13 @@
 package com.heartsignal.dev.Facade;
 
+import com.heartsignal.dev.domain.nosql.BarChat;
 import com.heartsignal.dev.domain.rds.Team;
 import com.heartsignal.dev.domain.rds.User;
 import com.heartsignal.dev.domain.rds.UserInfo;
 import com.heartsignal.dev.dto.bar.response.BarContent;
 import com.heartsignal.dev.dto.bar.response.BarInfoDTO;
 import com.heartsignal.dev.dto.bar.response.BarListDTO;
+import com.heartsignal.dev.dto.chat.response.MessageDTO;
 import com.heartsignal.dev.dto.signal.response.SignalDTO;
 import com.heartsignal.dev.dto.team.response.SignalTeamsDTO;
 import com.heartsignal.dev.dto.team.request.SaveTeamDTO;
@@ -16,6 +18,7 @@ import com.heartsignal.dev.dto.userInfo.response.ExistedNicknameDTO;
 import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfoDTO;
 import com.heartsignal.dev.exception.custom.CustomException;
 import com.heartsignal.dev.exception.custom.ErrorCode;
+import com.heartsignal.dev.service.domain.nosql.BarChatService;
 import com.heartsignal.dev.service.domain.rds.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +38,7 @@ public class AggregationFacade {
     private final SignalService signalService;
     private final MeetingChatRoomService meetingChatRoomService;
     private final BarChatroomService barChatroomService;
+    private final BarChatService barChatService;
 
     /**
      * 추가 정보 기입
@@ -196,4 +200,14 @@ public class AggregationFacade {
                 .receivedSignal(receivedInfos)
                 .build();
     }
+
+    /**
+     * 주점 채팅 저장하기
+     */
+    public void saveBarMessage(MessageDTO messageDTO, String barId) {
+        BarChat barchat = barChatService.findBarChat(barId);
+    }
+
+
+
 }
