@@ -41,4 +41,11 @@ public class SignalService {
         signalRepository.delete(signal);
         log.info("시그널 삭제 완료");
     }
+
+    public boolean isMutualFollow(Team teamA, Team teamB) {
+        boolean existsSignalFromAtoB = signalRepository.findBySenderAndReceiver(teamA, teamB).isPresent();
+        boolean existsSignalFromBtoA = signalRepository.findBySenderAndReceiver(teamB, teamA).isPresent();
+
+        return existsSignalFromAtoB && existsSignalFromBtoA;
+    }
 }

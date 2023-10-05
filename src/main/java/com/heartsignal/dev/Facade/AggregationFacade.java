@@ -11,16 +11,15 @@ import com.heartsignal.dev.dto.bar.response.BarListDTO;
 import com.heartsignal.dev.dto.chat.response.MessageDTO;
 import com.heartsignal.dev.dto.chat.response.MessageListDTO;
 import com.heartsignal.dev.dto.signal.response.SignalDTO;
-import com.heartsignal.dev.dto.team.response.SignalTeamsDTO;
 import com.heartsignal.dev.dto.team.request.SaveTeamDTO;
+import com.heartsignal.dev.dto.team.response.SignalTeamsDTO;
 import com.heartsignal.dev.dto.team.response.TeamDTO;
 import com.heartsignal.dev.dto.team.response.TeamDetailsDTO;
+import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfoDTO;
 import com.heartsignal.dev.dto.userInfo.response.AdditionalInfoDTO;
 import com.heartsignal.dev.dto.userInfo.response.ExistedNicknameDTO;
-import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfoDTO;
 import com.heartsignal.dev.exception.custom.CustomException;
 import com.heartsignal.dev.exception.custom.ErrorCode;
-import com.heartsignal.dev.service.domain.nosql.BarChatService;
 import com.heartsignal.dev.service.domain.nosql.ChatService;
 import com.heartsignal.dev.service.domain.rds.*;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +43,6 @@ public class AggregationFacade {
     private final SignalService signalService;
     private final MeetingChatRoomService meetingChatRoomService;
     private final BarChatroomService barChatroomService;
-    private final BarChatService barChatService;
     private final ChatService chatService;
 
     /**
@@ -135,7 +133,21 @@ public class AggregationFacade {
         Team myTeam = user.getTeam();
         if (!myTeam.getLeader().equals(user))
             throw new CustomException(ErrorCode.ONLY_LEADER); // 일반 유저라면 exception
-        signalService.saveSignal(myTeam, teamService.findById(teamId));
+        Team otherTeam = teamService.findById(teamId);
+        signalService.saveSignal(myTeam, otherTeam);
+        /**
+         * 맞시그널인지 확인하는 메소드
+         * 만약 true면
+         * 1. myTeam, OtherTeam의 status를 true로 업데이트 하기
+         * 2. 채팅방 반들기
+         *
+         */
+        if (signalService.isMutualFollow(myTeam, otherTeam)) {
+            myTeam.updateTeamStatus(true);
+            otherTeam.updateTeamStatus(true);
+            Long meetingChatRoomId = meetingChatRoomService.makeMeetingChatRoom(myTeam, otherTeam);
+            chatService.saveChat(meetingChatRoomId);
+        }
     }
 
     // 시그널 거절하기
@@ -224,13 +236,17 @@ public class AggregationFacade {
     }
 
 
+    /**
+     * 주점
+     * 채팅 내역 불러오기
+     */
     public MessageListDTO provideChatInfos(String chatId, OffsetDateTime dateTime) {
         Chat chat = chatService.findChatById(chatId);
 
         List<Message> sortedMessages = chat.getMessages()
                 .stream()
-                .filter(msg -> msg.getDate().isAfter(dateTime)) // dateTime 이후의 메시지만 필터링합니다.
-                .sorted(Comparator.comparing(Message::getDate)) // 날짜를 기준으로 오름차순 정렬합니다.
+                .filter(msg -> msg.getDate().isAfter(dateTime))
+                .sorted(Comparator.comparing(Message::getDate))
                 .toList();
 
         List<MessageDTO> messageDTOList = sortedMessages.stream()

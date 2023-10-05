@@ -53,4 +53,6 @@ public class TeamController {
         User user = principalDetails.getUser();
         aggregationFacade.rejectSignal(user, teamId, true);
     }
+
+
 }

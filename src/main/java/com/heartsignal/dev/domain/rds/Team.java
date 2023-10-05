@@ -45,5 +45,9 @@ public class Team {
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private List<User> members;
+
+    public void updateTeamStatus(Boolean status) {
+        this.status = status;
+    }
     protected Team(){}
 }
