@@ -1,9 +1,8 @@
 package com.heartsignal.dev.Facade;
 
-import com.heartsignal.dev.domain.Bar;
-import com.heartsignal.dev.domain.Team;
-import com.heartsignal.dev.domain.User;
-import com.heartsignal.dev.domain.UserInfo;
+import com.heartsignal.dev.domain.rds.Team;
+import com.heartsignal.dev.domain.rds.User;
+import com.heartsignal.dev.domain.rds.UserInfo;
 import com.heartsignal.dev.dto.signal.response.SignalDTO;
 import com.heartsignal.dev.dto.team.response.SignalTeamsInfo;
 import com.heartsignal.dev.dto.team.request.SaveTeamInfo;
@@ -14,12 +13,11 @@ import com.heartsignal.dev.dto.userInfo.response.ExistedNickname;
 import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfo;
 import com.heartsignal.dev.exception.custom.CustomException;
 import com.heartsignal.dev.exception.custom.ErrorCode;
-import com.heartsignal.dev.service.domain.*;
+import com.heartsignal.dev.service.domain.rds.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -29,7 +27,7 @@ public class AggregationFacade {
     private final UserInfoService userInfoService;
     private final UserService userService;
     private final TeamService teamService;
-    private final MeetingRoomService meetingRoomService;
+    private final MeetingChatRoomService meetingChatRoomService;
     private final BarService barService;
     private final BarChatroomService barChatroomService;
     private final SignalService signalService;
@@ -38,7 +36,8 @@ public class AggregationFacade {
      * 추가 정보 기입
      */
     public void saveAdditionalInfo(User user, SaveAdditionalInfo additionalInfo){
-        userInfoService.saveAdditionalInfo(user, additionalInfo);
+        User byId = userService.findById(user.getId());
+        userInfoService.saveAdditionalInfo(byId, additionalInfo);
     }
 
     public ExistedNickname checkDuplicatedNickname(String nickname){

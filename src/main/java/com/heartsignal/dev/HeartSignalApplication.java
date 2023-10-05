@@ -10,7 +10,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableJpaAuditing
 @SpringBootApplication
 @EnableAspectJAutoProxy
-@EnableJpaRepositories(basePackages = "com.heartsignal.dev.repository")
+@EnableJpaRepositories(basePackages = "com.heartsignal.dev.repository.rds")
+@EnableMongoRepositories(basePackages = "com.heartsignal.dev.repository.nosql")
 public class HeartSignalApplication {
 
 	public static void main(String[] args) {

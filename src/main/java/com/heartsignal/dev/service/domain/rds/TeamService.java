@@ -1,21 +1,21 @@
-package com.heartsignal.dev.service.domain;
+package com.heartsignal.dev.service.domain.rds;
 
 
-import com.heartsignal.dev.domain.Team;
-import com.heartsignal.dev.domain.User;
+import com.heartsignal.dev.domain.rds.Team;
+import com.heartsignal.dev.domain.rds.User;
 import com.heartsignal.dev.exception.custom.CustomException;
 import com.heartsignal.dev.exception.custom.ErrorCode;
-import com.heartsignal.dev.repository.TeamRepository;
-import javax.persistence.EntityManager;
-import javax.persistence.ParameterMode;
-import javax.persistence.StoredProcedureQuery;
+import com.heartsignal.dev.repository.rds.TeamRepository;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.ParameterMode;
+import jakarta.persistence.StoredProcedureQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Collectors;
-import java.sql.Timestamp;
 import java.util.List;
 @Slf4j
 @Service
@@ -23,7 +23,7 @@ import java.util.List;
 public class TeamService {
 
     private final TeamRepository teamRepository;
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     @Transactional
     public void saveTeam(User leader, List<User> members, String title){

@@ -1,4 +1,4 @@
-package com.heartsignal.dev.domain;
+package com.heartsignal.dev.domain.rds;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

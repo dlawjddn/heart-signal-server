@@ -2,9 +2,9 @@ package com.heartsignal.dev.filter;
 
 
 
-import com.heartsignal.dev.domain.User;
+import com.heartsignal.dev.domain.rds.User;
 import com.heartsignal.dev.oauth.PrincipalDetails;
-import com.heartsignal.dev.repository.UserRepository;
+import com.heartsignal.dev.repository.rds.UserRepository;
 import com.heartsignal.dev.service.jwt.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

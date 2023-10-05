@@ -1,7 +1,7 @@
 package com.heartsignal.dev.controller;
 
 import com.heartsignal.dev.Facade.AggregationFacade;
-import com.heartsignal.dev.domain.User;
+import com.heartsignal.dev.domain.rds.User;
 import com.heartsignal.dev.dto.signal.response.SignalDTO;
 import com.heartsignal.dev.dto.team.response.SignalTeamsInfo;
 import com.heartsignal.dev.dto.team.request.SaveTeamInfo;

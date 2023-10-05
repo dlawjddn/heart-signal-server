@@ -1,11 +1,11 @@
-package com.heartsignal.dev.service.domain;
+package com.heartsignal.dev.service.domain.rds;
 
-import com.heartsignal.dev.domain.User;
-import com.heartsignal.dev.domain.UserInfo;
+import com.heartsignal.dev.domain.rds.User;
+import com.heartsignal.dev.domain.rds.UserInfo;
 import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfo;
 import com.heartsignal.dev.exception.custom.CustomException;
 import com.heartsignal.dev.exception.custom.ErrorCode;
-import com.heartsignal.dev.repository.UserInfoRepository;
+import com.heartsignal.dev.repository.rds.UserInfoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,13 +18,20 @@ public class UserInfoService {
     private final UserInfoRepository userInfoRepository;
     @Transactional
     public void saveAdditionalInfo(User user, SaveAdditionalInfo additionalInfo){
-        userInfoRepository.save(new UserInfo(user.getId(),
-                additionalInfo.getGender(),
-                additionalInfo.getNickname(),
-                additionalInfo.getMbti(),
-                additionalInfo.getFace(),
-                additionalInfo.getSelfInfo(),
-                user));
+        log.info("userId ={}", user.getId().toString());
+
+        UserInfo userInfo = userInfoRepository.save(UserInfo.builder()
+                .gender((additionalInfo.getGender()))
+                .nickname(additionalInfo.getNickname())
+                .mbti(additionalInfo.getMbti())
+                .lookAlike(additionalInfo.getFace())
+                .selfInfo(additionalInfo.getSelfInfo())
+                .user(user)
+                .build());
+        user.updateUserInfo(userInfo);
+        /**
+         * 양방향 연관관계설정
+         */
         user.updateRoleToUser();
         /**
          * 유저 ROLE 변경 GUEST -> USER
