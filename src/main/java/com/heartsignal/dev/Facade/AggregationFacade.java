@@ -16,9 +16,7 @@ import com.heartsignal.dev.dto.team.response.SignalTeamsDTO;
 import com.heartsignal.dev.dto.team.response.TeamDTO;
 import com.heartsignal.dev.dto.team.response.TeamDetailsDTO;
 import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfoDTO;
-import com.heartsignal.dev.dto.userInfo.response.AdditionalInfoDTO;
-import com.heartsignal.dev.dto.userInfo.response.CanGroupDTO;
-import com.heartsignal.dev.dto.userInfo.response.ExistedNicknameDTO;
+import com.heartsignal.dev.dto.userInfo.response.*;
 import com.heartsignal.dev.exception.custom.CustomException;
 import com.heartsignal.dev.exception.custom.ErrorCode;
 import com.heartsignal.dev.service.domain.nosql.ChatService;
@@ -45,14 +43,35 @@ public class AggregationFacade {
     private final MeetingChatRoomService meetingChatRoomService;
     private final BarChatroomService barChatroomService;
     private final ChatService chatService;
+    /**
+     * 메인페이지
+     */
+
+    // 메인 페이지
+    public MainPageDTO showMainPage(User tempUser){
+        User user = userService.findById(tempUser.getId());
+        int checkPoint = 0;
+        if (user.getTeam() == null) checkPoint = 1;
+        else {
+            if (user.getTeam().getStatus() == 1) // 매칭이 된 상태
+                checkPoint = 3;
+            else checkPoint = 2; // 팀은 결성했지만 매칭은 안 된 상태
+        }
+        return MainPageDTO.builder()
+                .matchStatus(checkPoint)
+                .build();
+    }
 
     /**
      * 추가 정보 기입
      */
+
+    // 추가 정보 저장
     public void saveAdditionalInfo(User tempUser, SaveAdditionalInfoDTO additionalInfo){
         userInfoService.saveAdditionalInfo(userService.findById(tempUser.getId()), additionalInfo);
     }
 
+    // 닉네임 중복확인
     public ExistedNicknameDTO checkDuplicatedNickname(String nickname){
         return ExistedNicknameDTO.builder()
                 .isExisted(userInfoService.isExistedNickname(nickname))
@@ -61,15 +80,33 @@ public class AggregationFacade {
     /**
      * 마이페이지
      */
-    public AdditionalInfoDTO showMyPage(User tempUser) {
+    // 마이페이지
+    public MyPageDTO showMyPage(User tempUser) {
         User user = userService.findById(tempUser.getId());
         UserInfo myAddiInfo = user.getUserInfo();
-        return AdditionalInfoDTO.builder()
+        int checkPoint = 0;
+        if (user.getTeam() == null) checkPoint = 1;
+        else {
+            if (user.getTeam().getStatus() == 1) // 매칭이 된 상태
+                checkPoint = 3;
+            else checkPoint = 2; // 팀은 결성했지만 매칭은 안 된 상태
+        }
+        return MyPageDTO.builder()
                 .nickname(myAddiInfo.getNickname())
                 .mbti(myAddiInfo.getMbti())
                 .face(myAddiInfo.getLookAlike())
                 .selfInfo(myAddiInfo.getSelfInfo())
+                .matchStatus(checkPoint)
                 .build();
+    }
+
+    // 팀 삭제하기
+    public void deleteTeam(User tempUser){
+        User user = userService.findById(tempUser.getId());
+        Team myTeam = user.getTeam();
+        if (!myTeam.getLeader().equals(user))
+            throw new CustomException(ErrorCode.ONLY_LEADER); // 리더가 아닌 사람이 팀을 삭제하려는 경우
+        teamService.deleteTeam(myTeam);
     }
     /**
      * 그룹화

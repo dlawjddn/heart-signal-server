@@ -44,7 +44,6 @@ public class TeamService {
 
         try {
             storedProcedureQuery.execute();
-            entityManager.flush();
             log.info("팀 구성 완료");
         } catch (Exception e) {
             log.error("팀 구성 중 오류 발생", e);
@@ -61,5 +60,9 @@ public class TeamService {
     public Team findById(Long teamId){
         return teamRepository.findById(teamId)
                 .orElseThrow(() -> new CustomException(ErrorCode.TEAM_NOT_FOUND));
+    }
+    @Transactional
+    public void deleteTeam(Team team){
+        teamRepository.delete(team);
     }
 }
