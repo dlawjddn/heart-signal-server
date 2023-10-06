@@ -48,4 +48,8 @@ public class Team {
     private List<User> members;
 
     protected Team(){}
+
+    public void updateStatus(int status) {
+        this.status = status;
+    }
 }
