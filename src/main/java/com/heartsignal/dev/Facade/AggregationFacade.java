@@ -157,7 +157,10 @@ public class AggregationFacade {
          * 만약 true면
          * 1. myTeam, OtherTeam의 status를 true로 업데이트 하기
          * 2. 채팅방 반들기
-         *
+         * 3.   myTeam.updateTeamStatus(true);
+         *             otherTeam.updateTeamStatus(true);
+         *             2개 뺴기
+         * 4. 동겸이가 할일 시그널 다지우기
          */
         if (signalService.isMutualFollow(myTeam, otherTeam)) {
             myTeam.updateTeamStatus(true);

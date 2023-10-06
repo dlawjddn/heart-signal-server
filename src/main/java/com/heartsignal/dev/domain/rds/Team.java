@@ -35,6 +35,10 @@ public class Team {
     private User leader;            //  Leader인 유저를 저장
 
     private String title;
+    /**
+     * TODO
+     * Boolean -> int
+     */
     private Boolean status;
     private Timestamp createdAt;
 
