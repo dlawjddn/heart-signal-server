@@ -44,8 +44,11 @@ public class TeamService {
 
         try {
             storedProcedureQuery.execute();
-
             log.info("팀 구성 완료");
+            entityManager.refresh(leader);
+            for (User member : members) {
+                entityManager.refresh(member);
+            }
         } catch (Exception e) {
             log.error("팀 구성 중 오류 발생", e);
         }
