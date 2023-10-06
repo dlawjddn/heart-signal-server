@@ -17,5 +17,4 @@ public class Message {
     private String content;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private OffsetDateTime date;
-
 }

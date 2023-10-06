@@ -10,6 +10,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @Builder
+@Table(name = "barchatroom")
 public class BarChatRoom {
 
     @Id
@@ -21,7 +22,7 @@ public class BarChatRoom {
     @JoinColumn(name = "bar_id", nullable = false)
     private Bar bar;
 
-    @OneToMany(mappedBy = "barChatRoom", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "barChatRoom")
     private List<User> users;
 
     public BarChatRoom(){}

@@ -25,7 +25,7 @@ public class TeamService {
     private final TeamRepository teamRepository;
     private final EntityManager entityManager;
 
-    @Transactional
+//    @Transactional
     public void saveTeam(User leader, List<User> members, String title){
         Long leaderId = leader.getId();
 
@@ -61,8 +61,8 @@ public class TeamService {
         return teamRepository.findById(teamId)
                 .orElseThrow(() -> new CustomException(ErrorCode.TEAM_NOT_FOUND));
     }
-    @Transactional
+//    @Transactional
     public void deleteTeam(Team team){
-        teamRepository.delete(team);
+        teamRepository.deleteById(team.getId());
     }
 }
