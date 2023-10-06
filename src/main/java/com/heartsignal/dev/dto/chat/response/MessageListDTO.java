@@ -10,6 +10,5 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessageListDTO {
-    private String id;
     private List<MessageDTO> messageList;
 }

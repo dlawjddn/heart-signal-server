@@ -22,7 +22,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 /**
                  * TODO 도메인 설정 바꾸기
                  */
-                .setAllowedOrigins("http://localhost:3000")  // CORS 설정 추가
+                .setAllowedOrigins("http://localhost:3000")
+                .setAllowedOrigins("http://localhost:5173")
                 .withSockJS();
     }
 }

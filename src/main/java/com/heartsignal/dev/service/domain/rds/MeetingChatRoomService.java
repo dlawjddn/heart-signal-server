@@ -1,19 +1,24 @@
 package com.heartsignal.dev.service.domain.rds;
 
+import com.heartsignal.dev.domain.rds.MeetingChatRoom;
 import com.heartsignal.dev.domain.rds.Team;
+import com.heartsignal.dev.exception.custom.CustomException;
+import com.heartsignal.dev.exception.custom.ErrorCode;
+import com.heartsignal.dev.repository.rds.MeetingChatRoomRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.ParameterMode;
+import jakarta.persistence.StoredProcedureQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.ParameterMode;
-import jakarta.persistence.StoredProcedureQuery;
 
 @Service
 @RequiredArgsConstructor
 public class MeetingChatRoomService {
 
     private final EntityManager entityManager;
+    private final MeetingChatRoomRepository meetingChatRoomRepository;
 
     @Transactional
     public Long makeMeetingChatRoom(Team team1, Team team2) {
@@ -29,5 +34,10 @@ public class MeetingChatRoomService {
 
 
         return (Long) storedProcedure.getOutputParameterValue("o_meeting_id");
+    }
+
+    public Long findMeetingChatRoomByTeam(Team team) {
+        MeetingChatRoom meetingChatRoom = meetingChatRoomRepository.findByTeam1OrTeam2(team).orElseThrow(() -> new CustomException(ErrorCode.CHAT_NOT_FOUND));
+        return meetingChatRoom.getId();
     }
 }
