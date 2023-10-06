@@ -50,7 +50,7 @@ public class JwtService {
     private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
     private static final String EMAIL_CLAIM = "email";
     private static final String SOCIAL_TYPE_CLAIM = "socialType";
-    private static final String BEARER = "Bearer ";
+    private static final String BEARER = "Bearer";
     private static final String SOCIAL_ID_CLAIM = "socialId";
 
     private final UserRepository userRepository;
@@ -83,14 +83,12 @@ public class JwtService {
     public Optional<String> extractAccessToken(HttpServletRequest request) {
         return Optional.ofNullable(request.getHeader(accessHeader))
                 .filter(accessToken -> accessToken.startsWith(BEARER))
-                .map(token -> URLDecoder.decode(token, StandardCharsets.UTF_8))
                 .map(accessToken -> accessToken.replace(BEARER, ""));
     }
 
     public Optional<String> extractRefreshToken(HttpServletRequest request) {
         return Optional.ofNullable(request.getHeader(refreshHeader))
                 .filter(refreshToken -> refreshToken.startsWith(BEARER))
-                .map(token -> URLDecoder.decode(token, StandardCharsets.UTF_8))
                 .map(refreshToken -> refreshToken.replace(BEARER, ""));
     }
 
