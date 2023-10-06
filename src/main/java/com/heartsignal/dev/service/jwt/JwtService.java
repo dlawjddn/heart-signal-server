@@ -50,7 +50,7 @@ public class JwtService {
     private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
     private static final String EMAIL_CLAIM = "email";
     private static final String SOCIAL_TYPE_CLAIM = "socialType";
-    private static final String BEARER = "Bearer ";
+    private static final String BEARER = "Bearer";
     private static final String SOCIAL_ID_CLAIM = "socialId";
 
     private final UserRepository userRepository;
