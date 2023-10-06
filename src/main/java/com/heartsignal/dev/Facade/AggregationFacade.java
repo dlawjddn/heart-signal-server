@@ -163,8 +163,7 @@ public class AggregationFacade {
          * 4. 동겸이가 할일 시그널 다지우기
          */
         if (signalService.isMutualFollow(myTeam, otherTeam)) {
-            myTeam.updateTeamStatus(true);
-            otherTeam.updateTeamStatus(true);
+
             Long meetingChatRoomId = meetingChatRoomService.makeMeetingChatRoom(myTeam, otherTeam);
             chatService.saveChat(meetingChatRoomId);
         }
