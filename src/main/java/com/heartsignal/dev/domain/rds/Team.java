@@ -31,7 +31,7 @@ public class Team {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "leader_id", nullable = false)
     private User leader;            //  Leader인 유저를 저장
 
     private String title;
