@@ -128,9 +128,11 @@ public class AggregationFacade {
 
     // 그룹 생성
     public void makeTeam(User tempLeader, SaveTeamDTO teamInfo){
-        List<User> members = teamInfo.getNicknames().stream()
+        List<User> members = new ArrayList<>(teamInfo.getNicknames().stream()
                 .map(userInfoService::findByNickName).toList().stream()
-                .map(userInfo -> userService.findById(userInfo.getId())).toList();
+                .map(userInfo -> userService.findById(userInfo.getId())).toList());
+        members.add(tempLeader);
+
         log.info("팀 구성원 추출 완료");
         teamService.saveTeam(userService.findById(tempLeader.getId()), members, teamInfo.getTitle());
     }
@@ -156,14 +158,14 @@ public class AggregationFacade {
     public TeamDetailsDTO provideTeamDetails(User tempUser, Long teamId){
         User user = userService.findById(tempUser.getId());
         Team findTeam = teamService.findById(teamId);
-        List<AdditionalInfoDTO> memberInfos = findTeam.getMembers().stream()
+        List<AdditionalInfoDTO> memberInfos = new ArrayList<>(findTeam.getMembers().stream()
                 .map(User::getUserInfo).toList().stream()
-                .map(userInfo ->  AdditionalInfoDTO.builder()
+                .map(userInfo -> AdditionalInfoDTO.builder()
                         .nickname(userInfo.getNickname())
                         .mbti(userInfo.getMbti())
                         .face(userInfo.getLookAlike())
                         .selfInfo(userInfo.getSelfInfo())
-                        .build()).toList(); // 리더를 제외한 멤버들의 추가 정보 리스트
+                        .build()).toList()); // 리더를 제외한 멤버들의 추가 정보 리스트
 
         UserInfo leaderInfo = findTeam.getLeader().getUserInfo();
         memberInfos.add(AdditionalInfoDTO.builder()
@@ -175,7 +177,7 @@ public class AggregationFacade {
 
         Team myTeam = user.getTeam();
         return TeamDetailsDTO.builder()
-                .title(myTeam.getTitle())
+                .title(findTeam.getTitle())
                 .isLeader(myTeam.getLeader().equals(user))
                 .usersInfo(memberInfos)
                 .build();

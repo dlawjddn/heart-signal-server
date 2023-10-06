@@ -2,7 +2,9 @@ package com.heartsignal.dev.domain.rds;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
+
 
 @Entity
 @Getter
@@ -36,10 +38,10 @@ public class User {
     private Role role;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bar_chat_id", nullable = true)       //명시적으로 그냥 남겨놓기, null가능!
+    @JoinColumn(name = "bar_chat_room_id", nullable = true)       //명시적으로 그냥 남겨놓기, null가능!
     private BarChatRoom barChatRoom;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     UserInfo userInfo;
 
     public void updateRefreshToken(String refreshToken) {

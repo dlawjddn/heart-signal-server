@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @Builder
-@Table
+@Table(name= "meetingchatroom")
 public class MeetingChatRoom {
 
     @Id
