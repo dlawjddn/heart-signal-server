@@ -54,7 +54,7 @@ public class TeamService {
         int memberCnt = leader.getTeam().getMembers().size();
         String teamGender = leader.getUserInfo().getGender();
         return teamRepository.findAll().stream()
-                .filter(team -> (team.getLeader() != null && team.getMembers().size() == memberCnt && team.getLeader().getUserInfo().getGender().equals(teamGender)))
+                .filter(team -> (team.getLeader() != null && team.getMembers().size() == memberCnt && !team.getLeader().getUserInfo().getGender().equals(teamGender)))
                 .toList();
     }
     public Team findById(Long teamId){
