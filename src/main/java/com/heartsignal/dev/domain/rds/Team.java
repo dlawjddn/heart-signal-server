@@ -35,11 +35,8 @@ public class Team {
     private User leader;            //  Leader인 유저를 저장
 
     private String title;
-    /**
-     * TODO
-     * Boolean -> int
-     */
-    private Boolean status;
+
+    private int status; //0이면 false, 1이면 true
     private Timestamp createdAt;
 
     /**
@@ -50,8 +47,9 @@ public class Team {
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private List<User> members;
 
-    public void updateTeamStatus(Boolean status) {
+    protected Team(){}
+
+    public void updateStatus(int status) {
         this.status = status;
     }
-    protected Team(){}
 }
