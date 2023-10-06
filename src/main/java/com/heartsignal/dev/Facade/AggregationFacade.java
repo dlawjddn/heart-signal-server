@@ -336,5 +336,10 @@ public class AggregationFacade {
                 .sorted(Comparator.comparing(Message::getDate))
                 .collect(Collectors.toList());
     }
+
+    public void deleteMeetingRoom(String roomId) {
+        meetingChatRoomService.deleteMeetingRoom(roomId);
+        chatService.deleteChat(roomId);
+    }
 }
 

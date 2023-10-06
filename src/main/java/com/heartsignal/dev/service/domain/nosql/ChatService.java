@@ -23,4 +23,8 @@ public class ChatService {
                 .build();
         chatRepository.save(chat);
     }
+
+    public void deleteChat(String roomId) {
+        chatRepository.deleteById(roomId);
+    }
 }
