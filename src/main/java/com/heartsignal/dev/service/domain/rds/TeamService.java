@@ -61,4 +61,8 @@ public class TeamService {
         return teamRepository.findById(teamId)
                 .orElseThrow(() -> new CustomException(ErrorCode.TEAM_NOT_FOUND));
     }
+    @Transactional
+    public void deleteTeam(Team team){
+        teamRepository.delete(team);
+    }
 }
