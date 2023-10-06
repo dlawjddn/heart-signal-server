@@ -41,4 +41,10 @@ public class ChatController {
         User user = principalDetails.getUser();
         return aggregationFacade.provideMeetingChatInfos(user);
     }
+
+    @DeleteMapping("/api/v1/chats/meeting-room/{roomId}/chat")
+    public void deleteMeetingRoom(@PathVariable String roomId){
+        aggregationFacade.deleteRoom(roomId);
+    }
+
 }

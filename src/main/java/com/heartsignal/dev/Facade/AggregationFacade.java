@@ -336,5 +336,9 @@ public class AggregationFacade {
                 .sorted(Comparator.comparing(Message::getDate))
                 .collect(Collectors.toList());
     }
+
+    public void deleteRoom(String roomId) {
+
+    }
 }
 

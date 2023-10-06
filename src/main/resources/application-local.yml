@@ -44,7 +44,7 @@ jwt:
   secretKey: asdfasdfasdfasdrtqwetqpkna;pilugipk1j23k4lhj1adfkj9312kl3n@*!!~asdkflj9@#Nvlny.asdf
 
   access:
-    expiration: 3600000
+    expiration: 604800000
     header: Authorization
 
   refresh:
