@@ -44,7 +44,7 @@ public class ChatController {
 
     @DeleteMapping("/api/v1/chats/meeting-room/{roomId}/chat")
     public void deleteMeetingRoom(@PathVariable String roomId){
-        aggregationFacade.deleteRoom(roomId);
+        aggregationFacade.deleteMeetingRoom(roomId);
     }
 
 }

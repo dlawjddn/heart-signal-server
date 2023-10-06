@@ -337,8 +337,9 @@ public class AggregationFacade {
                 .collect(Collectors.toList());
     }
 
-    public void deleteRoom(String roomId) {
-
+    public void deleteMeetingRoom(String roomId) {
+        meetingChatRoomService.deleteMeetingRoom(roomId);
+        chatService.deleteChat(roomId);
     }
 }
 
