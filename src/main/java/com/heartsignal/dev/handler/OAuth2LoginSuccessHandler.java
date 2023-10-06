@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
@@ -34,10 +35,14 @@ import java.nio.charset.StandardCharsets;
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtService jwtService;
-    private final UserService userService;
     private final UserRepository userRepository;
     private final GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
 
+    @Value("${redirect.url.userInfo}")
+    private String userInfoUrl;
+
+    @Value("${redirect.url.main}")
+    private String mainPageUrl;
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.info("OAuth2 로그인 성공!! 토큰 세팅에 들어갑니다");
@@ -56,18 +61,15 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String accessToken = jwtService.createAccessToken(user.getSocialId());
         String refreshToken = jwtService.createRefreshToken();
         String bearerAccessToken = "Bearer " + accessToken;
-        String bearerRefreshToken = "Bearer " + refreshToken;
         /**
          * TODO url 문제 해결 필요 + Bearer + 문제 해결 필요
          */
         String cookieValueForAccess = URLEncoder.encode(bearerAccessToken, StandardCharsets.UTF_8).replace("+", "%20");
-        String cookieValueForRefresh = URLEncoder.encode(bearerRefreshToken, StandardCharsets.UTF_8).replace("+", "%20");
 
 
         jwtService.updateRefreshToken(user, refreshToken);
 
         Cookie accessCookie = new Cookie("accessCookie", cookieValueForAccess);
-        Cookie refreshCookie = new Cookie("refreshCookie", cookieValueForRefresh);
 
 
         /***
@@ -75,7 +77,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
          * 나중에 바꿔야하는값
          */
         accessCookie.setDomain("localhost");  // 도메인을 localhost로 설정
-        refreshCookie.setDomain("localhost"); // 도메인을 localhost로 설정
 
         if (user.getRole() == Role.GUEST) {
             log.info("처음 가입하는 사용자 입니다");
@@ -86,16 +87,13 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
              * 리프레시 쿠키 안넘기는 걸로
              */
             accessCookie.setPath("/");
-            refreshCookie.setPath("/");
             response.addCookie(accessCookie);
-            response.addCookie(refreshCookie);
 
-            response.sendRedirect("http://localhost:3000/user-info"); // localhost:3000으로 리다이렉트
+            response.sendRedirect(userInfoUrl);
             return;
         }
 
         response.addCookie(accessCookie);
-        response.addCookie(refreshCookie);
-        response.sendRedirect("http://localhost:3000/home"); // localhost:3000으로 리다이렉트
+        response.sendRedirect(mainPageUrl);
     }
 }
