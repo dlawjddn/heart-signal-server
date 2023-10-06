@@ -17,6 +17,7 @@ import com.heartsignal.dev.dto.team.response.TeamDTO;
 import com.heartsignal.dev.dto.team.response.TeamDetailsDTO;
 import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfoDTO;
 import com.heartsignal.dev.dto.userInfo.response.AdditionalInfoDTO;
+import com.heartsignal.dev.dto.userInfo.response.CanGroupDTO;
 import com.heartsignal.dev.dto.userInfo.response.ExistedNicknameDTO;
 import com.heartsignal.dev.exception.custom.CustomException;
 import com.heartsignal.dev.exception.custom.ErrorCode;
@@ -73,6 +74,22 @@ public class AggregationFacade {
     /**
      * 그룹화
      */
+
+    // 그룹이 되기 위한 사용자의 성별과 팀 존재 유무 파악
+    public CanGroupDTO canBeGroupMember(User tempUser, String nickname){
+        User user = userService.findById(tempUser.getId()); // 리더
+        // 로그인 한 사람(리더의 성별과 같고, 닉네임이 존재 해야함)
+        UserInfo otherUserInfo = userInfoService.findByGenderAndNickname(user.getUserInfo().getGender(), nickname);
+        User otherUser = userService.findById(otherUserInfo.getId()); // 멤버가 되려는 유저
+
+        // otherUser 에 대한 조건 처리 -> 결과값 도출
+        boolean canGroup = (user.getUserInfo().getGender().equals(otherUserInfo.getGender()) && otherUser.getTeam() == null);
+        return CanGroupDTO.builder()
+                .canGroup(canGroup)
+                .build();
+    }
+
+    // 그룹 생성
     public void makeTeam(User tempLeader, SaveTeamDTO teamInfo){
         List<User> members = teamInfo.getNicknames().stream()
                 .map(userInfoService::findByNickName).toList().stream()

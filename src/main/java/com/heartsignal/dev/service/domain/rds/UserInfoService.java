@@ -42,6 +42,10 @@ public class UserInfoService {
     public boolean isExistedNickname(String nickname){
         return userInfoRepository.existsByNickname(nickname);
     }
+    public UserInfo findByGenderAndNickname(String gender, String nickname){
+        return userInfoRepository.findByGenderAndNickname(gender, nickname)
+                .orElseThrow(() -> new CustomException(ErrorCode.USERINFO_NOT_FOUND));
+    }
     public UserInfo findByNickName(String nickname){
         return userInfoRepository.findByNickname(nickname)
                 .orElseThrow(() -> new CustomException(ErrorCode.NICKNAME_NOT_FOUND));

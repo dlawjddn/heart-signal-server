@@ -4,6 +4,7 @@ import com.heartsignal.dev.Facade.AggregationFacade;
 import com.heartsignal.dev.domain.rds.User;
 import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfoDTO;
 import com.heartsignal.dev.dto.userInfo.response.AdditionalInfoDTO;
+import com.heartsignal.dev.dto.userInfo.response.CanGroupDTO;
 import com.heartsignal.dev.dto.userInfo.response.ExistedNicknameDTO;
 import com.heartsignal.dev.oauth.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,11 @@ public class UserController {
     @GetMapping("/existed-nickname/{nickname}")
     public ExistedNicknameDTO checkDuplicatedNickname(@PathVariable String nickname){
         return aggregationFacade.checkDuplicatedNickname(nickname);
+    }
+    @GetMapping("/same-gender/{nickname}")
+    public CanGroupDTO canBeGroupMember(@PathVariable String nickname, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        User user = principalDetails.getUser();
+        return aggregationFacade.canBeGroupMember(user, nickname);
     }
     @GetMapping("/mypage")
     public AdditionalInfoDTO showMyPage(@AuthenticationPrincipal PrincipalDetails principalDetails){
