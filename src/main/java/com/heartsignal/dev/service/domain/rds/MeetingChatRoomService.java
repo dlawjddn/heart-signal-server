@@ -28,8 +28,6 @@ public class MeetingChatRoomService {
         // Register the OUT parameter and execute the stored procedure
         storedProcedure.registerStoredProcedureParameter("o_meeting_id", Integer.class, ParameterMode.OUT);
         storedProcedure.execute();
-        entityManager.refresh(team1);
-        entityManager.refresh(team2);
 
         // Get the value of the OUT parameter
         Long meetingId = (Long) storedProcedure.getOutputParameterValue("o_meeting_id");
