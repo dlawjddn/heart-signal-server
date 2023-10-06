@@ -9,7 +9,7 @@ import lombok.*;
 @Setter
 @Builder
 @AllArgsConstructor
-@Table(name = "signals")
+@Table(name = "`signal`")
 public class Signal {
 
     @Id
