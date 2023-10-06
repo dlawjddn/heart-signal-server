@@ -19,8 +19,7 @@ public class CorsConfig {
          * 도메인 정해지면 바꾸기
          */
         configuration.addAllowedOrigin("http://localhost:3000");
-
-
+        configuration.addAllowedOrigin("http://localhost:5173");
         configuration.addAllowedMethod("GET");
         configuration.addAllowedMethod("POST");
         configuration.addAllowedMethod("DELETE");

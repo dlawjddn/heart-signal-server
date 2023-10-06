@@ -60,16 +60,14 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         String accessToken = jwtService.createAccessToken(user.getSocialId());
         String refreshToken = jwtService.createRefreshToken();
-        String bearerAccessToken = "Bearer " + accessToken;
+        String bearerAccessToken = "Bearer" + accessToken;
         /**
          * TODO url 문제 해결 필요 + Bearer + 문제 해결 필요
          */
-        String cookieValueForAccess = URLEncoder.encode(bearerAccessToken, StandardCharsets.UTF_8).replace("+", "%20");
-
 
         jwtService.updateRefreshToken(user, refreshToken);
 
-        Cookie accessCookie = new Cookie("accessCookie", cookieValueForAccess);
+        Cookie accessCookie = new Cookie("accessCookie", bearerAccessToken);
 
 
         /***
