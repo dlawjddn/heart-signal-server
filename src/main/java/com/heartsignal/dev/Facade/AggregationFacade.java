@@ -292,28 +292,49 @@ public class AggregationFacade {
      * 주점
      * 채팅 내역 불러오기
      */
-    public MessageListDTO provideChatInfos(String chatId, OffsetDateTime dateTime) {
+    public MessageListDTO provideBarChatInfos(String chatId, OffsetDateTime dateTime) {
         Chat chat = chatService.findChatById(chatId);
 
-        List<Message> sortedMessages = chat.getMessages()
-                .stream()
+        List<Message> sortedMessages = sortMessagesByDate(chat).stream()
                 .filter(msg -> msg.getDate().isAfter(dateTime))
-                .sorted(Comparator.comparing(Message::getDate))
-                .toList();
+                .collect(Collectors.toList());
 
-        List<MessageDTO> messageDTOList = sortedMessages.stream()
+        return MessageListDTO.builder()
+                .messageList(convertToMessageDTOList(sortedMessages))
+                .build();
+    }
+
+    /**
+     * 미팅
+     * 채팅 내역 불러오기
+     */
+    public MessageListDTO provideMeetingChatInfos(User tempUser) {
+        User user = userService.findById(tempUser.getId());
+        Team team = user.getTeam();
+        Long meetingChatRoomId = meetingChatRoomService.findMeetingChatRoomByTeam(team);
+        Chat chat = chatService.findChatById(meetingChatRoomId.toString());
+
+        return MessageListDTO.builder()
+                .messageList(convertToMessageDTOList(sortMessagesByDate(chat)))
+                .build();
+    }
+
+
+    private List<MessageDTO> convertToMessageDTOList(List<Message> messages) {
+        return messages.stream()
                 .map(msg -> MessageDTO.builder()
                         .content(msg.getContent())
                         .sender(msg.getSender())
                         .sendTime(msg.getDate().toString())
-                        .build()
-                )
+                        .build())
                 .collect(Collectors.toList());
+    }
 
-        return MessageListDTO.builder()
-                .id(chatId)
-                .messageList(messageDTOList)
-                .build();
+    private List<Message> sortMessagesByDate(Chat chat) {
+        return chat.getMessages()
+                .stream()
+                .sorted(Comparator.comparing(Message::getDate))
+                .collect(Collectors.toList());
     }
 }
 
