@@ -53,6 +53,9 @@ public class TeamController {
         User user = principalDetails.getUser();
         aggregationFacade.rejectSignal(user, teamId, true);
     }
-
-
+    @DeleteMapping
+    public void deleteTeam(@AuthenticationPrincipal PrincipalDetails principalDetails){
+        User user = principalDetails.getUser();
+        aggregationFacade.deleteTeam(user);
+    }
 }
