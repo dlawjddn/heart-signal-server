@@ -3,9 +3,7 @@ package com.heartsignal.dev.controller;
 import com.heartsignal.dev.Facade.AggregationFacade;
 import com.heartsignal.dev.domain.rds.User;
 import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfoDTO;
-import com.heartsignal.dev.dto.userInfo.response.AdditionalInfoDTO;
-import com.heartsignal.dev.dto.userInfo.response.CanGroupDTO;
-import com.heartsignal.dev.dto.userInfo.response.ExistedNicknameDTO;
+import com.heartsignal.dev.dto.userInfo.response.*;
 import com.heartsignal.dev.oauth.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +31,13 @@ public class UserController {
         return aggregationFacade.canBeGroupMember(user, nickname);
     }
     @GetMapping("/mypage")
-    public AdditionalInfoDTO showMyPage(@AuthenticationPrincipal PrincipalDetails principalDetails){
+    public MyPageDTO showMyPage(@AuthenticationPrincipal PrincipalDetails principalDetails){
         User user = principalDetails.getUser();
         return aggregationFacade.showMyPage(user);
+    }
+    @GetMapping("/main-page")
+    public MainPageDTO showMainPage(@AuthenticationPrincipal PrincipalDetails principalDetails){
+        User user = principalDetails.getUser();
+        return aggregationFacade.showMainPage(user);
     }
 }
