@@ -99,6 +99,15 @@ public class AggregationFacade {
                 .matchStatus(checkPoint)
                 .build();
     }
+
+    // 팀 삭제하기
+    public void deleteTeam(User tempUser){
+        User user = userService.findById(tempUser.getId());
+        Team myTeam = user.getTeam();
+        if (!myTeam.getLeader().equals(user))
+            throw new CustomException(ErrorCode.ONLY_LEADER); // 리더가 아닌 사람이 팀을 삭제하려는 경우
+        teamService.deleteTeam(myTeam);
+    }
     /**
      * 그룹화
      */
