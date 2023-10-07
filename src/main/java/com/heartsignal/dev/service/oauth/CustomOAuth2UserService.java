@@ -56,7 +56,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 
         User user = User.builder()
-                .chatStatus(0)
                 .reportCount(0)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
