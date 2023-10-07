@@ -5,6 +5,7 @@ import com.heartsignal.dev.domain.rds.User;
 import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfoDTO;
 import com.heartsignal.dev.dto.userInfo.response.*;
 import com.heartsignal.dev.oauth.PrincipalDetails;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final AggregationFacade aggregationFacade;
     @PostMapping("/additional")
-    public void saveAdditionalInfo(@RequestBody SaveAdditionalInfoDTO additionalInfo, @AuthenticationPrincipal PrincipalDetails principalDetails){
+    public void saveAdditionalInfo(@Valid @RequestBody SaveAdditionalInfoDTO additionalInfo, @AuthenticationPrincipal PrincipalDetails principalDetails){
         User user = principalDetails.getUser();
         aggregationFacade.saveAdditionalInfo(user, additionalInfo);
     }
