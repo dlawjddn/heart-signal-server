@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -42,9 +44,8 @@ public class UserInfoService {
     public boolean isExistedNickname(String nickname){
         return userInfoRepository.existsByNickname(nickname);
     }
-    public UserInfo findByGenderAndNickname(String gender, String nickname){
-        return userInfoRepository.findByGenderAndNickname(gender, nickname)
-                .orElseThrow(() -> new CustomException(ErrorCode.USERINFO_NOT_FOUND));
+    public Optional<UserInfo> findByGenderAndNickname(String gender, String nickname){
+        return userInfoRepository.findByGenderAndNickname(gender, nickname);
     }
     public UserInfo findByNickName(String nickname){
         return userInfoRepository.findByNickname(nickname)

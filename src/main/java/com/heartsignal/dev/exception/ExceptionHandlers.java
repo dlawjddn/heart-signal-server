@@ -19,4 +19,10 @@ public class ExceptionHandlers {
         ErrorDto errorDto = ErrorDto.builder().code(e.getErrorCode().getCode()).build();
         return new ResponseEntity<>(errorDto, e.getErrorCode().getHttpStatus());
     }
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    public ResponseEntity<ErrorDto> handleValidationException(MethodArgumentNotValidException e){
+        log.error("error = {}", e.getStatusCode());
+        ErrorDto errorDto = ErrorDto.builder().code(e.getMessage()).build();
+        return new ResponseEntity<>(errorDto,e.getStatusCode());
+    }
 }

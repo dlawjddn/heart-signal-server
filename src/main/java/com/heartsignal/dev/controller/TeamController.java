@@ -7,6 +7,7 @@ import com.heartsignal.dev.dto.team.response.SignalTeamsDTO;
 import com.heartsignal.dev.dto.team.request.SaveTeamDTO;
 import com.heartsignal.dev.dto.team.response.TeamDetailsDTO;
 import com.heartsignal.dev.oauth.PrincipalDetails;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class TeamController {
     private final AggregationFacade aggregationFacade;
     @PostMapping("/building")
-    public void makeTeam(@RequestBody SaveTeamDTO teamInfo, @AuthenticationPrincipal PrincipalDetails principalDetails){
+    public void makeTeam(@Valid @RequestBody SaveTeamDTO teamInfo, @AuthenticationPrincipal PrincipalDetails principalDetails){
         User leader = principalDetails.getUser();
         aggregationFacade.makeTeam(leader, teamInfo);
     }
