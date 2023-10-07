@@ -29,6 +29,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -116,11 +117,14 @@ public class AggregationFacade {
     public CanGroupDTO canBeGroupMember(User tempUser, String nickname){
         User user = userService.findById(tempUser.getId()); // 리더
         // 로그인 한 사람(리더의 성별과 같고, 닉네임이 존재 해야함)
-        UserInfo otherUserInfo = userInfoService.findByGenderAndNickname(user.getUserInfo().getGender(), nickname);
-        User otherUser = userService.findById(otherUserInfo.getId()); // 멤버가 되려는 유저
-
+        Optional<UserInfo> optionalUserInfo = userInfoService.findByGenderAndNickname(user.getUserInfo().getGender(), nickname);
+        boolean canGroup = false; // dto 에 담을 값
+        if (optionalUserInfo != null){ // 유저가 존재하고
+            User otherUser = userService.findById(optionalUserInfo.get().getId()); // 멤버가 되려는 유저
+            if (otherUser.getTeam() == null) // 팀이 존재하지 않으면
+                canGroup = true;
+        }
         // otherUser 에 대한 조건 처리 -> 결과값 도출
-        boolean canGroup = (user.getUserInfo().getGender().equals(otherUserInfo.getGender()) && otherUser.getTeam() == null);
         return CanGroupDTO.builder()
                 .canGroup(canGroup)
                 .build();
