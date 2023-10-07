@@ -61,9 +61,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String accessToken = jwtService.createAccessToken(user.getSocialId());
         String refreshToken = jwtService.createRefreshToken();
         String bearerAccessToken = "Bearer" + accessToken;
-        /**
-         * TODO url 문제 해결 필요 + Bearer + 문제 해결 필요
-         */
+
 
         jwtService.updateRefreshToken(user, refreshToken);
 
