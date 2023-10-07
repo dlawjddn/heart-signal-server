@@ -10,6 +10,7 @@ public enum ErrorCode {
 
     //401
     ONLY_LEADER(HttpStatus.UNAUTHORIZED, "ONLY LEADER CAN DO"),
+    BANNED(HttpStatus.UNAUTHORIZED, "BANNED_USER"),
 
     //404
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER NOT FOUND"),
