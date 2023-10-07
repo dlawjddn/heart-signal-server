@@ -56,4 +56,7 @@ public class User {
     }
 
     public User(){}
+    public void reported(){
+        this.reportCount++;
+    }
 }

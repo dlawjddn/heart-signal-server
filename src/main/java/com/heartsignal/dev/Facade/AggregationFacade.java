@@ -44,6 +44,15 @@ public class AggregationFacade {
     private final MeetingChatRoomService meetingChatRoomService;
     private final BarChatroomService barChatroomService;
     private final ChatService chatService;
+
+    /**
+     *  회원 신고 확인하기
+     */
+
+    // 회원 리포트 카운트 확인하기
+    private boolean checkUserReport(User user){
+        return user.getReportCount() < 5;
+    }
     /**
      * 메인페이지
      */
@@ -51,6 +60,8 @@ public class AggregationFacade {
     // 메인 페이지
     public MainPageDTO showMainPage(User tempUser){
         User user = userService.findById(tempUser.getId());
+        if (!checkUserReport(user))
+            throw new CustomException(ErrorCode.BANNED);
         int checkPoint = 0;
         if (user.getTeam() == null) checkPoint = 1;
         else {
@@ -69,7 +80,10 @@ public class AggregationFacade {
 
     // 추가 정보 저장
     public void saveAdditionalInfo(User tempUser, SaveAdditionalInfoDTO additionalInfo){
-        userInfoService.saveAdditionalInfo(userService.findById(tempUser.getId()), additionalInfo);
+        User user = userService.findById(tempUser.getId());
+        if (!checkUserReport(user))
+            throw new CustomException(ErrorCode.BANNED);
+        userInfoService.saveAdditionalInfo(user, additionalInfo);
     }
 
     // 닉네임 중복확인
@@ -84,6 +98,8 @@ public class AggregationFacade {
     // 마이페이지
     public MyPageDTO showMyPage(User tempUser) {
         User user = userService.findById(tempUser.getId());
+        if (!checkUserReport(user))
+            throw new CustomException(ErrorCode.BANNED);
         UserInfo myAddiInfo = user.getUserInfo();
         int checkPoint = 0;
         if (user.getTeam() == null) checkPoint = 1;
@@ -104,10 +120,19 @@ public class AggregationFacade {
     // 팀 삭제하기
     public void deleteTeam(User tempUser){
         User user = userService.findById(tempUser.getId());
+        if (!checkUserReport(user))
+            throw new CustomException(ErrorCode.BANNED);
         Team myTeam = user.getTeam();
         if (!myTeam.getLeader().equals(user))
             throw new CustomException(ErrorCode.ONLY_LEADER); // 리더가 아닌 사람이 팀을 삭제하려는 경우
         teamService.deleteTeam(myTeam);
+    }
+
+    // 신고하기
+
+    public void reportUser(String nickname){
+        User reportedUser = userService.findById(userInfoService.findByNickName(nickname).getId());
+        userService.reportUser(reportedUser);
     }
     /**
      * 그룹화
@@ -116,6 +141,8 @@ public class AggregationFacade {
     // 그룹이 되기 위한 사용자의 성별과 팀 존재 유무 파악
     public CanGroupDTO canBeGroupMember(User tempUser, String nickname){
         User user = userService.findById(tempUser.getId()); // 리더
+        if (!checkUserReport(user))
+            throw new CustomException(ErrorCode.BANNED);
         // 로그인 한 사람(리더의 성별과 같고, 닉네임이 존재 해야함)
         Optional<UserInfo> optionalUserInfo = userInfoService.findByGenderAndNickname(user.getUserInfo().getGender(), nickname);
         boolean canGroup = false; // dto 에 담을 값
@@ -132,13 +159,16 @@ public class AggregationFacade {
 
     // 그룹 생성
     public void makeTeam(User tempLeader, SaveTeamDTO teamInfo){
+        User user = userService.findById(tempLeader.getId());
+        if (!checkUserReport(user))
+            throw new CustomException(ErrorCode.BANNED);
         List<User> members = new ArrayList<>(teamInfo.getNicknames().stream()
                 .map(userInfoService::findByNickName).toList().stream()
                 .map(userInfo -> userService.findById(userInfo.getId())).toList());
         members.add(tempLeader);
 
         log.info("팀 구성원 추출 완료");
-        teamService.saveTeam(userService.findById(tempLeader.getId()), members, teamInfo.getTitle());
+        teamService.saveTeam(user, members, teamInfo.getTitle());
     }
     /**
      * 시그널
@@ -147,6 +177,8 @@ public class AggregationFacade {
     // 시그널 리스트 제공
     public SignalTeamsDTO provideSignalList(User tempLeader){
         User leader = userService.findById(tempLeader.getId());
+        if (!checkUserReport(leader))
+            throw new CustomException(ErrorCode.BANNED);
         List<TeamDTO> teamDTOs = teamService.findSignalList(leader).stream()
                 .map(team -> TeamDTO.builder()
                         .teamId(team.getId())
@@ -161,6 +193,8 @@ public class AggregationFacade {
     // 시그널 상세 정보 제공
     public TeamDetailsDTO provideTeamDetails(User tempUser, Long teamId){
         User user = userService.findById(tempUser.getId());
+        if (!checkUserReport(user))
+            throw new CustomException(ErrorCode.BANNED);
         Team findTeam = teamService.findById(teamId);
         List<AdditionalInfoDTO> memberInfos = new ArrayList<>(findTeam.getMembers().stream()
                 .map(User::getUserInfo).toList().stream()
@@ -190,6 +224,8 @@ public class AggregationFacade {
     //시그널 보내기
     public void sendSignal(User tempUser, Long teamId){
         User user = userService.findById(tempUser.getId());
+        if (!checkUserReport(user))
+            throw new CustomException(ErrorCode.BANNED);
         Team myTeam = user.getTeam();
         if (!myTeam.getLeader().equals(user))
             throw new CustomException(ErrorCode.ONLY_LEADER); // 일반 유저라면 exception
@@ -211,6 +247,8 @@ public class AggregationFacade {
     // 시그널 거절하기
     public void rejectSignal(User tempUser, Long teamId, boolean reject){
         User user = userService.findById(tempUser.getId());
+        if (!checkUserReport(user))
+            throw new CustomException(ErrorCode.BANNED);
         Team myTeam = user.getTeam();
         Team otherTeam = teamService.findById(teamId);
         if (!myTeam.getLeader().equals(user))
@@ -259,6 +297,8 @@ public class AggregationFacade {
 
     public SignalDTO checkMatching(User tempUser){
         User user = userService.findById(tempUser.getId());
+        if (!checkUserReport(user))
+            throw new CustomException(ErrorCode.BANNED);
         Team myTeam = user.getTeam();
         List<TeamDTO> sendingInfos = signalService.findSendingSignal(myTeam).stream()
                 .map(signal -> TeamDTO.builder()
@@ -316,6 +356,8 @@ public class AggregationFacade {
      */
     public MessageListDTO provideMeetingChatInfos(User tempUser) {
         User user = userService.findById(tempUser.getId());
+        if (!checkUserReport(user))
+            throw new CustomException(ErrorCode.BANNED);
         Team team = user.getTeam();
         Long meetingChatRoomId = meetingChatRoomService.findMeetingChatRoomByTeam(team);
         Chat chat = chatService.findChatById(meetingChatRoomId.toString());
