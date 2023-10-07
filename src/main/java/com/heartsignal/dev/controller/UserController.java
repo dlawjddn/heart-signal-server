@@ -2,6 +2,7 @@ package com.heartsignal.dev.controller;
 
 import com.heartsignal.dev.Facade.AggregationFacade;
 import com.heartsignal.dev.domain.rds.User;
+import com.heartsignal.dev.dto.report.request.ReportDTO;
 import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfoDTO;
 import com.heartsignal.dev.dto.userInfo.response.*;
 import com.heartsignal.dev.oauth.PrincipalDetails;
@@ -40,5 +41,9 @@ public class UserController {
     public MainPageDTO showMainPage(@AuthenticationPrincipal PrincipalDetails principalDetails){
         User user = principalDetails.getUser();
         return aggregationFacade.showMainPage(user);
+    }
+    @PatchMapping("/report")
+    public void reportUser(@RequestBody ReportDTO reportDTO){
+        aggregationFacade.reportUser(reportDTO.getReportNickname());
     }
 }
