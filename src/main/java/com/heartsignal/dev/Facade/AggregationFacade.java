@@ -127,6 +127,13 @@ public class AggregationFacade {
             throw new CustomException(ErrorCode.ONLY_LEADER); // 리더가 아닌 사람이 팀을 삭제하려는 경우
         teamService.deleteTeam(myTeam);
     }
+
+    // 신고하기
+
+    public void reportUser(String nickname){
+        User reportedUser = userService.findById(userInfoService.findByNickName(nickname).getId());
+        userService.reportUser(reportedUser);
+    }
     /**
      * 그룹화
      */
