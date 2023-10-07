@@ -5,6 +5,13 @@ spring:
     password: heart-signal-admin
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  sql:
+    init:
+      mode: always
+  flyway:
+    user: heart-signal-admin
+    password: heart-signal-admin
+
   jpa:
     hibernate:
       ddl-auto: validate
