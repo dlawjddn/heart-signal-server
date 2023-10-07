@@ -23,7 +23,6 @@ public class User {
     @JoinColumn(name = "team_id", nullable = true)  //명시적으로 그냥 남겨놓기, null가능!
     private Team team;
 
-    private int chatStatus; //0이면 false, 1이면 true
     private int reportCount;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
