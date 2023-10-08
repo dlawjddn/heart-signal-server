@@ -62,7 +62,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String refreshToken = jwtService.createRefreshToken();
         String bearerAccessToken = "Bearer" + accessToken;
 
-
+        request.getPathInfo();
         jwtService.updateRefreshToken(user, refreshToken);
 
         Cookie accessCookie = new Cookie("accessCookie", bearerAccessToken);

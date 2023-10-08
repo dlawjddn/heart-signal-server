@@ -14,12 +14,13 @@ spring:
 
   data:
     mongodb:
-      host: heart-signal-db.oro1t2c.mongodb.net
-      port: 27017
+      uri: mongodb+srv://hs_admin:hs_admin@heart-signal-db.oro1t2c.mongodb.net/heart-signal-db?retryWrites=true&w=majority
+      # host: heart-signal-db.oro1t2c.mongodb.net
+      # port: 27017
       authentication-database: admin
       database: heart-signal-db
-      username: hs_admin
-      password: hs_admin
+      # username: hs_admin
+      # password: hs_admin
 
   security:
     oauth2:
@@ -33,7 +34,7 @@ spring:
             client-name: kakao
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
-            redirect-uri: http://43.202.145.101:8080/login/oauth2/code/kakao
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
 
         provider:
           kakao:
