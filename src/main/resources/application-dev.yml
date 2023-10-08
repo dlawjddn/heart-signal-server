@@ -58,4 +58,4 @@ jwt:
 redirect:
   url:
     userInfo: http://localhost:5173/userInfo
-    main: http://localhost:5173/main
+    main: http://localhost:5173/
