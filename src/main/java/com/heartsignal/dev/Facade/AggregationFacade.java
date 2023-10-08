@@ -2,6 +2,7 @@ package com.heartsignal.dev.Facade;
 
 import com.heartsignal.dev.domain.nosql.Chat;
 import com.heartsignal.dev.domain.nosql.Message;
+import com.heartsignal.dev.domain.rds.Bar;
 import com.heartsignal.dev.domain.rds.Team;
 import com.heartsignal.dev.domain.rds.User;
 import com.heartsignal.dev.domain.rds.UserInfo;
@@ -283,11 +284,17 @@ public class AggregationFacade {
                             .name(bar.getName())
                             .build())
                     .toList();
-            for (int i=0; i<barInfoDTOS.size(); i+=2){
-                barContentDTOS.add(BarContentDTO.builder()
-                                .first(barInfoDTOS.get(i))
-                                .second(barInfoDTOS.get(i+1))
-                        .build());
+            int cnt = 0;
+            for (int i=0; i<barInfoDTOS.size(); i++){
+                if (i % 2 == 0){
+                    barContentDTOS.add(BarContentDTO.builder()
+                            .first(barInfoDTOS.get(i))
+                            .build());
+                }
+                else{
+                    barContentDTOS.get(cnt).setSecond(barInfoDTOS.get(i));
+                    cnt++;
+                }
             }
             barListDTOS.add(BarListDTO.builder()
                     .name(location)
