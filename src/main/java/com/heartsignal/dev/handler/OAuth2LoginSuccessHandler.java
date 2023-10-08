@@ -78,14 +78,14 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
              * 리프레시는 시큐어쿠키로 바꿀것
              * 리프레시 쿠키 안넘기는 걸로
              */
-//            accessCookie.setPath("/userInfo");
+            accessCookie.setPath("/userInfo");
             response.addCookie(accessCookie);
             response.addCookie(refreshCookie);
             response.sendRedirect(userInfoUrl);
             return;
         }
 
-//        accessCookie.setPath("/");
+        accessCookie.setPath("/");
         response.addCookie(accessCookie);
         response.addCookie(refreshCookie);
         response.sendRedirect(mainPageUrl);
