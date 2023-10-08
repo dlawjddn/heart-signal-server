@@ -81,19 +81,21 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
              */
 
             accessCookie.setPath("/userInfo");
-            response.addCookie(accessCookie);
-            response.addCookie(refreshCookie);
             accessCookie.setDomain(".heart.dcs-hyungjoon.com");
             refreshCookie.setDomain(".heart.dcs-hyungjoon.com");
+            response.addCookie(accessCookie);
+            response.addCookie(refreshCookie);
+
             response.sendRedirect(userInfoUrl);
             return;
         }
 
         accessCookie.setPath("/");
-        response.addCookie(accessCookie);
-        response.addCookie(refreshCookie);
         accessCookie.setDomain(".heart.dcs-hyungjoon.com");
         refreshCookie.setDomain(".heart.dcs-hyungjoon.com");
+        response.addCookie(accessCookie);
+        response.addCookie(refreshCookie);
+
         response.sendRedirect(mainPageUrl);
     }
 }
