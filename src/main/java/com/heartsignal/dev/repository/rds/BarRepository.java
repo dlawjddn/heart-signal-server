@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface BarRepository extends JpaRepository<Bar, Long> {
-    @Query("SELECT b.location from Bar b")
+    @Query("SELECT DISTINCT b.location FROM Bar b")
     List<String> findLocation();
     List<Bar> findByLocation(String location);
 }
