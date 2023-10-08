@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://heart-signal-dev.cykxxwdhqye6.ap-northeast-2.rds.amazonaws.com:3306/heart-signal_database
+    url: jdbc:mysql://heart-signal-dev.cykxxwdhqye6.ap-northeast-2.rds.amazonaws.com:3306/heart_signal_database
     username: hs_admin
     password: hs_admin
     driver-class-name: com.mysql.cj.jdbc.Driver
