@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @Builder
-@Table(name = "barchatroom")
+@Table(name = "bar_chat_room")
 public class BarChatRoom {
 
     @Id

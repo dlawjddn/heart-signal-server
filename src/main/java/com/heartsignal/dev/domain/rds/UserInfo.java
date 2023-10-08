@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @ToString
-@Table(name = "userinfo")
+@Table(name = "user_info")
 public class UserInfo {
 
     @Id
