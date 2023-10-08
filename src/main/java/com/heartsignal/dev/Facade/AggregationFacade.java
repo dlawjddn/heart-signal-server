@@ -289,6 +289,7 @@ public class AggregationFacade {
                 if (i % 2 == 0){
                     barContentDTOS.add(BarContentDTO.builder()
                             .first(barInfoDTOS.get(i))
+                            .second(BarInfoDTO.builder().barID(0L).name("").groupName("").build())
                             .build());
                 }
                 else{
