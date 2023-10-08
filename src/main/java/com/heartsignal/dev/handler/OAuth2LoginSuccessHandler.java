@@ -68,6 +68,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         Cookie accessCookie = new Cookie("accessCookie", bearerAccessToken);
         Cookie refreshCookie = new Cookie("refreshCookie", bearerRefreshToken);
+        accessCookie.setSecure(true);
+        accessCookie.setHttpOnly(true);
         refreshCookie.setSecure(true);
         refreshCookie.setHttpOnly(true);
 
@@ -83,10 +85,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
             accessCookie.setPath("/userInfo");
 //            accessCookie.setDomain("heart.dcs-hyungjoon.com");
 //            refreshCookie.setDomain("heart.dcs-hyungjoon.com");
-            response.addCookie(accessCookie);
-            response.addCookie(refreshCookie);
-            response.setHeader("Set-Cookie", accessCookie.toString());
-            response.setHeader("Set-Cookie", refreshCookie.toString());
+
+            response.addHeader("Set-Cookie", accessCookie + "; SameSite=None");
+            response.addHeader("Set-Cookie", refreshCookie + "; SameSite=None");
 
             response.sendRedirect(userInfoUrl);
             return;
@@ -95,10 +96,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         accessCookie.setPath("/");
 //        accessCookie.setDomain("heart.dcs-hyungjoon.com");
 //        refreshCookie.setDomain("heart.dcs-hyungjoon.com");
-        response.addCookie(accessCookie);
-        response.addCookie(refreshCookie);
-        response.setHeader("Set-Cookie", accessCookie.toString());
-        response.setHeader("Set-Cookie", refreshCookie.toString());
+
+        response.addHeader("Set-Cookie", accessCookie + "; SameSite=None");
+        response.addHeader("Set-Cookie", refreshCookie + "; SameSite=None");
 
         response.sendRedirect(mainPageUrl);
     }
