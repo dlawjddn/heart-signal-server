@@ -6,6 +6,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.util.List;
+
 @Configuration
 public class CorsConfig {
 
@@ -14,20 +16,17 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration configuration = new CorsConfiguration();
 
-        /**
-         * TODO
-         * 도메인 정해지면 바꾸기
-         */
-        configuration.addAllowedOrigin("http://localhost:3000");
-        configuration.addAllowedOrigin("http://localhost:5173");
-        configuration.addAllowedOrigin("https://heart.dcs-hyungjoon.com");
-        configuration.addAllowedOrigin("http://heart.dcs-hyungjoon.com");
-        configuration.addAllowedMethod("GET");
-        configuration.addAllowedMethod("POST");
-        configuration.addAllowedMethod("DELETE");
-        configuration.addAllowedMethod("PUT");
-        configuration.addAllowedMethod("PATCH");
-        configuration.addAllowedMethod("OPTIONS");
+        configuration.setAllowedOrigins(
+                List.of(
+                        "http://localhost:3000",
+                        "http://localhost:5173",
+                        "http://heart.dcs-hyungjoon.com",
+                        "https://heart.dcs-hyungjoon.com"
+                )
+        );
+        configuration.setAllowedMethods(
+                List.of("GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS")
+        );
         configuration.setAllowCredentials(true);
         configuration.addAllowedHeader("*");
         configuration.addExposedHeader("*");
