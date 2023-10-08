@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
@@ -78,9 +79,12 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
              * 리프레시는 시큐어쿠키로 바꿀것
              * 리프레시 쿠키 안넘기는 걸로
              */
+
             accessCookie.setPath("/userInfo");
             response.addCookie(accessCookie);
             response.addCookie(refreshCookie);
+            accessCookie.setDomain(".heart.dcs-hyungjoon.com");
+            refreshCookie.setDomain(".heart.dcs-hyungjoon.com");
             response.sendRedirect(userInfoUrl);
             return;
         }
@@ -88,6 +92,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         accessCookie.setPath("/");
         response.addCookie(accessCookie);
         response.addCookie(refreshCookie);
+        accessCookie.setDomain(".heart.dcs-hyungjoon.com");
+        refreshCookie.setDomain(".heart.dcs-hyungjoon.com");
         response.sendRedirect(mainPageUrl);
     }
 }
