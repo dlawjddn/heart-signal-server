@@ -28,8 +28,9 @@ public class CorsConfig {
         configuration.addAllowedMethod("PATCH");
         configuration.setAllowCredentials(true);
         configuration.addAllowedHeader("*");
-        configuration.addExposedHeader("authorization");
-        configuration.addExposedHeader("reauthorization");
+        configuration.addExposedHeader("*");
+//        configuration.addExposedHeader("authorization");
+//        configuration.addExposedHeader("reauthorization");
 
         source.registerCorsConfiguration("/**", configuration);
         return new CorsFilter(source);
