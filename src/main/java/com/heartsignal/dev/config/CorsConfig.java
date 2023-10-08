@@ -2,6 +2,7 @@ package com.heartsignal.dev.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -31,6 +32,7 @@ public class CorsConfig {
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(Arrays.asList("DNT", "User-Agent", "X-Requested-With", "If-Modified-Since", "Cache-Control", "Content-Type", "Range","Set-Cookie"));
 //        configuration.addExposedHeader("*");
+        configuration.addExposedHeader("Set-Cookie");
         configuration.addExposedHeader("authorization");
         configuration.addExposedHeader("reauthorization");
 
