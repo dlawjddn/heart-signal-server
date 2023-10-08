@@ -85,6 +85,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 //            refreshCookie.setDomain("heart.dcs-hyungjoon.com");
             response.addCookie(accessCookie);
             response.addCookie(refreshCookie);
+            response.setHeader("Set-Cookie", accessCookie.toString());
+            response.setHeader("Set-Cookie", refreshCookie.toString());
 
             response.sendRedirect(userInfoUrl);
             return;
@@ -95,6 +97,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 //        refreshCookie.setDomain("heart.dcs-hyungjoon.com");
         response.addCookie(accessCookie);
         response.addCookie(refreshCookie);
+        response.setHeader("Set-Cookie", accessCookie.toString());
+        response.setHeader("Set-Cookie", refreshCookie.toString());
 
         response.sendRedirect(mainPageUrl);
     }

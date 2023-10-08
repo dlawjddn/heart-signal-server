@@ -6,6 +6,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -28,8 +29,8 @@ public class CorsConfig {
                 List.of("GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS")
         );
         configuration.setAllowCredentials(true);
-        configuration.addAllowedHeader("*");
-        configuration.addExposedHeader("*");
+        configuration.setAllowedHeaders(Arrays.asList("DNT", "User-Agent", "X-Requested-With", "If-Modified-Since", "Cache-Control", "Content-Type", "Range"));
+//        configuration.addExposedHeader("*");
         configuration.addExposedHeader("authorization");
         configuration.addExposedHeader("reauthorization");
 
