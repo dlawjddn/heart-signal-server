@@ -144,14 +144,21 @@ public class AggregationFacade {
         if (!checkUserReport(user))
             throw new CustomException(ErrorCode.BANNED);
         // 로그인 한 사람(리더의 성별과 같고, 닉네임이 존재 해야함)
-        Optional<UserInfo> optionalUserInfo = userInfoService.findByGenderAndNickname(user.getUserInfo().getGender(), nickname);
+        UserInfo otherUserInfo = userInfoService.findByNickName(nickname);
         boolean canGroup = false; // dto 에 담을 값
-        if (optionalUserInfo != null){ // 유저가 존재하고
-            User otherUser = userService.findById(optionalUserInfo.get().getId()); // 멤버가 되려는 유저
-            if (otherUser.getTeam() == null) // 팀이 존재하지 않으면
-                canGroup = true;
-        }
-        // otherUser 에 대한 조건 처리 -> 결과값 도출
+        if (otherUserInfo.getGender().equals(user.getUserInfo().getGender()) && user.getTeam() == null)
+            canGroup = true;
+//
+//
+//
+//        Optional<UserInfo> optionalUserInfo = userInfoService.findByGenderAndNickname(user.getUserInfo().getGender(), nickname);
+//
+//        if (optionalUserInfo != null){ // 유저가 존재하고
+//            User otherUser = userService.findById(optionalUserInfo.get().getId()); // 멤버가 되려는 유저
+//            if (otherUser.getTeam() == null) // 팀이 존재하지 않으면
+//                canGroup = true;
+//        }
+//        // otherUser 에 대한 조건 처리 -> 결과값 도출
         return CanGroupDTO.builder()
                 .canGroup(canGroup)
                 .build();
