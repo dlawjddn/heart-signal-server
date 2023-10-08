@@ -54,4 +54,4 @@ jwt:
 redirect:
   url:
     userInfo: http://localhost:3000/userInfo
-    main: http://localhost:3000/main
+    main: http://localhost:3000/
