@@ -29,7 +29,7 @@ public class CorsConfig {
                 List.of("GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS")
         );
         configuration.setAllowCredentials(true);
-        configuration.setAllowedHeaders(Arrays.asList("DNT", "User-Agent", "X-Requested-With", "If-Modified-Since", "Cache-Control", "Content-Type", "Range"));
+        configuration.setAllowedHeaders(Arrays.asList("DNT", "User-Agent", "X-Requested-With", "If-Modified-Since", "Cache-Control", "Content-Type", "Range","Set-Cookie"));
 //        configuration.addExposedHeader("*");
         configuration.addExposedHeader("authorization");
         configuration.addExposedHeader("reauthorization");
