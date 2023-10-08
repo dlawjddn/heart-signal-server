@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/heart-signal-database?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: heart-signal-admin
-    password: heart-signal-admin
+    url: jdbc:mysql://heart-signal-dev.cykxxwdhqye6.ap-northeast-2.rds.amazonaws.com:3306/heart_signal_database
+    username: hs_admin
+    password: hs_admin
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -14,8 +14,7 @@ spring:
 
   data:
     mongodb:
-      host: localhost
-      port: 27017
+      uri: mongodb+srv://admin:admin@heart-signal-dev.kvwdaqg.mongodb.net/?retryWrites=true&w=majority
       authentication-database: admin
       database: heart-signal-db
 
@@ -40,11 +39,12 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 
+
 jwt:
   secretKey: asdfasdfasdfasdrtqwetqpkna;pilugipk1j23k4lhj1adfkj9312kl3n@*!!~asdkflj9@#Nvlny.asdf
 
   access:
-    expiration: 604800000
+    expiration: 3600000
     header: Authorization
 
   refresh:
@@ -53,5 +53,5 @@ jwt:
 
 redirect:
   url:
-    userInfo: http://localhost:3000/userInfo
-    main: http://localhost:3000/main
+    userInfo: http://localhost:5173/userInfo
+    main: http://localhost:5173/

@@ -2,6 +2,7 @@ package com.heartsignal.dev.filter;
 
 
 
+import com.heartsignal.dev.domain.rds.Role;
 import com.heartsignal.dev.domain.rds.User;
 import com.heartsignal.dev.oauth.PrincipalDetails;
 import com.heartsignal.dev.repository.rds.UserRepository;
@@ -72,7 +73,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         jwtService.extractAccessToken(request)
                 .ifPresent(accessToken -> {
                             String socialId = jwtService.extractSocialId(accessToken);
-                            userRepository.findBySocialId(socialId)
+                            userRepository.findBySocialIdAndRole(socialId, Role.GUEST)     //GUEST일때는 throw날리기
                                     .ifPresent(
                                             this::saveAuthentication
                                     );
@@ -85,9 +86,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
                 .ifPresent(
                         user -> {
                             String reIssuedAccessToken = jwtService.createAccessToken(user.getSocialId());
-                            String reIssuedRefreshToken = jwtService.createRefreshToken();
-                            jwtService.updateRefreshToken(user, reIssuedRefreshToken);
-                            jwtService.sendAccessAndRefreshToken(response, reIssuedAccessToken, reIssuedRefreshToken);
+                            jwtService.sendAccessToken(response, reIssuedAccessToken);
                             saveAuthentication(user);
                         }
                 );

@@ -1,8 +1,6 @@
 package com.heartsignal.dev.service.jwt;
 
 
-
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
@@ -18,8 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Optional;
@@ -73,11 +69,10 @@ public class JwtService {
     }
 
 
-    public void sendAccessAndRefreshToken(HttpServletResponse response, String accessToken, String refreshToken) {
+    public void sendAccessToken(HttpServletResponse response, String accessToken) {
         response.setStatus(HttpServletResponse.SC_OK);
         response.setHeader(accessHeader, BEARER + accessToken);
-        response.setHeader(refreshHeader, BEARER + refreshToken);
-        log.info("Access Token, Refresh Token 헤더 설정 완료");
+        log.info("Access Token 발급완료");
     }
 
     public Optional<String> extractAccessToken(HttpServletRequest request) {
@@ -125,6 +120,9 @@ public class JwtService {
         } catch (SignatureVerificationException e) {
             log.info("엑세스 토큰 서명이 유효하지 않습니다.");
             throw new SignatureVerificationException(Algorithm.HMAC512(secretKey));
+        } catch (TokenExpiredException e){
+            log.info("토큰 유효 시간이 지났습니다.");
+            throw new TokenExpiredException(e.getMessage(), Instant.MAX);
         }
     }
 

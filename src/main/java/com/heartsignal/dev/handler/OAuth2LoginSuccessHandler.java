@@ -1,4 +1,3 @@
-
 package com.heartsignal.dev.handler;
 
 
@@ -61,18 +60,15 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String accessToken = jwtService.createAccessToken(user.getSocialId());
         String refreshToken = jwtService.createRefreshToken();
         String bearerAccessToken = "Bearer" + accessToken;
+        String bearerRefreshToken = "Bearer" + refreshToken;
 
-
+        request.getPathInfo();
         jwtService.updateRefreshToken(user, refreshToken);
 
         Cookie accessCookie = new Cookie("accessCookie", bearerAccessToken);
-
-
-        /***
-         * TODO
-         * 나중에 바꿔야하는값
-         */
-        accessCookie.setDomain("localhost");  // 도메인을 localhost로 설정
+        Cookie refreshCookie = new Cookie("refreshCookie", bearerRefreshToken);
+        refreshCookie.setSecure(true);
+        refreshCookie.setHttpOnly(true);
 
         if (user.getRole() == Role.GUEST) {
             log.info("처음 가입하는 사용자 입니다");
@@ -84,12 +80,13 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
              */
             accessCookie.setPath("/");
             response.addCookie(accessCookie);
-
+            response.addCookie(refreshCookie);
             response.sendRedirect(userInfoUrl);
             return;
         }
 
         response.addCookie(accessCookie);
+        response.addCookie(refreshCookie);
         response.sendRedirect(mainPageUrl);
     }
 }
