@@ -27,6 +27,7 @@ public class CorsConfig {
         configuration.addAllowedMethod("DELETE");
         configuration.addAllowedMethod("PUT");
         configuration.addAllowedMethod("PATCH");
+        configuration.addAllowedMethod("OPTIONS");
         configuration.setAllowCredentials(true);
         configuration.addAllowedHeader("*");
         configuration.addExposedHeader("*");
