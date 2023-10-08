@@ -46,5 +46,5 @@ public class UserController {
     public void reportUser(@RequestBody ReportDTO reportDTO){
         aggregationFacade.reportUser(reportDTO.getReportNickname());
     }
-    @Pa
+
 }
