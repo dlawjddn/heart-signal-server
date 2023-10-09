@@ -11,6 +11,7 @@ import com.heartsignal.dev.dto.bar.response.BarInfoDTO;
 import com.heartsignal.dev.dto.bar.response.BarListDTO;
 import com.heartsignal.dev.dto.chat.response.MessageDTO;
 import com.heartsignal.dev.dto.chat.response.MessageListDTO;
+import com.heartsignal.dev.dto.report.response.CanReportDTO;
 import com.heartsignal.dev.dto.signal.response.SignalDTO;
 import com.heartsignal.dev.dto.team.request.SaveTeamDTO;
 import com.heartsignal.dev.dto.team.response.SignalTeamsDTO;
