@@ -379,6 +379,7 @@ public class AggregationFacade {
                 .collect(Collectors.toList());
 
         return MessageListDTO.builder()
+                .id(chat.getId())
                 .messageList(convertToMessageDTOList(sortedMessages))
                 .build();
     }
@@ -400,6 +401,7 @@ public class AggregationFacade {
                     .build();
         }
         return MessageListDTO.builder()
+                .id(chat.getId())
                 .messageList(convertToMessageDTOList(sortMessagesByDate(chat)))
                 .build();
     }

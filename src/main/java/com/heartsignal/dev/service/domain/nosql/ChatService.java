@@ -18,6 +18,7 @@ public class ChatService {
     private final ChatRepository chatRepository;
 
     public Chat findChatById(String barId){
+        log.info("barId = {} ", barId);
 
         return chatRepository.findById(barId).orElseThrow(() -> new CustomException(ErrorCode.CHAT_NOT_FOUND));
     }
