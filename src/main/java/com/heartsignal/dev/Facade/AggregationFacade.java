@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -189,7 +190,7 @@ public class AggregationFacade {
             throw new CustomException(ErrorCode.BANNED);
         Team myTeam = leader.getTeam();
         List<TeamDTO> teamDTOs = teamService.findSignalList(leader).stream()
-                .filter(team -> !signalService.checkCantSend(myTeam, team)) // team: 내가 보낼 수 있는 team 을 의미함
+                .filter(team -> (!signalService.checkCantSend(myTeam, team) && team.getStatus() == 0)) // team: 내가 보낼 수 있는 team 을 의미함
                 .map(team -> TeamDTO.builder()
                         .teamId(team.getId())
                         .teamName(team.getTitle())
@@ -272,10 +273,21 @@ public class AggregationFacade {
         if (!checkUserReport(user))
             throw new CustomException(ErrorCode.BANNED);
         List<BarListDTO> barListDTOS = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime base = LocalDateTime.of(2023, 10, 12, 0, 0);
         List<String> locations = barService.findLocations(); // -> 위치에 해당하는 문자열 배열
         for (String location : locations) {
             List<BarContentDTO> barContentDTOS = new ArrayList<>();
             List<BarInfoDTO> barInfoDTOS = barService.findBarsInLocation(location).stream()
+                    .filter(bar -> {
+                        if (now.isBefore(base) && bar.getFirst() == 1) {// 1일차 주점인 경우
+                            return true;
+                        }else if(now.isAfter(base) && bar.getSecond() == 1){ // 2일차 주점인 경우
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    })
                     .map(bar -> BarInfoDTO.builder()
                             .barID(bar.getId())
                             .groupName(bar.getGroup())
