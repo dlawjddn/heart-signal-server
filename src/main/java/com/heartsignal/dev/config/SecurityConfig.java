@@ -45,7 +45,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(config -> config
                         .requestMatchers("/api/v1/users/additional").hasAnyRole("GUEST")
                         .requestMatchers("/api/v1/users/duplicate-nickname/**").hasAnyRole("GUEST")
-                        .requestMatchers("/oauth2/authorization/kakao", "/login/oauth2/code/kakao", "/api/v1/auth/refresh").permitAll()
+                        .requestMatchers("/oauth2/authorization/kakao", "/login/oauth2/code/kakao", "/api/v1/auth/refresh", "").permitAll()
                         .anyRequest().authenticated()
                 );
 
