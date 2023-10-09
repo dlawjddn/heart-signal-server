@@ -41,10 +41,11 @@ public class SecurityConfig {
                 .sessionManagement((sessionManagement) ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+//                .sessionManagement(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(config -> config
                         .requestMatchers("/api/v1/users/additional").hasAnyRole("GUEST")
                         .requestMatchers("/api/v1/users/duplicate-nickname/**").hasAnyRole("GUEST")
-                        .requestMatchers("/oauth2/authorization/kakao", "/login/oauth2/code/kakao").permitAll()
+                        .requestMatchers("/oauth2/authorization/kakao", "/login/oauth2/code/kakao", "/api/v1/auth/refresh").permitAll()
                         .anyRequest().authenticated()
                 );
 

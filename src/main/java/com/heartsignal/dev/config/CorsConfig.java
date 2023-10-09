@@ -17,7 +17,7 @@ public class CorsConfig {
     public CorsFilter corsFilter(){
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration configuration = new CorsConfiguration();
-
+        configuration.setAllowCredentials(true);
         configuration.setAllowedOrigins(
                 List.of(
                         "http://localhost:3000",
@@ -29,7 +29,6 @@ public class CorsConfig {
         configuration.setAllowedMethods(
                 List.of("GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS")
         );
-        configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(Arrays.asList("DNT", "User-Agent", "X-Requested-With", "If-Modified-Since", "Cache-Control", "Content-Type", "Range","Set-Cookie"));
 //        configuration.addExposedHeader("*");
         configuration.addExposedHeader("Set-Cookie");
