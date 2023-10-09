@@ -131,7 +131,10 @@ public class AggregationFacade {
     }
 
     // 신고하기
-    public void reportUser(String nickname){
+    public void reportUser(User tempUser, String nickname){
+        User user = userService.findById(tempUser.getId());
+        if (!checkUserReport(user))
+            throw new CustomException(ErrorCode.BANNED);
         User reportedUser = userService.findById(userInfoService.findByNickName(nickname).getId());
         userService.reportUser(reportedUser);
     }
@@ -264,7 +267,10 @@ public class AggregationFacade {
      */
 
     // 주점 목록 조회 -> 야호 해냈당
-    public List<BarListDTO> provideBarInfos(){
+    public List<BarListDTO> provideBarInfos(User tempUser){
+        User user = userService.findById(tempUser.getId());
+        if (!checkUserReport(user))
+            throw new CustomException(ErrorCode.BANNED);
         List<BarListDTO> barListDTOS = new ArrayList<>();
         List<String> locations = barService.findLocations(); // -> 위치에 해당하는 문자열 배열
         for (String location : locations) {
