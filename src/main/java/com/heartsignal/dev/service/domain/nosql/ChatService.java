@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -23,6 +25,7 @@ public class ChatService {
     public void saveMeetingChat(String id) {
         Chat chat = Chat.builder()
                 .id(id)
+                .messages(new ArrayList<>())
                 .build();
         chatRepository.save(chat);
     }
