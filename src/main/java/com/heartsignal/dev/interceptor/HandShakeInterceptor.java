@@ -1,8 +1,10 @@
+
 package com.heartsignal.dev.interceptor;
 
+import com.heartsignal.dev.oauth.PrincipalDetails;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
-import org.springframework.http.server.ServletServerHttpRequest;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 
@@ -10,19 +12,14 @@ import java.util.Map;
 
 public class HandShakeInterceptor implements HandshakeInterceptor {
 
+
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
-        if (request instanceof ServletServerHttpRequest) {
-            ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;
-            String id = servletRequest.getServletRequest().getRequestURI().split("/")[2]; // Assuming /ws-connection/12345 format
-            attributes.put("id", id); // Add to session attributes
-        }
-        return true;
+        return false;
     }
 
     @Override
     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception exception) {
+
     }
-
-
 }

@@ -71,6 +71,7 @@ public class AggregationFacade {
         }
         return MainPageDTO.builder()
                 .matchStatus(checkPoint)
+                .nickname(user.getUserInfo().getNickname())
                 .build();
     }
 

@@ -9,4 +9,5 @@ import lombok.*;
 @NoArgsConstructor
 public class MainPageDTO {
     private int matchStatus;
+    private String nickname;
 }
