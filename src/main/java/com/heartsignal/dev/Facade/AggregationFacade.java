@@ -184,7 +184,9 @@ public class AggregationFacade {
         User leader = userService.findById(tempLeader.getId());
         if (!checkUserReport(leader))
             throw new CustomException(ErrorCode.BANNED);
+        Team myTeam = leader.getTeam();
         List<TeamDTO> teamDTOs = teamService.findSignalList(leader).stream()
+                .filter(team -> !signalService.checkCantSend(myTeam, team)) // team: 내가 보낼 수 있는 team 을 의미함
                 .map(team -> TeamDTO.builder()
                         .teamId(team.getId())
                         .teamName(team.getTitle())
@@ -225,9 +227,9 @@ public class AggregationFacade {
         Team myTeam = user.getTeam();
         if (!myTeam.getLeader().equals(user))
             throw new CustomException(ErrorCode.ONLY_LEADER); // 일반 유저라면 exception
-        if (signalService.checkCantSend(myTeam))
-            throw new CustomException(ErrorCode.ONLY_ONE_SIGNAL); // 내 팀이 이미 시그널을 보냈더라면
         Team otherTeam = teamService.findById(teamId);
+        if (signalService.checkCantSend(myTeam, otherTeam))
+            throw new CustomException(ErrorCode.ONLY_ONE_SIGNAL); // 내 팀이 이미 시그널을 보냈더라면
         signalService.saveSignal(myTeam, otherTeam);
         /**
          * 맞시그널인지 확인하는 메소드
