@@ -201,16 +201,7 @@ public class AggregationFacade {
                         .mbti(userInfo.getMbti())
                         .face(userInfo.getLookAlike())
                         .selfInfo(userInfo.getSelfInfo())
-                        .build()).toList()); // 리더를 제외한 멤버들의 추가 정보 리스트
-
-        UserInfo leaderInfo = findTeam.getLeader().getUserInfo();
-        memberInfos.add(AdditionalInfoDTO.builder()
-                .nickname(leaderInfo.getNickname())
-                .mbti(leaderInfo.getMbti())
-                .face(leaderInfo.getLookAlike())
-                .selfInfo(leaderInfo.getSelfInfo())
-                .build());
-
+                        .build()).toList());
         Team myTeam = user.getTeam();
         return TeamDetailsDTO.builder()
                 .title(findTeam.getTitle())
