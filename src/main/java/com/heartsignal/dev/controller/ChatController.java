@@ -23,13 +23,13 @@ public class ChatController {
     private final AggregationFacade aggregationFacade;
 
     @MessageMapping("/messages/{barId}")
-    public void chat(@DestinationVariable Integer barId, @RequestBody MessageDTO messageDTO) {
+    public void chat(@DestinationVariable String barId, @RequestBody MessageDTO messageDTO) {
         aggregationFacade.saveChat(messageDTO, barId);
         simpMessagingTemplate.convertAndSend("/subscribe/rooms/" + barId, messageDTO);
     }
 
     @GetMapping("/api/v1/chats/{chatId}/chat")
-    public MessageListDTO showBarMessages(@PathVariable Integer chatId,
+    public MessageListDTO showBarMessages(@PathVariable String chatId,
                                        @RequestParam
                                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime enterTime){
 
