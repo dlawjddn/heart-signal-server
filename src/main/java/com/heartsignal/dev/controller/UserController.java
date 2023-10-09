@@ -47,7 +47,10 @@ public class UserController {
     public void reportUser(@RequestBody ReportDTO reportDTO){
         aggregationFacade.reportUser(reportDTO.getReportNickname());
     }
-
+    @GetMapping("/report/check-nickname/{nickname}")
+    public CanReportDTO checkCanReport(@PathVariable String nickname){
+        return aggregationFacade.checkCanReport(nickname);
+    }
     @PostMapping("/dummy")
     public ResponseEntity<Void> dummyController(){
         return ResponseEntity.ok().build();

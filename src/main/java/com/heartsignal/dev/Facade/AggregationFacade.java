@@ -135,6 +135,12 @@ public class AggregationFacade {
         User reportedUser = userService.findById(userInfoService.findByNickName(nickname).getId());
         userService.reportUser(reportedUser);
     }
+    //신고가 가능한 사용자인지 확인하기
+    public CanReportDTO checkCanReport(String nickname){
+        return CanReportDTO.builder()
+                .canReport(userInfoService.isExistedNickname(nickname))
+                .build();
+    }
     /**
      * 그룹화
      */
