@@ -2,6 +2,7 @@ package com.heartsignal.dev.filter;
 
 
 
+import com.heartsignal.dev.domain.rds.Role;
 import com.heartsignal.dev.domain.rds.User;
 import com.heartsignal.dev.oauth.PrincipalDetails;
 import com.heartsignal.dev.repository.rds.UserRepository;
@@ -27,8 +28,10 @@ import java.io.IOException;
 @Component
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
-    private static final String NO_CHECK_URL_LOGIN = "/oauth/authorization/kakao";
+    private static final String NO_CHECK_URL_LOGIN = "/oauth2/authorization/kakao";
     private static final String NO_CHECK_URL_REDIRECT = "/login/oauth2/code/kakao";
+    private static final String CHECK_URL_EXISTED_NICKNAME ="/api/v1/users/existed-nickname/**";
+    private static final String CHECK_URL_USERINFO = "/api/v1/users/additional";
 
     private final JwtService jwtService;
     private final UserRepository userRepository;
@@ -57,8 +60,13 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
             return;
         }
 
-        //재발급 필요없는 경우
-        checkAccessTokenAndAuthentication(request);
+        log.info("request.getRequestURI ={} ", request.getRequestURI());
+        if (antPathMatcher.match(CHECK_URL_USERINFO, request.getRequestURI())|| antPathMatcher.match(CHECK_URL_EXISTED_NICKNAME, request.getRequestURI())){
+            checkAccessTokenAndAuthentication(request, Role.GUEST);
+        } else {
+            checkAccessTokenAndAuthentication(request, Role.USER);
+        }
+
         filterChain.doFilter(request, response);
     }
 
@@ -68,11 +76,11 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
                 .orElse(null);
     }
 
-    private void checkAccessTokenAndAuthentication(HttpServletRequest request) {
+    private void checkAccessTokenAndAuthentication(HttpServletRequest request, Role role) {
         jwtService.extractAccessToken(request)
                 .ifPresent(accessToken -> {
                             String socialId = jwtService.extractSocialId(accessToken);
-                            userRepository.findBySocialId(socialId)
+                            userRepository.findBySocialIdAndRole(socialId, role)     //GUEST일때는 throw날리기
                                     .ifPresent(
                                             this::saveAuthentication
                                     );
@@ -85,9 +93,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
                 .ifPresent(
                         user -> {
                             String reIssuedAccessToken = jwtService.createAccessToken(user.getSocialId());
-                            String reIssuedRefreshToken = jwtService.createRefreshToken();
-                            jwtService.updateRefreshToken(user, reIssuedRefreshToken);
-                            jwtService.sendAccessAndRefreshToken(response, reIssuedAccessToken, reIssuedRefreshToken);
+                            jwtService.sendAccessToken(response, reIssuedAccessToken);
                             saveAuthentication(user);
                         }
                 );
