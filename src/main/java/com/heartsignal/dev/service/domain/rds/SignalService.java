@@ -48,4 +48,8 @@ public class SignalService {
 
         return existsSignalFromAtoB && existsSignalFromBtoA;
     }
+
+    public boolean checkCantSend(Team sendTeam, Team receivedTeam){
+        return signalRepository.existsBySenderAndReceiver(sendTeam, receivedTeam);
+    }
 }

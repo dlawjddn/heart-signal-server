@@ -20,8 +20,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws-connection/{id}")
-                .addInterceptors(new HandShakeInterceptor())
+        registry.addEndpoint("/ws-connection")
+//                .addInterceptors(new HandShakeInterceptor())
                 .setAllowedOrigins(
                         "http://localhost:3000",
                         "http://localhost:5173",
