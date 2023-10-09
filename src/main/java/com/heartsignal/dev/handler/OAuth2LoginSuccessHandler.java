@@ -68,8 +68,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         Cookie accessCookie = new Cookie("accessCookie", bearerAccessToken);
         Cookie refreshCookie = new Cookie("refreshCookie", bearerRefreshToken);
-        accessCookie.setSecure(true);
-        accessCookie.setHttpOnly(true);
+//        accessCookie.setSecure(true);
+//        accessCookie.setHttpOnly(true);
         refreshCookie.setSecure(true);
         refreshCookie.setHttpOnly(true);
 
