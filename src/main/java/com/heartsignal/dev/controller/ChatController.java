@@ -23,17 +23,17 @@ public class ChatController {
     private final AggregationFacade aggregationFacade;
 
     @MessageMapping("/messages/{barId}")
-    public void chat(@DestinationVariable String barId, @RequestBody MessageDTO messageDTO) {
+    public void chat(@DestinationVariable Integer barId, @RequestBody MessageDTO messageDTO) {
         aggregationFacade.saveChat(messageDTO, barId);
         simpMessagingTemplate.convertAndSend("/subscribe/rooms/" + barId, messageDTO);
     }
 
     @GetMapping("/api/v1/chats/{chatId}/chat")
-    public MessageListDTO showBarMessages(@PathVariable String chatId,
+    public MessageListDTO showBarMessages(@PathVariable Integer chatId,
                                        @RequestParam
-                                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime date){
+                                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime enterTime){
 
-        return aggregationFacade.provideBarChatInfos(chatId, date);
+        return aggregationFacade.provideBarChatInfos(chatId, enterTime);
     }
 
     @GetMapping("/api/v1/chats/meeting-room/chat")
@@ -43,7 +43,7 @@ public class ChatController {
     }
 
     @DeleteMapping("/api/v1/chats/meeting-room/{roomId}/chat")
-    public void deleteMeetingRoom(@PathVariable String roomId){
+    public void deleteMeetingRoom(@PathVariable Long roomId){
         aggregationFacade.deleteMeetingRoom(roomId);
     }
 

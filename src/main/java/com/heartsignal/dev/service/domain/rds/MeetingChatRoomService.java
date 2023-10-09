@@ -42,7 +42,7 @@ public class MeetingChatRoomService {
     }
 
     @Transactional
-    public void deleteMeetingRoom(String roomId) {
-        meetingChatRoomRepository.deleteById(Long.parseLong(roomId));
+    public void deleteMeetingRoom(Long roomId) {
+        meetingChatRoomRepository.deleteById(roomId);
     }
 }

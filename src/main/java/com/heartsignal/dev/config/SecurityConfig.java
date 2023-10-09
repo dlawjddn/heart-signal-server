@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.filter.CorsFilter;
 
@@ -45,7 +46,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(config -> config
                         .requestMatchers("/api/v1/users/additional").hasAnyRole("GUEST")
                         .requestMatchers("/api/v1/users/duplicate-nickname/**").hasAnyRole("GUEST")
-                        .requestMatchers("/oauth2/authorization/kakao", "/login/oauth2/code/kakao", "/api/v1/auth/refresh", "/ws-connection").permitAll()
+                        .requestMatchers(
+                                "/oauth2/authorization/kakao",
+                                "/login/oauth2/code/kakao",
+                                "/api/v1/auth/refresh",
+                                "/api/v1/users/additional",
+                                "/ws-connection").permitAll()
                         .requestMatchers("/api/v1/users/dummy").permitAll()
                         .anyRequest().authenticated()
                 );
@@ -68,7 +74,7 @@ public class SecurityConfig {
                 .exceptionHandling(config -> config.authenticationEntryPoint(customAuthenticationEntryPoint));
 
         http
-                .addFilter(corsFilter);
+                .addFilterBefore(corsFilter, ChannelProcessingFilter.class);
 
         return http.build();
     }

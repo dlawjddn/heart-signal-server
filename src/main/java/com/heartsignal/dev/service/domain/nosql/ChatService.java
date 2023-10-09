@@ -5,26 +5,29 @@ import com.heartsignal.dev.exception.custom.CustomException;
 import com.heartsignal.dev.exception.custom.ErrorCode;
 import com.heartsignal.dev.repository.nosql.ChatRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ChatService {
 
     private final ChatRepository chatRepository;
 
-    public Chat findChatById(String barId){
+    public Chat findChatById(Integer barId){
+
         return chatRepository.findById(barId).orElseThrow(() -> new CustomException(ErrorCode.CHAT_NOT_FOUND));
     }
 
     public void saveChat(Long id) {
         Chat chat = Chat.builder()
-                .id(id.toString())
+                .id(id.intValue())
                 .build();
         chatRepository.save(chat);
     }
 
-    public void deleteChat(String roomId) {
-        chatRepository.deleteById(roomId);
+    public void deleteChat(Long roomId) {
+        chatRepository.deleteById(roomId.intValue());
     }
 }
