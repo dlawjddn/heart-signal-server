@@ -4,6 +4,7 @@ import jakarta.persistence.Id;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -15,5 +16,5 @@ import java.util.List;
 public class Chat {
     @Id
     private String id;
-    private List<Message> messages;
+    private List<Message> messages = new ArrayList<>();
 }

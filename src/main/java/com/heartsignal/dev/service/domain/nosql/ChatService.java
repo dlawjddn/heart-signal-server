@@ -20,10 +20,14 @@ public class ChatService {
         return chatRepository.findById(barId).orElseThrow(() -> new CustomException(ErrorCode.CHAT_NOT_FOUND));
     }
 
-    public void saveChat(Long id) {
+    public void saveMeetingChat(String id) {
         Chat chat = Chat.builder()
-                .id(id.toString())
+                .id(id)
                 .build();
+        chatRepository.save(chat);
+    }
+
+    public void saveBarChat(Chat chat){
         chatRepository.save(chat);
     }
 

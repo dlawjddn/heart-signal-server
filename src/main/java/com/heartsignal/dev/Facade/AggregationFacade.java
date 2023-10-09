@@ -2,7 +2,6 @@ package com.heartsignal.dev.Facade;
 
 import com.heartsignal.dev.domain.nosql.Chat;
 import com.heartsignal.dev.domain.nosql.Message;
-import com.heartsignal.dev.domain.rds.Bar;
 import com.heartsignal.dev.domain.rds.Team;
 import com.heartsignal.dev.domain.rds.User;
 import com.heartsignal.dev.domain.rds.UserInfo;
@@ -11,6 +10,7 @@ import com.heartsignal.dev.dto.bar.response.BarInfoDTO;
 import com.heartsignal.dev.dto.bar.response.BarListDTO;
 import com.heartsignal.dev.dto.chat.response.MessageDTO;
 import com.heartsignal.dev.dto.chat.response.MessageListDTO;
+import com.heartsignal.dev.dto.report.response.CanReportDTO;
 import com.heartsignal.dev.dto.signal.response.SignalDTO;
 import com.heartsignal.dev.dto.team.request.SaveTeamDTO;
 import com.heartsignal.dev.dto.team.response.SignalTeamsDTO;
@@ -30,7 +30,6 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -135,6 +134,12 @@ public class AggregationFacade {
         User reportedUser = userService.findById(userInfoService.findByNickName(nickname).getId());
         userService.reportUser(reportedUser);
     }
+
+    public CanReportDTO checkCanReport(String nickname){
+        return CanReportDTO.builder()
+                .canReport(userInfoService.isExistedNickname(nickname))
+                .build();
+    }
     /**
      * 그룹화
      */
@@ -177,7 +182,9 @@ public class AggregationFacade {
         User leader = userService.findById(tempLeader.getId());
         if (!checkUserReport(leader))
             throw new CustomException(ErrorCode.BANNED);
+        Team myTeam = leader.getTeam();
         List<TeamDTO> teamDTOs = teamService.findSignalList(leader).stream()
+                .filter(team -> !signalService.checkCantSend(myTeam, team)) // team: 내가 보낼 수 있는 team 을 의미함
                 .map(team -> TeamDTO.builder()
                         .teamId(team.getId())
                         .teamName(team.getTitle())
@@ -230,7 +237,7 @@ public class AggregationFacade {
          */
         if (signalService.isMutualFollow(myTeam, otherTeam)) {
             Long meetingChatRoomId = meetingChatRoomService.makeMeetingChatRoom(myTeam, otherTeam);
-            chatService.saveChat(meetingChatRoomId);
+            chatService.saveMeetingChat(meetingChatRoomId.toString());
         }
     }
 
@@ -325,9 +332,10 @@ public class AggregationFacade {
                 Message.builder()
                         .sender(messageDTO.getSender())
                         .content(messageDTO.getContent())
-                        .date(parsedDate)
+                        .date(parsedDate.toInstant())
                         .build()
         );
+        chatService.saveBarChat(chat);
     }
 
 
@@ -344,7 +352,7 @@ public class AggregationFacade {
         }
 
         List<Message> sortedMessages = sortMessagesByDate(chat).stream()
-                .filter(msg -> msg.getDate().isAfter(dateTime))
+                .filter(msg -> msg.getDate().isAfter(dateTime.toInstant()))
                 .collect(Collectors.toList());
 
         return MessageListDTO.builder()
