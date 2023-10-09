@@ -350,6 +350,7 @@ public class AggregationFacade {
     public void saveChat(MessageDTO messageDTO, String barId) {
         Chat chat = chatService.findChatById(barId);
         OffsetDateTime parsedDate = OffsetDateTime.parse(messageDTO.getSendTime());
+
         chat.getMessages().add(
                 Message.builder()
                         .sender(messageDTO.getSender())
