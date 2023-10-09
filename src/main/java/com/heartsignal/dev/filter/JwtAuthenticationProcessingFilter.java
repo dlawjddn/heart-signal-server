@@ -28,8 +28,9 @@ import java.io.IOException;
 @Component
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
-    private static final String NO_CHECK_URL_LOGIN = "/oauth/authorization/kakao";
+    private static final String NO_CHECK_URL_LOGIN = "/oauth2/authorization/kakao";
     private static final String NO_CHECK_URL_REDIRECT = "/login/oauth2/code/kakao";
+    private static final String CHECK_URL_USERINFO ="/api/v1/users/additional";
 
     private final JwtService jwtService;
     private final UserRepository userRepository;
@@ -58,8 +59,12 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
             return;
         }
 
-        //재발급 필요없는 경우
-        checkAccessTokenAndAuthentication(request);
+        if (request.getRequestURI().equals(CHECK_URL_USERINFO)){
+            checkAccessTokenAndAuthentication(request, Role.GUEST);
+        } else {
+            checkAccessTokenAndAuthentication(request, Role.USER);
+        }
+
         filterChain.doFilter(request, response);
     }
 
@@ -69,11 +74,11 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
                 .orElse(null);
     }
 
-    private void checkAccessTokenAndAuthentication(HttpServletRequest request) {
+    private void checkAccessTokenAndAuthentication(HttpServletRequest request, Role role) {
         jwtService.extractAccessToken(request)
                 .ifPresent(accessToken -> {
                             String socialId = jwtService.extractSocialId(accessToken);
-                            userRepository.findBySocialIdAndRole(socialId, Role.GUEST)     //GUEST일때는 throw날리기
+                            userRepository.findBySocialIdAndRole(socialId, role)     //GUEST일때는 throw날리기
                                     .ifPresent(
                                             this::saveAuthentication
                                     );

@@ -203,14 +203,6 @@ public class AggregationFacade {
                         .selfInfo(userInfo.getSelfInfo())
                         .build()).toList()); // 리더를 제외한 멤버들의 추가 정보 리스트
 
-        UserInfo leaderInfo = findTeam.getLeader().getUserInfo();
-        memberInfos.add(AdditionalInfoDTO.builder()
-                .nickname(leaderInfo.getNickname())
-                .mbti(leaderInfo.getMbti())
-                .face(leaderInfo.getLookAlike())
-                .selfInfo(leaderInfo.getSelfInfo())
-                .build());
-
         Team myTeam = user.getTeam();
         return TeamDetailsDTO.builder()
                 .title(findTeam.getTitle())
@@ -326,7 +318,7 @@ public class AggregationFacade {
     /**
      * 채팅 저장하기
      */
-    public void saveChat(MessageDTO messageDTO, String barId) {
+    public void saveChat(MessageDTO messageDTO, Integer barId) {
         Chat chat = chatService.findChatById(barId);
         OffsetDateTime parsedDate = OffsetDateTime.parse(messageDTO.getSendTime());
         chat.getMessages().add(
@@ -343,7 +335,7 @@ public class AggregationFacade {
      * 주점
      * 채팅 내역 불러오기
      */
-    public MessageListDTO provideBarChatInfos(String chatId, OffsetDateTime dateTime) {
+    public MessageListDTO provideBarChatInfos(Integer chatId, OffsetDateTime dateTime) {
         Chat chat = chatService.findChatById(chatId);
 
         List<Message> sortedMessages = sortMessagesByDate(chat).stream()
@@ -365,7 +357,7 @@ public class AggregationFacade {
             throw new CustomException(ErrorCode.BANNED);
         Team team = user.getTeam();
         Long meetingChatRoomId = meetingChatRoomService.findMeetingChatRoomByTeam(team);
-        Chat chat = chatService.findChatById(meetingChatRoomId.toString());
+        Chat chat = chatService.findChatById(meetingChatRoomId.intValue());
 
         return MessageListDTO.builder()
                 .messageList(convertToMessageDTOList(sortMessagesByDate(chat)))
@@ -390,7 +382,7 @@ public class AggregationFacade {
                 .collect(Collectors.toList());
     }
 
-    public void deleteMeetingRoom(String roomId) {
+    public void deleteMeetingRoom(Long roomId) {
         meetingChatRoomService.deleteMeetingRoom(roomId);
         chatService.deleteChat(roomId);
     }

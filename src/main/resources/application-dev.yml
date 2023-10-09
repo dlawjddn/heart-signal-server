@@ -30,7 +30,7 @@ spring:
             client-name: kakao
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
-            redirect-uri: https://heart.dcs-hyungjoon.com/login/oauth2/code/kakao
+            redirect-uri: https://heart.dcs-hyungjoon.com//login/oauth2/code/kakao
 
         provider:
           kakao:
@@ -41,7 +41,7 @@ spring:
 
 
 jwt:
-  secretKey: asdfasdfasdfasdrtqwetqpkna;pilugipk1j23k4lhj1adfkj9312kl3n@*!!~asdkflj9@#Nvlny.asdf
+  secretKey: asdokjfqlekrthlbandglkasujdriqkwejnlkrtajf123!(sdfioja0-123jkladsfajipo~~~assdfa
 
   access:
     expiration: 3600000
@@ -53,8 +53,8 @@ jwt:
 
 redirect:
   url:
-    userInfo: http://localhost:5173/userInfo
-    main: http://localhost:5173/
+    userInfo: https://heart.dcs-hyungjoon.com/userInfo
+    main: https://heart.dcs-hyungjoon.com/
 
 server:
   session:

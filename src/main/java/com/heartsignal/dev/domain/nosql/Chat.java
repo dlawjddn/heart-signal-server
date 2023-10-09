@@ -11,9 +11,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "chats")
+@Document(collection = "chat")
 public class Chat {
     @Id
-    private String id;
+    private Integer id;
     private List<Message> messages;
 }
