@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     //400
-
+    ONLY_ONE_SIGNAL(HttpStatus.BAD_REQUEST, "ONLY ONE SIGNAL"),
     //401
     ONLY_LEADER(HttpStatus.UNAUTHORIZED, "ONLY LEADER CAN DO"),
     BANNED(HttpStatus.UNAUTHORIZED, "BANNED_USER"),
