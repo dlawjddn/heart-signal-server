@@ -39,7 +39,7 @@ public class TeamController {
         User user = principalDetails.getUser();
         aggregationFacade.sendSignal(user, teamId);
     }
-    @PostMapping("/match/confirm")
+    @GetMapping("/match/confirm")
     public SignalDTO checkMatching(@AuthenticationPrincipal PrincipalDetails principalDetails){
         User user = principalDetails.getUser();
         return aggregationFacade.checkMatching(user);
