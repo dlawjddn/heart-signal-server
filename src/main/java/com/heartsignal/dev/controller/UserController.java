@@ -9,6 +9,7 @@ import com.heartsignal.dev.oauth.PrincipalDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +46,11 @@ public class UserController {
     @PatchMapping("/report")
     public void reportUser(@RequestBody ReportDTO reportDTO){
         aggregationFacade.reportUser(reportDTO.getReportNickname());
+    }
+
+    @PostMapping("/dummy")
+    public ResponseEntity<Void> dummyController(){
+        return ResponseEntity.ok().build();
     }
 
 }
