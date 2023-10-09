@@ -12,4 +12,5 @@ public interface SignalRepository extends JpaRepository<Signal, Long> {
     List<Signal> findByReceiver(Team receivedTeam);
     boolean existsBySenderAndReceiver(Team myTeam, Team otherTeam);
     Optional<Signal> findBySenderAndReceiver(Team sender, Team receiver);
+    boolean existsBySenderAndReceiver(Team myTeam, Team otherTeam);
 }

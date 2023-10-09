@@ -51,7 +51,7 @@ public class SecurityConfig {
                                 "/login/oauth2/code/kakao",
                                 "/api/v1/auth/refresh",
                                 "/api/v1/users/additional",
-                                "/ws-connection").permitAll()
+                                "/ws-connection/**").permitAll()
                         .requestMatchers("/api/v1/users/dummy").permitAll()
                         .anyRequest().authenticated()
                 );

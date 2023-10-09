@@ -32,6 +32,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     private static final String NO_CHECK_URL_REDIRECT = "/login/oauth2/code/kakao";
     private static final String CHECK_URL_EXISTED_NICKNAME ="/api/v1/users/existed-nickname/**";
     private static final String CHECK_URL_USERINFO = "/api/v1/users/additional";
+    private static final String CHECK_URL_WEBSOCKET = "/ws-connection/**";
 
     private final JwtService jwtService;
     private final UserRepository userRepository;
@@ -47,7 +48,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (antPathMatcher.match(NO_CHECK_URL_LOGIN, request.getRequestURI()) || antPathMatcher.match(NO_CHECK_URL_REDIRECT, request.getRequestURI())) {
+        if (antPathMatcher.match(NO_CHECK_URL_LOGIN, request.getRequestURI()) || antPathMatcher.match(NO_CHECK_URL_REDIRECT, request.getRequestURI()) || antPathMatcher.match(CHECK_URL_WEBSOCKET,request.getRequestURI())) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -60,7 +61,6 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
             return;
         }
 
-        log.info("request.getRequestURI ={} ", request.getRequestURI());
         if (antPathMatcher.match(CHECK_URL_USERINFO, request.getRequestURI())|| antPathMatcher.match(CHECK_URL_EXISTED_NICKNAME, request.getRequestURI())){
             checkAccessTokenAndAuthentication(request, Role.GUEST);
         } else {

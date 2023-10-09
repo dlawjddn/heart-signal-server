@@ -2,7 +2,6 @@ package com.heartsignal.dev.Facade;
 
 import com.heartsignal.dev.domain.nosql.Chat;
 import com.heartsignal.dev.domain.nosql.Message;
-import com.heartsignal.dev.domain.rds.Bar;
 import com.heartsignal.dev.domain.rds.Team;
 import com.heartsignal.dev.domain.rds.User;
 import com.heartsignal.dev.domain.rds.UserInfo;
@@ -31,7 +30,6 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -136,7 +134,11 @@ public class AggregationFacade {
         User reportedUser = userService.findById(userInfoService.findByNickName(nickname).getId());
         userService.reportUser(reportedUser);
     }
+
+
+
     //신고가 가능한 사용자인지 확인하기
+
     public CanReportDTO checkCanReport(String nickname){
         return CanReportDTO.builder()
                 .canReport(userInfoService.isExistedNickname(nickname))
@@ -239,7 +241,7 @@ public class AggregationFacade {
          */
         if (signalService.isMutualFollow(myTeam, otherTeam)) {
             Long meetingChatRoomId = meetingChatRoomService.makeMeetingChatRoom(myTeam, otherTeam);
-            chatService.saveChat(meetingChatRoomId);
+            chatService.saveMeetingChat(meetingChatRoomId.toString());
         }
     }
 
@@ -334,9 +336,10 @@ public class AggregationFacade {
                 Message.builder()
                         .sender(messageDTO.getSender())
                         .content(messageDTO.getContent())
-                        .date(parsedDate)
+                        .date(parsedDate.toInstant())
                         .build()
         );
+        chatService.saveBarChat(chat);
     }
 
 
@@ -353,7 +356,7 @@ public class AggregationFacade {
         }
 
         List<Message> sortedMessages = sortMessagesByDate(chat).stream()
-                .filter(msg -> msg.getDate().isAfter(dateTime))
+                .filter(msg -> msg.getDate().isAfter(dateTime.toInstant()))
                 .collect(Collectors.toList());
 
         return MessageListDTO.builder()
