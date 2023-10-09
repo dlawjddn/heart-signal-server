@@ -36,8 +36,8 @@ public class SignalService {
         return signalRepository.findBySenderAndReceiver(sender, receiver)
                 .orElseThrow(() -> new CustomException(ErrorCode.SIGNAL_NOT_FOUND));
     }
-    public boolean checkCantSend(Team myTeam){
-        return signalRepository.existsBySender(myTeam);
+    public boolean checkCantSend(Team sendTeam, Team receivedTeam){
+        return signalRepository.existsBySenderAndReceiver(sendTeam, receivedTeam);
     }
     @Transactional
     public void deleteSignal(Signal signal){
