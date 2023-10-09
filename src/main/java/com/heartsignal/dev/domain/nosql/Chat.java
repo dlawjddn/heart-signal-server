@@ -14,6 +14,6 @@ import java.util.List;
 @Document(collection = "chat")
 public class Chat {
     @Id
-    private Integer id;
+    private String id;
     private List<Message> messages;
 }

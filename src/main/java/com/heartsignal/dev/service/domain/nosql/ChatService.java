@@ -15,19 +15,19 @@ public class ChatService {
 
     private final ChatRepository chatRepository;
 
-    public Chat findChatById(Integer barId){
+    public Chat findChatById(String barId){
 
         return chatRepository.findById(barId).orElseThrow(() -> new CustomException(ErrorCode.CHAT_NOT_FOUND));
     }
 
     public void saveChat(Long id) {
         Chat chat = Chat.builder()
-                .id(id.intValue())
+                .id(id.toString())
                 .build();
         chatRepository.save(chat);
     }
 
     public void deleteChat(Long roomId) {
-        chatRepository.deleteById(roomId.intValue());
+        chatRepository.deleteById(roomId.toString());
     }
 }

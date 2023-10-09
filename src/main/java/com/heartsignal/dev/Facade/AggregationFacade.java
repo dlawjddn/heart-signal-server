@@ -318,7 +318,7 @@ public class AggregationFacade {
     /**
      * 채팅 저장하기
      */
-    public void saveChat(MessageDTO messageDTO, Integer barId) {
+    public void saveChat(MessageDTO messageDTO, String barId) {
         Chat chat = chatService.findChatById(barId);
         OffsetDateTime parsedDate = OffsetDateTime.parse(messageDTO.getSendTime());
         chat.getMessages().add(
@@ -335,8 +335,13 @@ public class AggregationFacade {
      * 주점
      * 채팅 내역 불러오기
      */
-    public MessageListDTO provideBarChatInfos(Integer chatId, OffsetDateTime dateTime) {
+    public MessageListDTO provideBarChatInfos(String chatId, OffsetDateTime dateTime) {
         Chat chat = chatService.findChatById(chatId);
+        if(chat.getMessages() == null){
+            return MessageListDTO.builder()
+                    .messageList(null)
+                    .build();
+        }
 
         List<Message> sortedMessages = sortMessagesByDate(chat).stream()
                 .filter(msg -> msg.getDate().isAfter(dateTime))
@@ -357,8 +362,12 @@ public class AggregationFacade {
             throw new CustomException(ErrorCode.BANNED);
         Team team = user.getTeam();
         Long meetingChatRoomId = meetingChatRoomService.findMeetingChatRoomByTeam(team);
-        Chat chat = chatService.findChatById(meetingChatRoomId.intValue());
-
+        Chat chat = chatService.findChatById(meetingChatRoomId.toString());
+        if(chat.getMessages() == null){
+            return MessageListDTO.builder()
+                    .messageList(null)
+                    .build();
+        }
         return MessageListDTO.builder()
                 .messageList(convertToMessageDTOList(sortMessagesByDate(chat)))
                 .build();
@@ -376,6 +385,9 @@ public class AggregationFacade {
     }
 
     private List<Message> sortMessagesByDate(Chat chat) {
+        if(chat.getMessages() == null){
+            return null;
+        }
         return chat.getMessages()
                 .stream()
                 .sorted(Comparator.comparing(Message::getDate))
