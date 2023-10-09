@@ -20,6 +20,9 @@ public class Bar {
     @Column(name = "`group`")
     private String group;
     private String location;
+    private int first;
+    @Column(name = "`second`")
+    private int second;
 
     @OneToOne(mappedBy = "bar", fetch = FetchType.LAZY)
     private BarChatRoom barChatRoom;
