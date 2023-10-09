@@ -225,6 +225,8 @@ public class AggregationFacade {
         Team myTeam = user.getTeam();
         if (!myTeam.getLeader().equals(user))
             throw new CustomException(ErrorCode.ONLY_LEADER); // 일반 유저라면 exception
+        if (signalService.checkCantSend(myTeam))
+            throw new CustomException(ErrorCode.ONLY_ONE_SIGNAL); // 내 팀이 이미 시그널을 보냈더라면
         Team otherTeam = teamService.findById(teamId);
         signalService.saveSignal(myTeam, otherTeam);
         /**
