@@ -183,7 +183,9 @@ public class AggregationFacade {
         User leader = userService.findById(tempLeader.getId());
         if (!checkUserReport(leader))
             throw new CustomException(ErrorCode.BANNED);
+        Team myTeam = leader.getTeam();
         List<TeamDTO> teamDTOs = teamService.findSignalList(leader).stream()
+                .filter(team -> !signalService.checkCantSend(myTeam, team)) // team: 내가 보낼 수 있는 team 을 의미함
                 .map(team -> TeamDTO.builder()
                         .teamId(team.getId())
                         .teamName(team.getTitle())
