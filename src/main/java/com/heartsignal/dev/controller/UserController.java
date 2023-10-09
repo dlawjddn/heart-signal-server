@@ -57,9 +57,5 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/report/check-nickname/{nickname}")
-    public CanReportDTO checkCanReport(@PathVariable String nickname){
-        return aggregationFacade.checkCanReport(nickname);
-    }
 
 }

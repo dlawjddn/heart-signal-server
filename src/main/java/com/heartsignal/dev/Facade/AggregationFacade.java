@@ -136,7 +136,6 @@ public class AggregationFacade {
     }
 
 
-
     //신고가 가능한 사용자인지 확인하기
 
     public CanReportDTO checkCanReport(String nickname){

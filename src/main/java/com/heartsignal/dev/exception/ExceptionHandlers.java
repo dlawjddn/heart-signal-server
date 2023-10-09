@@ -15,7 +15,7 @@ public class ExceptionHandlers {
 
     @ExceptionHandler({CustomException.class})
     public ResponseEntity<ErrorDto> handleCustomException(CustomException e) {
-        log.error("error = {}", e.getErrorCode().getCode());
+        log.error("error = {}", (Object) e.getStackTrace());
         ErrorDto errorDto = ErrorDto.builder().code(e.getErrorCode().getCode()).build();
         return new ResponseEntity<>(errorDto, e.getErrorCode().getHttpStatus());
     }
