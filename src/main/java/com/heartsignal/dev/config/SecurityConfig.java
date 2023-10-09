@@ -46,6 +46,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/users/additional").hasAnyRole("GUEST")
                         .requestMatchers("/api/v1/users/duplicate-nickname/**").hasAnyRole("GUEST")
                         .requestMatchers("/oauth2/authorization/kakao", "/login/oauth2/code/kakao", "/api/v1/auth/refresh", "/ws-connection").permitAll()
+                        .requestMatchers("/api/v1/users/dummy").permitAll()
                         .anyRequest().authenticated()
                 );
 
