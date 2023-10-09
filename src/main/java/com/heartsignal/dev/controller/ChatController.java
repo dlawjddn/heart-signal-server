@@ -5,6 +5,7 @@ import com.heartsignal.dev.domain.rds.User;
 import com.heartsignal.dev.dto.chat.response.MessageDTO;
 import com.heartsignal.dev.dto.chat.response.MessageListDTO;
 import com.heartsignal.dev.oauth.PrincipalDetails;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -23,7 +24,7 @@ public class ChatController {
     private final AggregationFacade aggregationFacade;
 
     @MessageMapping("/messages/{barId}")
-    public void chat(@DestinationVariable String barId, @RequestBody MessageDTO messageDTO) {
+    public void chat(@DestinationVariable String barId, @Valid @RequestBody MessageDTO messageDTO) {
         aggregationFacade.saveChat(messageDTO, barId);
         simpMessagingTemplate.convertAndSend("/subscribe/rooms/" + barId, messageDTO);
     }
