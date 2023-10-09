@@ -135,6 +135,9 @@ public class AggregationFacade {
         userService.reportUser(reportedUser);
     }
 
+
+    //신고가 가능한 사용자인지 확인하기
+
     public CanReportDTO checkCanReport(String nickname){
         return CanReportDTO.builder()
                 .canReport(userInfoService.isExistedNickname(nickname))

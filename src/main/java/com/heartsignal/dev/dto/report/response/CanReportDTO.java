@@ -11,4 +11,3 @@ public class CanReportDTO {
     private boolean canReport;
 
 }
-
