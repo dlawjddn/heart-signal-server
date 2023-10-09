@@ -11,6 +11,7 @@ import com.heartsignal.dev.dto.bar.response.BarInfoDTO;
 import com.heartsignal.dev.dto.bar.response.BarListDTO;
 import com.heartsignal.dev.dto.chat.response.MessageDTO;
 import com.heartsignal.dev.dto.chat.response.MessageListDTO;
+import com.heartsignal.dev.dto.report.response.CanReportDTO;
 import com.heartsignal.dev.dto.signal.response.SignalDTO;
 import com.heartsignal.dev.dto.team.request.SaveTeamDTO;
 import com.heartsignal.dev.dto.team.response.SignalTeamsDTO;
@@ -130,10 +131,16 @@ public class AggregationFacade {
     }
 
     // 신고하기
-
     public void reportUser(String nickname){
         User reportedUser = userService.findById(userInfoService.findByNickName(nickname).getId());
         userService.reportUser(reportedUser);
+    }
+
+    //신고가 가능한 사용자인지 확인하기
+    public CanReportDTO checkCanReport(String nickname){
+        return CanReportDTO.builder()
+                .canReport(userInfoService.isExistedNickname(nickname))
+                .build();
     }
     /**
      * 그룹화
@@ -218,6 +225,8 @@ public class AggregationFacade {
         Team myTeam = user.getTeam();
         if (!myTeam.getLeader().equals(user))
             throw new CustomException(ErrorCode.ONLY_LEADER); // 일반 유저라면 exception
+        if (signalService.checkCantSend(myTeam))
+            throw new CustomException(ErrorCode.ONLY_ONE_SIGNAL); // 내 팀이 이미 시그널을 보냈더라면
         Team otherTeam = teamService.findById(teamId);
         signalService.saveSignal(myTeam, otherTeam);
         /**

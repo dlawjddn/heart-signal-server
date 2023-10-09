@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface SignalRepository extends JpaRepository<Signal, Long> {
     List<Signal> findBySender(Team sendTeam);
     List<Signal> findByReceiver(Team receivedTeam);
+    boolean existsBySender(Team myTeam);
     Optional<Signal> findBySenderAndReceiver(Team sender, Team receiver);
 }
