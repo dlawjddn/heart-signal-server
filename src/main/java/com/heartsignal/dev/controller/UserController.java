@@ -44,8 +44,9 @@ public class UserController {
         return aggregationFacade.showMainPage(user);
     }
     @PatchMapping("/report")
-    public void reportUser(@RequestBody ReportDTO reportDTO){
-        aggregationFacade.reportUser(reportDTO.getReportNickname());
+    public void reportUser(@RequestBody ReportDTO reportDTO, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        User user = principalDetails.getUser();
+        aggregationFacade.reportUser(user, reportDTO.getReportNickname());
     }
     @GetMapping("/report/check-nickname/{nickname}")
     public CanReportDTO checkCanReport(@PathVariable String nickname){
