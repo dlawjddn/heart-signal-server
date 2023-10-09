@@ -9,4 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 public class CanReportDTO {
     private boolean canReport;
+
 }
+
