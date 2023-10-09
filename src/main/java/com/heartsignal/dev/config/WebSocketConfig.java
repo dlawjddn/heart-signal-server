@@ -23,10 +23,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/ws-connection")
 //                .addInterceptors(new HandShakeInterceptor())
                 .setAllowedOrigins(
+                        "ws://localhost:5173",
                         "http://localhost:3000",
                         "http://localhost:5173",
                         "http://43.202.145.101:8080",
-                        "https://heart.dcs-hyungjoon.com")
+                        "https://heart.dcs-hyungjoon.com",
+                        "wss://heart.dcs-hyungjoon.com")
                 .withSockJS();
     }
 }
