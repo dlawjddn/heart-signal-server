@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     //400
+    MAKE_TEAM_FIRST(HttpStatus.BAD_REQUEST, "MAKE TEAM FIRST"),
 
     //401
     ONLY_LEADER(HttpStatus.UNAUTHORIZED, "ONLY LEADER CAN DO"),
