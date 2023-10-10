@@ -1,0 +1,63 @@
+spring:
+  datasource:
+    url: jdbc:mysql://heart-signal-prod.cykxxwdhqye6.ap-northeast-2.rds.amazonaws.com:3306/heart_signal_database
+    username: hs_admin
+    password: hs_adminqwer1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  data:
+    mongodb:
+      uri: mongodb+srv://hs_admin:hs_adminqwer1234@prod-heart-signal.ajod1.mongodb.net/?retryWrites=true&w=majority
+      authentication-database: admin
+      database: heart-signal-db
+
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: 5f08f6b3929d0013a8f484faa6b4fc3f
+            client-secret: ozbZ2xyiHKXcpo36JDk3a2xRqmKS887r
+            scope:
+              - profile_nickname
+            client-name: kakao
+            authorization-grant-type: authorization_code
+            client-authentication-method: client_secret_post
+            redirect-uri: https://heartu-signal.com/login/oauth2/code/kakao
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+
+jwt:
+  secretKey: asdokjfqlekrthlbandglkasujdriqkwejnlkrtajf123!(sdfioja0-123jkladsfajipo~~~assdfa
+
+  access:
+    expiration: 3600000
+    header: Authorization
+
+  refresh:
+    expiration: 1209600000
+    header: ReAuthorization
+
+redirect:
+  url:
+    userInfo: https://heartu-signal.com/userInfo
+    main: https://heartu-signal.com/
+
+server:
+  session:
+    tracking-modes: cookie
+
+
