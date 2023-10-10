@@ -433,6 +433,8 @@ public class AggregationFacade {
     }
 
     public void deleteMeetingRoom(Long roomId) {
+        if (!meetingChatRoomService.isExisted(roomId))
+            throw new CustomException(ErrorCode.MEETINGROOM_NOT_FOUND);
         meetingChatRoomService.deleteMeetingRoom(roomId);
         chatService.deleteChat(roomId);
     }

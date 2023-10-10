@@ -15,5 +15,5 @@ public interface MeetingChatRoomRepository extends JpaRepository<MeetingChatRoom
 
     @Query("SELECT m FROM MeetingChatRoom m WHERE m.team1 = :team OR m.team2 = :team")
     Optional<MeetingChatRoom> findByTeam1OrTeam2(@Param("team") Team team);
-
+    boolean existsById(Long id);
 }
