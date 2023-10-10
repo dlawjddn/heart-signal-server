@@ -7,10 +7,14 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     //400
+    MAKE_TEAM_FIRST(HttpStatus.BAD_REQUEST, "MAKE TEAM FIRST"),
 
     //401
     ONLY_LEADER(HttpStatus.UNAUTHORIZED, "ONLY LEADER CAN DO"),
     BANNED(HttpStatus.UNAUTHORIZED, "BANNED_USER"),
+
+    //
+    NOT_LOGIN_USER(HttpStatus.UNAUTHORIZED, "NOT LOGIN USER"),
 
     //404
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER NOT FOUND"),

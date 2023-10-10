@@ -190,6 +190,8 @@ public class AggregationFacade {
         User leader = userService.findById(tempLeader.getId());
         if (!checkUserReport(leader))
             throw new CustomException(ErrorCode.BANNED);
+        if (leader.getTeam() == null)
+            throw new CustomException(ErrorCode.MAKE_TEAM_FIRST); // null exception 방지
         Team myTeam = leader.getTeam();
         List<TeamDTO> teamDTOs = teamService.findSignalList(leader).stream()
                 .filter(team -> !signalService.checkCantSend(myTeam, team) && team.getStatus() == 0) // team: 내가 보낼 수 있는 team 을 의미함
@@ -208,6 +210,8 @@ public class AggregationFacade {
         User user = userService.findById(tempUser.getId());
         if (!checkUserReport(user))
             throw new CustomException(ErrorCode.BANNED);
+        if (user.getTeam() == null)
+            throw new CustomException(ErrorCode.MAKE_TEAM_FIRST); // null exception
         Team findTeam = teamService.findById(teamId);
         List<AdditionalInfoDTO> memberInfos = new ArrayList<>(findTeam.getMembers().stream()
                 .map(User::getUserInfo).toList().stream()
@@ -231,6 +235,8 @@ public class AggregationFacade {
         User user = userService.findById(tempUser.getId());
         if (!checkUserReport(user))
             throw new CustomException(ErrorCode.BANNED);
+        if (user.getTeam() == null)
+            throw new CustomException(ErrorCode.MAKE_TEAM_FIRST); // null exception
         Team myTeam = user.getTeam();
         if (!myTeam.getLeader().equals(user))
             throw new CustomException(ErrorCode.ONLY_LEADER); // 일반 유저라면 exception
@@ -254,6 +260,8 @@ public class AggregationFacade {
         User user = userService.findById(tempUser.getId());
         if (!checkUserReport(user))
             throw new CustomException(ErrorCode.BANNED);
+        if (user.getTeam() == null)
+            throw new CustomException(ErrorCode.MAKE_TEAM_FIRST); // null exception
         Team myTeam = user.getTeam();
         Team otherTeam = teamService.findById(teamId);
         if (!myTeam.getLeader().equals(user))
@@ -280,21 +288,14 @@ public class AggregationFacade {
         for (String location : locations) {
             List<BarContentDTO> barContentDTOS = new ArrayList<>();
             List<BarInfoDTO> barInfoDTOS = barService.findBarsInLocation(location).stream()
-                    .filter(bar -> {
-                        if (now.isBefore(base) && bar.getFirst() == 1) {// 1일차 주점인 경우
-                            return true;
-                        }else if(now.isAfter(base) && bar.getSecond() == 1){ // 2일차 주점인 경우
-                            return true;
-                        }else{
-                            return false;
-                        }
-                    })
+                    .filter(bar -> (now.isBefore(base) && bar.getFirst() == 1) || (now.isAfter(base) && bar.getSecond() == 1))
                     .map(bar -> BarInfoDTO.builder()
                             .barID(bar.getId())
                             .groupName(bar.getGroup())
                             .name(bar.getName())
                             .build())
                     .toList();
+            if (barInfoDTOS.isEmpty()) continue;
             int cnt = 0;
             for (int i=0; i<barInfoDTOS.size(); i++){
                 if (i % 2 == 0){
@@ -324,7 +325,9 @@ public class AggregationFacade {
     public SignalDTO checkMatching(User tempUser){
         User user = userService.findById(tempUser.getId());
         if (!checkUserReport(user))
-            throw new CustomException(ErrorCode.BANNED);
+            throw new CustomException(ErrorCode.BANNED); // report check
+        if (user.getTeam() == null)
+            throw new CustomException(ErrorCode.MAKE_TEAM_FIRST); // null exception
         Team myTeam = user.getTeam();
         List<TeamDTO> sendingInfos = signalService.findSendingSignal(myTeam).stream()
                 .map(signal -> TeamDTO.builder()
@@ -392,6 +395,8 @@ public class AggregationFacade {
         User user = userService.findById(tempUser.getId());
         if (!checkUserReport(user))
             throw new CustomException(ErrorCode.BANNED);
+        if (user.getTeam() == null)
+            throw new CustomException(ErrorCode.MAKE_TEAM_FIRST);
         Team team = user.getTeam();
         Long meetingChatRoomId = meetingChatRoomService.findMeetingChatRoomByTeam(team);
         Chat chat = chatService.findChatById(meetingChatRoomId.toString());
