@@ -35,6 +35,8 @@ public class ChatController {
     @MessageMapping("/delete-room/{meetingRoomId}")
     public void deleteRoom(@DestinationVariable String meetingRoomId, @RequestBody MeetLeaveStatusDTO meetLeaveStatusDTO) {
         log.info("meetLeaveStatus = {}", meetLeaveStatusDTO.isLeaveClicked());
+        log.info("meetLeaveStatus = {}", meetLeaveStatusDTO.isLeaveClicked());
+
         simpMessagingTemplate.convertAndSend("/subscribe/delete-room/" + meetingRoomId, meetLeaveStatusDTO);
     }
 
