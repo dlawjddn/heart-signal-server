@@ -40,6 +40,9 @@ public class MeetingChatRoomService {
         MeetingChatRoom meetingChatRoom = meetingChatRoomRepository.findByTeam1OrTeam2(team).orElseThrow(() -> new CustomException(ErrorCode.CHAT_NOT_FOUND));
         return meetingChatRoom.getId();
     }
+    public boolean isExisted(Long roomId){
+        return meetingChatRoomRepository.existsById(roomId);
+    }
 
     @Transactional
     public void deleteMeetingRoom(Long roomId) {
