@@ -27,8 +27,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                         "http://localhost:3000",
                         "http://localhost:5173",
                         "http://43.202.145.101:8080",
-                        "https://heart.dcs-hyungjoon.com",
-                        "wss://heart.dcs-hyungjoon.com")
+                        "https://heartu-signal.com",
+                        "wss://heartu-signal.com",)
                 .withSockJS();
     }
 }
