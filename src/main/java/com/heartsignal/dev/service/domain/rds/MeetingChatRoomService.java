@@ -2,6 +2,7 @@ package com.heartsignal.dev.service.domain.rds;
 
 import com.heartsignal.dev.domain.rds.MeetingChatRoom;
 import com.heartsignal.dev.domain.rds.Team;
+import com.heartsignal.dev.event.Event;
 import com.heartsignal.dev.exception.custom.CustomException;
 import com.heartsignal.dev.exception.custom.ErrorCode;
 import com.heartsignal.dev.repository.rds.MeetingChatRoomRepository;
@@ -9,6 +10,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.ParameterMode;
 import jakarta.persistence.StoredProcedureQuery;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +45,7 @@ public class MeetingChatRoomService {
     public boolean isExisted(Long roomId){
         return meetingChatRoomRepository.existsById(roomId);
     }
+
 
     @Transactional
     public void deleteMeetingRoom(Long roomId) {

@@ -18,12 +18,14 @@ import com.heartsignal.dev.dto.team.response.TeamDTO;
 import com.heartsignal.dev.dto.team.response.TeamDetailsDTO;
 import com.heartsignal.dev.dto.userInfo.request.SaveAdditionalInfoDTO;
 import com.heartsignal.dev.dto.userInfo.response.*;
+import com.heartsignal.dev.event.Event;
 import com.heartsignal.dev.exception.custom.CustomException;
 import com.heartsignal.dev.exception.custom.ErrorCode;
 import com.heartsignal.dev.service.domain.nosql.ChatService;
 import com.heartsignal.dev.service.domain.rds.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -45,6 +47,8 @@ public class AggregationFacade {
     private final MeetingChatRoomService meetingChatRoomService;
     private final BarChatroomService barChatroomService;
     private final ChatService chatService;
+    private final ApplicationEventPublisher eventPublisher;
+
 
     /**
      *  회원 신고 확인하기
@@ -432,10 +436,12 @@ public class AggregationFacade {
                 .collect(Collectors.toList());
     }
 
-    public void deleteMeetingRoom(Long roomId) {
+    public void deleteMeetingRoom(Long roomId, User tempUser) {
+        User user = userService.findById(tempUser.getId());
         if (!meetingChatRoomService.isExisted(roomId))
             throw new CustomException(ErrorCode.MEETINGROOM_NOT_FOUND);
         meetingChatRoomService.deleteMeetingRoom(roomId);
+        eventPublisher.publishEvent(new Event(roomId, user.getUserInfo().getNickname()));
         chatService.deleteChat(roomId);
     }
 }
