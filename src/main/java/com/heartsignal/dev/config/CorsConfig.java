@@ -44,7 +44,7 @@ public class CorsConfig {
 
         configuration.addAllowedOrigin("http://localhost:5173");
         configuration.addAllowedOrigin("http://localhost:3000");
-        configuration.addAllowedOrigin("https://heart.dcs-hyungjoon.com");
+        configuration.addAllowedOrigin("https://heartu-signal.com");
 
         configuration.addAllowedMethod("GET");
         configuration.addAllowedMethod("POST");
