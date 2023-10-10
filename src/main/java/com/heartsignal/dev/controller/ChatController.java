@@ -2,6 +2,7 @@ package com.heartsignal.dev.controller;
 
 import com.heartsignal.dev.Facade.AggregationFacade;
 import com.heartsignal.dev.domain.rds.User;
+import com.heartsignal.dev.dto.chat.response.MeetLeaveStatusDTO;
 import com.heartsignal.dev.dto.chat.response.MessageDTO;
 import com.heartsignal.dev.dto.chat.response.MessageListDTO;
 import com.heartsignal.dev.oauth.PrincipalDetails;
@@ -27,6 +28,11 @@ public class ChatController {
     public void chat(@DestinationVariable String barId, @Valid @RequestBody MessageDTO messageDTO) {
         aggregationFacade.saveChat(messageDTO, barId);
         simpMessagingTemplate.convertAndSend("/subscribe/rooms/" + barId, messageDTO);
+    }
+
+    @MessageMapping("/delete-room/{meetingRoomId}")
+    public void deleteRoom(@DestinationVariable String meetingRoomId, @RequestBody MeetLeaveStatusDTO meetLeaveStatusDTO) {
+        simpMessagingTemplate.convertAndSend("/subscribe/delete-room/" + meetingRoomId, meetLeaveStatusDTO);
     }
 
     @GetMapping("/api/v1/chats/{chatId}/chat")
