@@ -8,6 +8,7 @@ import com.heartsignal.dev.dto.chat.response.MessageListDTO;
 import com.heartsignal.dev.oauth.PrincipalDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -19,6 +20,7 @@ import java.time.OffsetDateTime;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class ChatController {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
@@ -32,6 +34,7 @@ public class ChatController {
 
     @MessageMapping("/delete-room/{meetingRoomId}")
     public void deleteRoom(@DestinationVariable String meetingRoomId, @RequestBody MeetLeaveStatusDTO meetLeaveStatusDTO) {
+        log.info("meetLeaveStatus = {}", meetLeaveStatusDTO.isLeaveClicked());
         simpMessagingTemplate.convertAndSend("/subscribe/delete-room/" + meetingRoomId, meetLeaveStatusDTO);
     }
 
