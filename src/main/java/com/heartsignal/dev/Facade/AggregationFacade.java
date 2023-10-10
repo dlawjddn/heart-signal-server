@@ -295,6 +295,7 @@ public class AggregationFacade {
                             .name(bar.getName())
                             .build())
                     .toList();
+            if (barInfoDTOS.isEmpty()) continue;
             int cnt = 0;
             for (int i=0; i<barInfoDTOS.size(); i++){
                 if (i % 2 == 0){
