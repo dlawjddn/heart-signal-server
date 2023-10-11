@@ -356,21 +356,19 @@ public class AggregationFacade {
     public void saveChat(MessageDTO messageDTO, String barId) {
         Chat chat = chatService.findChatById(barId);
         OffsetDateTime parsedDate = OffsetDateTime.parse(messageDTO.getSendTime());
+        OffsetDateTime offTime = OffsetDateTime.now();
 
         // OffsetDateTime에서 LocalDateTime으로 변환
         LocalDateTime localDateTime = parsedDate.toLocalDateTime();
 
-        // 한국 시간대로 변환
-        ZonedDateTime koreanZonedDateTime = localDateTime.atZone(ZoneId.of("Asia/Seoul"));
-
-        // ZonedDateTime에서 LocalDateTime으로 변환 (필요한 경우)
-        LocalDateTime koreanLocalDateTime = koreanZonedDateTime.toLocalDateTime();
+        // 한국 시간으로 변환
+        LocalDateTime korTime = localDateTime.plusHours(9L);
 
         chat.getMessages().add(
                 Message.builder()
                         .sender(messageDTO.getSender())
                         .content(messageDTO.getContent())
-                        .date(koreanZonedDateTime.toInstant())  // 한국 시간대의 시간을 Instant로 변환
+                        .date(Instant.from(korTime))  // 한국 시간대의 시간을 Instant로 변환
                         .build()
         );
         chatService.saveBarChat(chat);
@@ -388,8 +386,10 @@ public class AggregationFacade {
                     .messageList(null)
                     .build();
         }
-        LocalDateTime localDateTime = LocalDateTime.of(2023, 10, 11, 12, 0);
-        OffsetDateTime koreanTime = OffsetDateTime.of(localDateTime, ZoneOffset.ofHours(9));
+        LocalDateTime localDateTime = LocalDateTime.of(2023, 10, 11, 21, 0);
+        OffsetDateTime koreanTime = OffsetDateTime.of(localDateTime, ZoneOffset.ofHours(9)); // 영국시간 기준 우리나라 시간이 +9
+
+        Instant date = chat.getMessages().get(0).getDate();
 
         List<Message> sortedMessages = sortMessagesByDate(chat).stream()
                 .filter(msg -> msg.getDate().isAfter(koreanTime.toInstant()))
