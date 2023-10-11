@@ -1,6 +1,6 @@
 spring:
   profiles:
-    default: prgr od
+    default: prod
 
 ---
 spring:
