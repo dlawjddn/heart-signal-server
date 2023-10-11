@@ -14,6 +14,10 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories(basePackages = "com.heartsignal.dev.repository.nosql")
 public class HeartSignalApplication {
 
+	//	@PostConstruct
+	//	public void start(){
+	//		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
+	//	}
 	public static void main(String[] args) {
 		SpringApplication.run(HeartSignalApplication.class, args);
 	}

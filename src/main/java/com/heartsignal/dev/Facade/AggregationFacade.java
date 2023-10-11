@@ -286,7 +286,7 @@ public class AggregationFacade {
             throw new CustomException(ErrorCode.BANNED);
         List<BarListDTO> barListDTOS = new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime base = LocalDateTime.of(2023, 10, 12, 0, 0);
+        LocalDateTime base = LocalDateTime.of(2023, 10, 11, 15, 0);
         List<String> locations = barService.findLocations(); // -> 위치에 해당하는 문자열 배열
         for (String location : locations) {
             List<BarContentDTO> barContentDTOS = new ArrayList<>();
