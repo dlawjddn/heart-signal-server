@@ -380,9 +380,10 @@ public class AggregationFacade {
                     .messageList(null)
                     .build();
         }
+        OffsetDateTime offsetDateTime = dateTime.withHour(16).withMinute(0).withSecond(0).withNano(0);
 
         List<Message> sortedMessages = sortMessagesByDate(chat).stream()
-                .filter(msg -> msg.getDate().isAfter(dateTime.toInstant()))
+                .filter(msg -> msg.getDate().isAfter(offsetDateTime.toInstant()))
                 .collect(Collectors.toList());
 
         return MessageListDTO.builder()
