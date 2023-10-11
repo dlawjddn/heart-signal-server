@@ -4,7 +4,7 @@ name: server-actions
 
 on:
   push:
-    branches: [prod]
+    branches: [dev]
 
 jobs:
   ci:
