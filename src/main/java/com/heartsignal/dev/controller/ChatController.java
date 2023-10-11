@@ -42,7 +42,6 @@ public class ChatController {
 
     @GetMapping("/api/v1/chats/{chatId}/chat")
     public MessageListDTO showBarMessages(@PathVariable String chatId){
-
         return aggregationFacade.provideBarChatInfos(chatId);
     }
 

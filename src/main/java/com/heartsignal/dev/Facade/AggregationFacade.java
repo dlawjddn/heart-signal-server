@@ -28,8 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -358,11 +357,20 @@ public class AggregationFacade {
         Chat chat = chatService.findChatById(barId);
         OffsetDateTime parsedDate = OffsetDateTime.parse(messageDTO.getSendTime());
 
+        // OffsetDateTime에서 LocalDateTime으로 변환
+        LocalDateTime localDateTime = parsedDate.toLocalDateTime();
+
+        // 한국 시간대로 변환
+        ZonedDateTime koreanZonedDateTime = localDateTime.atZone(ZoneId.of("Asia/Seoul"));
+
+        // ZonedDateTime에서 LocalDateTime으로 변환 (필요한 경우)
+        LocalDateTime koreanLocalDateTime = koreanZonedDateTime.toLocalDateTime();
+
         chat.getMessages().add(
                 Message.builder()
                         .sender(messageDTO.getSender())
                         .content(messageDTO.getContent())
-                        .date(parsedDate.toInstant())
+                        .date(koreanZonedDateTime.toInstant())  // 한국 시간대의 시간을 Instant로 변환
                         .build()
         );
         chatService.saveBarChat(chat);
@@ -380,10 +388,11 @@ public class AggregationFacade {
                     .messageList(null)
                     .build();
         }
-        OffsetDateTime offsetDateTime = OffsetDateTime.now().withHour(16).withMinute(0).withSecond(0).withNano(0);
+        LocalDateTime localDateTime = LocalDateTime.of(2023, 10, 11, 12, 0);
+        OffsetDateTime koreanTime = OffsetDateTime.of(localDateTime, ZoneOffset.ofHours(9));
 
         List<Message> sortedMessages = sortMessagesByDate(chat).stream()
-                .filter(msg -> msg.getDate().isAfter(offsetDateTime.toInstant()))
+                .filter(msg -> msg.getDate().isAfter(koreanTime.toInstant()))
                 .collect(Collectors.toList());
 
         return MessageListDTO.builder()
