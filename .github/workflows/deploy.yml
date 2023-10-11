@@ -2,6 +2,7 @@
 
 name: server-actions
 
+
 on:
   push:
     branches: [prod]
