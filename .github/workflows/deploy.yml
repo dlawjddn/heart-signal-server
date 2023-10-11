@@ -48,28 +48,16 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Docker Image Pull and Container Run at Instance A
+      - name: Docker Image Pull and Container Run
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.BASTION_HOST }}
-          username: ${{ secrets.BASTION_USERNAME }}
-          password: ${{ secrets.BASTION_PASSWORD }}
-          port: ${{ secrets.BASTION_PORT }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          # key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script: |
-            ssh -i ${{ secrets.PRIVATE_KEY }} ${{ secrets.PRIVATE_A_USERNAME }}@${{ secrets.PRIVATE_A_HOST }} << EOF
-            chmod +x ./docker-server.sh
-            ./docker-server.sh ${{ secrets.DOCKERHUB_USERNAME }} ${{ secrets.DOCKERHUB_PROD_REPONAME }} ${{ secrets.DOCKER_IMAGE_NAME }}
-            EOF
-
-      - name: Docker Image Pull and Container Run at Instance C
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.BASTION_HOST }}
-          username: ${{ secrets.BASTION_USERNAME }}
-          password: ${{ secrets.BASTION_PASSWORD }}
-          port: ${{ secrets.BASTION_PORT }}
-          script: |
-            ssh -i ${{ secrets.PRIVATE_KEY }} ${{ secrets.PRIVATE_C_USERNAME }}@${{ secrets.PRIVATE_C_HOST }} << EOF
-            chmod +x ./docker-server.sh
-            ./docker-server.sh ${{ secrets.DOCKERHUB_USERNAME }} ${{ secrets.DOCKERHUB_PROD_REPONAME }} ${{ secrets.DOCKER_IMAGE_NAME }}
-            EOF
+            docker stop signal-was
+            docker rm signal-was
+            docker image rm ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPONAME }}
+            docker run -d -p 8080:8080 --name signal-was ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPONAME }}
