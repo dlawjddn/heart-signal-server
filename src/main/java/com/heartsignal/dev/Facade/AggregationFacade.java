@@ -356,23 +356,50 @@ public class AggregationFacade {
     public void saveChat(MessageDTO messageDTO, String barId) {
         Chat chat = chatService.findChatById(barId);
         OffsetDateTime parsedDate = OffsetDateTime.parse(messageDTO.getSendTime());
-        OffsetDateTime offTime = OffsetDateTime.now();
 
         // OffsetDateTime에서 LocalDateTime으로 변환
         LocalDateTime localDateTime = parsedDate.toLocalDateTime();
-
         // 한국 시간으로 변환
         LocalDateTime korTime = localDateTime.plusHours(9L);
+        ZonedDateTime koreanZonedDateTime = korTime.atZone(ZoneId.of("Asia/Seoul"));
 
         chat.getMessages().add(
                 Message.builder()
                         .sender(messageDTO.getSender())
                         .content(messageDTO.getContent())
-                        .date(Instant.from(korTime))  // 한국 시간대의 시간을 Instant로 변환
+                        .date(koreanZonedDateTime.toInstant())  // 한국 시간대의 시간을 Instant로 변환
                         .build()
         );
         chatService.saveBarChat(chat);
     }
+    /**
+     * public void saveChat(MessageDTO messageDTO, String barId) {
+     *         Chat chat = chatService.findChatById(barId);
+     *         OffsetDateTime parsedDate = OffsetDateTime.parse(messageDTO.getSendTime());
+     *
+     *         // OffsetDateTime에서 LocalDateTime으로 변환
+     *         LocalDateTime localDateTime = parsedDate.toLocalDateTime();
+     *
+     *         // 한국 시간대로 변환
+     *         ZonedDateTime koreanZonedDateTime = localDateTime.atZone(ZoneId.of("Asia/Seoul"));
+     *
+     *         // ZonedDateTime에서 LocalDateTime으로 변환 (필요한 경우)
+     *         LocalDateTime koreanLocalDateTime = koreanZonedDateTime.toLocalDateTime();
+     *
+     *         chat.getMessages().add(
+     *                 Message.builder()
+     *                         .sender(messageDTO.getSender())
+     *                         .content(messageDTO.getContent())
+     *                         .date(koreanZonedDateTime.toInstant())  // 한국 시간대의 시간을 Instant로 변환
+     *                         .build()
+     *         );
+     *         chatService.saveBarChat(chat);
+     *     }
+     *
+     *
+     *
+     *
+     */
 
 
     /**
