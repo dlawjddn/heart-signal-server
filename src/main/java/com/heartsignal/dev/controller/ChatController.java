@@ -41,11 +41,9 @@ public class ChatController {
     }
 
     @GetMapping("/api/v1/chats/{chatId}/chat")
-    public MessageListDTO showBarMessages(@PathVariable String chatId,
-                                       @RequestParam
-                                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime enterTime){
+    public MessageListDTO showBarMessages(@PathVariable String chatId){
 
-        return aggregationFacade.provideBarChatInfos(chatId, enterTime);
+        return aggregationFacade.provideBarChatInfos(chatId);
     }
 
     @GetMapping("/api/v1/chats/meeting-room/chat")

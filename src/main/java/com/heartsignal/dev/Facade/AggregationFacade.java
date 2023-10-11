@@ -373,16 +373,17 @@ public class AggregationFacade {
      * 주점
      * 채팅 내역 불러오기
      */
-    public MessageListDTO provideBarChatInfos(String chatId, OffsetDateTime dateTime) {
+    public MessageListDTO provideBarChatInfos(String chatId) {
         Chat chat = chatService.findChatById(chatId);
         if(chat.getMessages() == null){
             return MessageListDTO.builder()
                     .messageList(null)
                     .build();
         }
+        OffsetDateTime offsetDateTime = OffsetDateTime.now().withHour(16).withMinute(0).withSecond(0).withNano(0);
 
         List<Message> sortedMessages = sortMessagesByDate(chat).stream()
-                .filter(msg -> msg.getDate().isAfter(dateTime.toInstant()))
+                .filter(msg -> msg.getDate().isAfter(offsetDateTime.toInstant()))
                 .collect(Collectors.toList());
 
         return MessageListDTO.builder()
